@@ -57,7 +57,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	/**
-	 * This function is called periodically during test mode.
+	 * This function is called periodically during test mode, approximate every 20ms
 	 */
 	@Override
 	public void testPeriodic() {
