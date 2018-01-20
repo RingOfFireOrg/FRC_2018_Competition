@@ -7,86 +7,120 @@
 
 package org.usfirst.frc.team3459.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Don't change the name of this or it won't work. (The manifest looks for
- * "Robot")
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the IterativeRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the build.properties file in the
+ * project.
  */
 public class Robot extends IterativeRobot {
-	/* list of autonomous choices go here */
 	private static final String kDefaultAuto = "Default";
 	private static final String kCustomAuto = "My Auto";
-	/* end of list */
-	
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
+	private Encoder e;
+	Victor motor3 = new Victor(3);
+	Joystick stick = new Joystick(1);
+	DigitalInput d2;
+	boolean needsReset;
 
 	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
+	 * This function is run when the robot is first started up and should be used
+	 * for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
 		m_chooser.addDefault("Default Auto", kDefaultAuto);
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
+		System.out.print("Andrew");
+		DriverStation.reportError("Andrew rules!", false);
+		e = new Encoder(0, 1);
+		d2 = new DigitalInput(2);
 	}
 
 	/**
-	 * This function is called once when we go into the teleop mode
-	 */
-	@Override
-	public void teleopInit() {
-	}
-	
-	/**
-	 * This function is called periodically during operator control (approx 20ms)
-	 */
-	@Override
-	public void teleopPeriodic() {
-	}
-
-	/**
-	 * This function is called once when we go into the test mode
-	 */
-	@Override
-	public void testInit() {
-	}
-
-	/**
-	 * This function is called periodically during test mode, approximate every 20ms
-	 */
-	@Override
-	public void testPeriodic() {
-	}
-	
-	/**
-	 * This function is called once when we go into the Autonomous mode
+	 * This autonomous (along with the chooser code above) shows how to select
+	 * between different autonomous modes using the dashboard. The sendable chooser
+	 * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
+	 * remove all of the chooser code and uncomment the getString line to get the
+	 * auto name from the text box below the Gyro
+	 *
+	 * <p>
+	 * You can add additional auto modes by adding additional comparisons to the
+	 * switch structure below with additional strings. If using the SendableChooser
+	 * make sure to add them to the chooser code above as well.
 	 */
 	@Override
 	public void autonomousInit() {
 		m_autoSelected = m_chooser.getSelected();
-
+		// autoSelected = SmartDashboard.getString("Auto Selector",
+		// defaultAuto);
 		System.out.println("Auto selected: " + m_autoSelected);
 	}
 
 	/**
-	 * This function is called periodically during autonomous control (approx
-	 * 20ms)
+	 * This function is called periodically during autonomous.
 	 */
 	@Override
 	public void autonomousPeriodic() {
 		switch (m_autoSelected) {
-			case kCustomAuto:
-				// Put custom auto code here
-				break;
-			case kDefaultAuto:
-			default:
-				// Put default auto code here
-				break;
+		case kCustomAuto:
+			// Put custom auto code here
+			break;
+		case kDefaultAuto:
+		default:
+			// Put default auto code here
+			break;
 		}
+	}
+
+	@Override
+	public void teleopInit() {
+		super.teleopInit();
+		needsReset = true;
+	}
+
+	/**
+	 * This function is called periodically during operator control.
+	 */
+	@Override
+	public void teleopPeriodic() {
+		DriverStation.reportError("Encoder Value: " + e.getRaw() + " " + e.get(), false);
+		// DriverStation.reportError("Encoder Value: " + d0.get() + " " + d1.get(),
+		// false);
+		double ysetting = stick.getY();
+		DriverStation.reportError("Joystick Value: " + ysetting, false);
+		// motor3.set(ysetting);
+		if (needsReset) {
+			motor3.set(-1);
+		} else {
+			if (e.get() < 90) {
+				motor3.set(1);
+			} else {
+				motor3.set(-1);
+			}
+		}
+		if (!d2.get()) {
+			needsReset = false;
+			e.reset();
+		}
+	}
+
+	/**
+	 * This function is called periodically during test mode.
+	 */
+	@Override
+	public void testPeriodic() {
 	}
 }
