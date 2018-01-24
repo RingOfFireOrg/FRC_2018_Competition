@@ -19,6 +19,7 @@ public class Robot extends IterativeRobot {
 	/* list of autonomous choices go here */
 	private static final String kDefaultAuto = "Default";
 	private static final String kCustomAuto = "My Auto";
+	PTMotor motor = new PTMotor(4);
 	/* end of list */
 	
 	private String m_autoSelected;
@@ -54,6 +55,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testInit() {
+		motor.set(1.0);
 	}
 
 	/**
