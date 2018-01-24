@@ -8,6 +8,7 @@
 package org.usfirst.frc.team3459.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -19,15 +20,16 @@ public class Robot extends IterativeRobot {
 	/* list of autonomous choices go here */
 	private static final String kDefaultAuto = "Default";
 	private static final String kCustomAuto = "My Auto";
-	PTMotor motor = new PTMotor(4);
+	CascadingLift lift = new CascadingLift(4);
+	Joystick stick = new Joystick(1);
 	/* end of list */
-	
+
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 
 	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
+	 * This function is run when the robot is first started up and should be used
+	 * for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
@@ -42,7 +44,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopInit() {
 	}
-	
+
 	/**
 	 * This function is called periodically during operator control (approx 20ms)
 	 */
@@ -55,7 +57,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testInit() {
-		motor.set(1.0);
+
 	}
 
 	/**
@@ -63,8 +65,17 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+		if (stick.getRawButtonPressed(5)) {
+			lift.startUp();
+		}
+		if (stick.getRawButtonPressed(3)) {
+			lift.startDown();
+		}
+		if (stick.getTrigger()) {
+			lift.stop();
+		}
 	}
-	
+
 	/**
 	 * This function is called once when we go into the Autonomous mode
 	 */
@@ -76,19 +87,18 @@ public class Robot extends IterativeRobot {
 	}
 
 	/**
-	 * This function is called periodically during autonomous control (approx
-	 * 20ms)
+	 * This function is called periodically during autonomous control (approx 20ms)
 	 */
 	@Override
 	public void autonomousPeriodic() {
 		switch (m_autoSelected) {
-			case kCustomAuto:
-				// Put custom auto code here
-				break;
-			case kDefaultAuto:
-			default:
-				// Put default auto code here
-				break;
+		case kCustomAuto:
+			// Put custom auto code here
+			break;
+		case kDefaultAuto:
+		default:
+			// Put default auto code here
+			break;
 		}
 	}
 }
