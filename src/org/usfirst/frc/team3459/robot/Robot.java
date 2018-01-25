@@ -54,6 +54,8 @@ public class Robot extends IterativeRobot {
 		drive.arcadeDrive(-stick.getY(), stick.getX());
 		if (stick.getTrigger()) {
 			lift.startUp();
+		} else if (stick.getRawButton(3)) {
+			lift.startDown();
 		} else {
 			lift.stop();
 		}
