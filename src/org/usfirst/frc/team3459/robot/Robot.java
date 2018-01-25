@@ -21,6 +21,7 @@ public class Robot extends IterativeRobot {
 	private static final String kDefaultAuto = "Default";
 	private static final String kCustomAuto = "My Auto";
 	CascadingLift lift = new CascadingLift(4);
+	TankDrive drive = new TankDrive();
 	Joystick stick = new Joystick(1);
 	/* end of list */
 
@@ -50,6 +51,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		drive.arcadeDrive(-stick.getY(), stick.getX());
+		if (stick.getTrigger()) {
+			lift.startUp();
+		} else {
+			lift.stop();
+		}
 	}
 
 	/**

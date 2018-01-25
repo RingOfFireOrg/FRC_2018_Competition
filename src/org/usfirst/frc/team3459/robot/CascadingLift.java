@@ -6,10 +6,10 @@ CascadingLift(int channel){
 	motor = new PTMotor(channel);
 }
 public void startUp() {
-	motor.set(1.0);
+	motor.set(0.5);
 }
 public void startDown() {
-	motor.set(-1.0);
+	motor.set(-0.5);
 }
 public void stop() {
 	motor.set(0.0);
