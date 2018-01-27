@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Encoder;
 
 /**
@@ -21,7 +22,7 @@ public class Robot extends IterativeRobot {
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	
-	Joystick commandstick = new Joystick(0);
+	Joystick commandStick = new Joystick(0);
 	
 	Jaguar driveFrontRight = new Jaguar(2);
 	Jaguar driveFrontLeft = new Jaguar(0);
@@ -30,20 +31,23 @@ public class Robot extends IterativeRobot {
 
 	Talon steerFrontRight = new Talon(1);
 	Talon steerFrontLeft = new Talon(3);
-	Talon steerBackRight = new Talon(5);
-	Talon steerBackLeft = new Talon(7);
+	Talon steerBackRight = new Talon(7);
+	Talon steerBackLeft = new Talon(5);
+	
 	
 	AbsoluteAnalogEncoder steerEncoderFrontRight = new AbsoluteAnalogEncoder(0);
 	AbsoluteAnalogEncoder steerEncoderFrontLeft = new AbsoluteAnalogEncoder(1);
 	AbsoluteAnalogEncoder steerEncoderBackRight = new AbsoluteAnalogEncoder(2);
 	AbsoluteAnalogEncoder steerEncoderBackLeft = new AbsoluteAnalogEncoder(3);
 	
-	//^numbers?????
 	
-	SwerveModule frontLeft = new SwerveModule(driveFrontLeft, steerFrontLeft, steerEncoderFrontLeft);
-	SwerveModule frontRight = new SwerveModule(driveFrontRight, steerFrontRight, steerEncoderFrontRight);
-	SwerveModule backLeft = new SwerveModule(driveBackLeft, steerBackLeft, steerEncoderBackLeft);
-	SwerveModule backRight = new SwerveModule(driveBackRight, steerBackRight, steerEncoderBackRight);
+	//^numbers?????
+
+	SwerveModule frontLeft = new SwerveModule(driveFrontLeft, steerFrontLeft, steerEncoderFrontLeft, 5);
+	SwerveModule frontRight = new SwerveModule(driveFrontRight, steerFrontRight, steerEncoderFrontRight, 50);
+	SwerveModule backLeft = new SwerveModule(driveBackLeft, steerBackLeft, steerEncoderBackLeft, 22);
+	SwerveModule backRight = new SwerveModule(driveBackRight, steerBackRight, steerEncoderBackRight, 180);
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -53,6 +57,8 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
+		steerBackLeft.setInverted(true);
+		steerBackRight.setInverted(true);
 	}
 
 	/**
@@ -95,22 +101,38 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		
-		/*
-		double speed = commandStick.getThrottle();
+
+	
+		//double speed = commandStick.getThrottle();
 		double direction = commandStick.getDirectionDegrees();
+		SmartDashboard.putNumber("Joystick output", direction);
+		/*
 		frontRight.control(speed, direction - 255.791);
 		frontLeft.control(speed, direction - 180.703);
 		backRight.control(speed, direction - 199.160);
 		backLeft.control(speed, direction - 3.340);
 		*/
 		
-	/*	frontRight.setAngle(180 - 255.791);
-		frontLeft.setAngle(180 - 180.703);
-		backRight.setAngle(180  - 199.160);
-		backLeft.setAngle(180 - 199.160); */
-		steerFrontRight.set(1);
+//		frontRight.setAngle(0);
+//		frontLeft.setAngle(0);
+//		backRight.setAngle(0);
+//		backLeft.setAngle(0); 
+		frontRight.control(0.5, 0);
+		frontLeft.control(0.5, 0);
+		backRight.control(0.5, 0);
+		backLeft.control(0.5, 0);
 		
+		//steerFrontRight.set(1);
+	
+		SmartDashboard.putNumber("front right encoder: ", steerEncoderFrontRight.getAngle());
+		SmartDashboard.putNumber("front left encoder: ", steerEncoderFrontLeft.getAngle());
+		SmartDashboard.putNumber("back right encoder: ", steerEncoderBackRight.getAngle());
+		SmartDashboard.putNumber("back left encoder: ", steerEncoderBackLeft.getAngle());
+		
+		SmartDashboard.putNumber("Corrected angle FR", frontRight.convertToRobotRelative(steerEncoderFrontRight.getAngle()));
+		SmartDashboard.putNumber("Corrected angle FL", frontLeft.convertToRobotRelative(steerEncoderFrontLeft.getAngle()));
+		SmartDashboard.putNumber("Corrected angle BR", backRight.convertToRobotRelative(steerEncoderBackRight.getAngle()));
+		SmartDashboard.putNumber("Corrected angle BL", backLeft.convertToRobotRelative(steerEncoderBackLeft.getAngle()));
 		
 	}
 
