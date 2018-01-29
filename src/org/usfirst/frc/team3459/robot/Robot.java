@@ -103,24 +103,18 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 
 	
-		//double speed = commandStick.getThrottle();
+		double speed = Math.pow(commandStick.getMagnitude(), 2);
 		double direction = commandStick.getDirectionDegrees();
 		SmartDashboard.putNumber("Joystick output", direction);
-		/*
-		frontRight.control(speed, direction - 255.791);
-		frontLeft.control(speed, direction - 180.703);
-		backRight.control(speed, direction - 199.160);
-		backLeft.control(speed, direction - 3.340);
-		*/
 		
 //		frontRight.setAngle(0);
 //		frontLeft.setAngle(0);
 //		backRight.setAngle(0);
 //		backLeft.setAngle(0); 
-		frontRight.control(0.5, 0);
-		frontLeft.control(0.5, 0);
-		backRight.control(0.5, 0);
-		backLeft.control(0.5, 0);
+		frontRight.control(speed, direction);
+		frontLeft.control(speed, direction);
+		backRight.control(speed, direction);
+		backLeft.control(speed, direction);
 		
 		//steerFrontRight.set(1);
 	
