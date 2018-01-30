@@ -104,13 +104,15 @@ public class Robot extends IterativeRobot {
 
 	
 		double speed = Math.pow(commandStick.getMagnitude(), 2);
-		double direction = commandStick.getDirectionDegrees();
+		double direction = commandStick.getDirectionDegrees() * -1;
 		SmartDashboard.putNumber("Joystick output", direction);
+		SmartDashboard.putNumber("Joystick output speed", speed);
 		
 //		frontRight.setAngle(0);
 //		frontLeft.setAngle(0);
 //		backRight.setAngle(0);
 //		backLeft.setAngle(0); 
+	
 		frontRight.control(speed, direction);
 		frontLeft.control(speed, direction);
 		backRight.control(speed, direction);

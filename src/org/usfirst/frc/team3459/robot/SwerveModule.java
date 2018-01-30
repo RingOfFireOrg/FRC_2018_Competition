@@ -50,9 +50,9 @@ public class SwerveModule {
 			// pid.enable
 			//SmartDashboard.putNumber("diff value", diff);
 			if((diff > 0 && diff < 180) || diff < -180) {
-				steer.set(-0.3);
+				steer.set(-0.6);
 			} else {
-				steer.set(0.3);
+				steer.set(0.6);
 			}
 			
 		}
