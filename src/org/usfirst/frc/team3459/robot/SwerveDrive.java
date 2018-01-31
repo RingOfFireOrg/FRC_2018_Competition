@@ -47,11 +47,24 @@ public class SwerveDrive {
 		steerBackRight.setInverted(true);
 
 	}
-	void syncroDrive(double driveSpeed, double driveAngle) {
-		frontRight.control(driveSpeed, driveAngle);
-		frontLeft.control(driveSpeed, driveAngle);
-		backRight.control(driveSpeed, driveAngle);
-		backLeft.control(driveSpeed, driveAngle);
+	void syncroDrive(double driveSpeed, double driveAngle, double twist) {
+		if(twist > .5){
+			frontRight.control(0.6, 45);
+			frontLeft.control(-0.6, 315);
+			backRight.control(-0.6, 315);
+			backLeft.control(0.6, 45);
+		}else if(twist < -.5){
+			frontRight.control(-0.6, 45);
+			frontLeft.control(0.6, 315);
+			backRight.control(0.6, 315);
+			backLeft.control(-0.6, 45);
+		} else {
+			frontRight.control(driveSpeed, driveAngle);
+			frontLeft.control(driveSpeed, driveAngle);
+			backRight.control(driveSpeed, driveAngle);
+			backLeft.control(driveSpeed, driveAngle);
+		}
+		
 		
 		//steerFrontRight.set(1);
 	

@@ -81,10 +81,11 @@ public class Robot extends IterativeRobot {
 	
 		double speed = Math.pow(commandStick.getMagnitude(), 2);
 		double direction = commandStick.getDirectionDegrees() * -1;
+		double twist = commandStick.getTwist();
 		SmartDashboard.putNumber("Joystick output", direction);
 		SmartDashboard.putNumber("Joystick output speed", speed);
 		
-		swerveDrive.syncroDrive(speed, direction);
+		swerveDrive.syncroDrive(speed, direction, twist);
 		
 	}
 
