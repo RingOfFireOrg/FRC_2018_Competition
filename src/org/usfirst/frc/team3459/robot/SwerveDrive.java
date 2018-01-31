@@ -55,7 +55,7 @@ public class SwerveDrive {
 			backLeft.control(0.6, 45);
 		}else if(twist < -.5){
 			frontRight.control(-0.6, 45);
-			frontLeft.control(0.6, 315);
+			frontLeft.control(-0.6, 315);
 			backRight.control(0.6, 315);
 			backLeft.control(-0.6, 45);
 		} else {
