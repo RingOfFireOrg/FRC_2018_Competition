@@ -62,6 +62,10 @@ public class SwerveModule {
 		// do cases with steps for each one
 
 	}
+	
+	public double getAngle() {
+		return turnEncoder.getAngle();
+	}
 
 	public void control(double driveSpeed, double wheelAngle) {
 		setAngle(wheelAngle);

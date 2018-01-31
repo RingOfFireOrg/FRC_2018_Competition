@@ -24,30 +24,7 @@ public class Robot extends IterativeRobot {
 	
 	Joystick commandStick = new Joystick(0);
 	
-	Jaguar driveFrontRight = new Jaguar(2);
-	Jaguar driveFrontLeft = new Jaguar(0);
-	Jaguar driveBackRight = new Jaguar(6);
-	Jaguar driveBackLeft = new Jaguar(4);
-
-	Talon steerFrontRight = new Talon(1);
-	Talon steerFrontLeft = new Talon(3);
-	Talon steerBackRight = new Talon(7);
-	Talon steerBackLeft = new Talon(5);
-	
-	
-	AbsoluteAnalogEncoder steerEncoderFrontRight = new AbsoluteAnalogEncoder(0);
-	AbsoluteAnalogEncoder steerEncoderFrontLeft = new AbsoluteAnalogEncoder(1);
-	AbsoluteAnalogEncoder steerEncoderBackRight = new AbsoluteAnalogEncoder(2);
-	AbsoluteAnalogEncoder steerEncoderBackLeft = new AbsoluteAnalogEncoder(3);
-	
-	
-	//^numbers?????
-
-	SwerveModule frontLeft = new SwerveModule(driveFrontLeft, steerFrontLeft, steerEncoderFrontLeft, 5);
-	SwerveModule frontRight = new SwerveModule(driveFrontRight, steerFrontRight, steerEncoderFrontRight, 50);
-	SwerveModule backLeft = new SwerveModule(driveBackLeft, steerBackLeft, steerEncoderBackLeft, 22);
-	SwerveModule backRight = new SwerveModule(driveBackRight, steerBackRight, steerEncoderBackRight, 180);
-
+	SwerveDrive swerveDrive = new SwerveDrive();
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -57,8 +34,7 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
-		steerBackLeft.setInverted(true);
-		steerBackRight.setInverted(true);
+		
 	}
 
 	/**
@@ -108,27 +84,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Joystick output", direction);
 		SmartDashboard.putNumber("Joystick output speed", speed);
 		
-//		frontRight.setAngle(0);
-//		frontLeft.setAngle(0);
-//		backRight.setAngle(0);
-//		backLeft.setAngle(0); 
-	
-		frontRight.control(speed, direction);
-		frontLeft.control(speed, direction);
-		backRight.control(speed, direction);
-		backLeft.control(speed, direction);
-		
-		//steerFrontRight.set(1);
-	
-		SmartDashboard.putNumber("front right encoder: ", steerEncoderFrontRight.getAngle());
-		SmartDashboard.putNumber("front left encoder: ", steerEncoderFrontLeft.getAngle());
-		SmartDashboard.putNumber("back right encoder: ", steerEncoderBackRight.getAngle());
-		SmartDashboard.putNumber("back left encoder: ", steerEncoderBackLeft.getAngle());
-		
-		SmartDashboard.putNumber("Corrected angle FR", frontRight.convertToRobotRelative(steerEncoderFrontRight.getAngle()));
-		SmartDashboard.putNumber("Corrected angle FL", frontLeft.convertToRobotRelative(steerEncoderFrontLeft.getAngle()));
-		SmartDashboard.putNumber("Corrected angle BR", backRight.convertToRobotRelative(steerEncoderBackRight.getAngle()));
-		SmartDashboard.putNumber("Corrected angle BL", backLeft.convertToRobotRelative(steerEncoderBackLeft.getAngle()));
+		swerveDrive.syncroDrive(speed, direction);
 		
 	}
 
