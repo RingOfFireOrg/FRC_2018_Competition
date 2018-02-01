@@ -103,6 +103,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Gyro output: ", ahrs.getAngle());
 				swerveDrive.syncroDrive(speed, direction, twist);	
 		
+		//swerveDrive.setpidsetpoint((commandStick.getX() + 1.0) * 2.5);
 	}
 
 	/**

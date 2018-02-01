@@ -1,10 +1,12 @@
 package org.usfirst.frc.team3459.robot;
 
 import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+
 
 public class SwerveModule {
 	Jaguar drive;
@@ -14,17 +16,24 @@ public class SwerveModule {
 	// turnSpeed);
 	double speed;
 	double turnSpeed;
+	double diff;
 	double angleGoal;
 	double currentAngle;
 	double zeroValue;
+	PIDController pid;
 
 	public SwerveModule(Jaguar driveMotor, Talon steerMotor, AbsoluteAnalogEncoder steerEncoder, double zeroValue) {
 		this.zeroValue = zeroValue;
 		drive = driveMotor;
 		steer = steerMotor;
 		turnEncoder = steerEncoder;
+	 //pid = new PIDController(0.1, 0, 0, steerEncoder, steerMotor);	
+	 //pid.enable(); 
 	}
-
+	
+	public void setpidsetpoint(double input) {
+		pid.setSetpoint(input);
+	}
 	private void setSpeed(double driveSpeed) {
 		speed = driveSpeed;
 		drive.set(speed);
@@ -41,7 +50,10 @@ public class SwerveModule {
 	public void setAngle(double wheelAngleGoal) {
 		angleGoal = convertToAbsolute(wheelAngleGoal);
 		currentAngle = turnEncoder.getAngle();
-		double diff = angleGoal - currentAngle;
+		diff = angleGoal - currentAngle;
+		//turnSpeed = pid.get();
+		//SmartDashboard.putNumber("pid ", turnSpeed);
+
 		if (Math.abs(diff) < 5 || Math.abs(diff) > 355) {
 			// stop
 			steer.set(0);
@@ -50,9 +62,9 @@ public class SwerveModule {
 			// pid.enable
 			//SmartDashboard.putNumber("diff value", diff);
 			if((diff > 0 && diff < 180) || diff < -180) {
-				steer.set(-0.6);
-			} else {
 				steer.set(0.6);
+			} else {
+				steer.set(-0.6);
 			}
 			
 		}
