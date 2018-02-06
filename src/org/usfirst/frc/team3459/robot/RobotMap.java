@@ -1,7 +1,5 @@
 package org.usfirst.frc.team3459.robot;
 
-import edu.wpi.first.wpilibj.DigitalSource;
-
 public final class RobotMap {
 
 	//All PWMs for Robot
@@ -16,6 +14,13 @@ public final class RobotMap {
 	
 	//Motor Speed
 	public static final double DEFAULT_LIFT_SPEED = 1.0;
+
+	//Joysticks
+	public static final int LIFT_JOYSTICK = 5;
+	public static final int LIFT_UP_BUTTON = 6;
+	public static final int LIFT_DOWN_BUTTON = 4;
+
+	
 
 	
 	
