@@ -67,8 +67,8 @@ public class Robot extends IterativeRobot {
 			lift0.set(1.0);
 			lift1.set(1.0);
 		} else if (stick0.getRawButton(2)) {
-			lift0.set(-0.8);
-			lift1.set(-0.8);
+			lift0.set(-0.3);
+			lift1.set(-0.3);
 		} else {
 			lift0.set(0.0);
 			lift1.set(0.0);
