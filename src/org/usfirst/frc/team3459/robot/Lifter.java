@@ -3,6 +3,7 @@ package org.usfirst.frc.team3459.robot;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Lifter {
 
@@ -16,37 +17,59 @@ public class Lifter {
 
 	private Talon controller1 = new Talon(RobotMap.PWM_LIFTER_1);
 	private Talon controller2 = new Talon(RobotMap.PWM_LIFTER_2);
-	
+
+	Lifter() {
+		encoder.reset();
+	}
+
+	private void debug() {
+		SmartDashboard.putNumber("lift Encoder", encoder.get());
+		SmartDashboard.putNumber("lift rotations", rotation);
+		SmartDashboard.putBoolean("upper sw", upperLimitSwitch.get());
+		SmartDashboard.putBoolean("lower sw", lowerLimitSwitch.get());
+	}
+
 	public void up() {
+		debug();
+
 		if (upperLimitSwitch.get()) {
+			stop();
 			return;
 		}
+
 		double currentValue = encoder.get();
 		if (currentValue < lastEncoderValue) {
 			rotation++;
 		}
 		lastEncoderValue = currentValue;
+
 		controller1.set(RobotMap.DEFAULT_LIFT_SPEED);
 		controller2.set(RobotMap.DEFAULT_LIFT_SPEED);
 	}
 
 	public void down() {
+		debug();
+
 		if (lowerLimitSwitch.get()) {
 			rotation = 0;
 			lastEncoderValue = 0;
 			encoder.reset();
+			stop();
 			return;
 		}
+
 		double currentValue = encoder.get();
 		if (currentValue > lastEncoderValue) {
 			rotation--;
 		}
 		lastEncoderValue = currentValue;
+
 		controller1.set(-RobotMap.DEFAULT_LIFT_SPEED);
 		controller2.set(-RobotMap.DEFAULT_LIFT_SPEED);
 	}
 
 	public void stop() {
+		debug();
 		controller1.set(0);
 		controller2.set(0);
 	}
