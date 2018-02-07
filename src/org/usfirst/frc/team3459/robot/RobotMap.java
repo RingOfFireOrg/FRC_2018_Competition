@@ -14,6 +14,7 @@ public final class RobotMap {
 	
 	//Motor Speed
 	public static final double DEFAULT_LIFT_SPEED = 0.5;
+	public static final double DEFAULT_FIND_SPEED = 0.1;
 
 	//Joysticks
 	public static final int LIFT_JOYSTICK = 5;
