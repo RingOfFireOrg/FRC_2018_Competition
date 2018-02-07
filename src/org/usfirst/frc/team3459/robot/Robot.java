@@ -20,9 +20,10 @@ public class Robot extends IterativeRobot {
 	/* list of autonomous choices go here */
 	private static final String kDefaultAuto = "Default";
 	private static final String kCustomAuto = "My Auto";
-	CascadingLift lift = new CascadingLift(4);
+	CascadingLift lift = new CascadingLift(4, 5);
 	TankDrive drive = new TankDrive();
 	Joystick stick = new Joystick(1);
+	double stickX, stickY;
 	/* end of list */
 
 	private String m_autoSelected;
@@ -51,7 +52,14 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		if (stick.getY() > 0.05 || stick.getY() < -0.05) {
+			stickY = stick.getY()*stick.getY()*stick.getY();
+		}
+		if (stick.getX() > 0.05 || stick.getX() < -0.05) {
+			stickX = stick.getX()*stick.getX()*stick.getX();
+		}
 		drive.arcadeDrive(-stick.getY(), stick.getX());
+		
 		if (stick.getTrigger()) {
 			lift.startUp();
 		} else if (stick.getRawButton(3)) {
