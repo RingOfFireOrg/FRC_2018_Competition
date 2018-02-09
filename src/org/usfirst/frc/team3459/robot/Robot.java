@@ -26,13 +26,16 @@ public class Robot extends IterativeRobot {
 	private static final String kCustomAuto = "My Auto";
 	TankDrive drive = new TankDrive();
 	
-	TalonSRX intake0 = new TalonSRX(4);
-	TalonSRX intake1 = new TalonSRX(5);
-	Victor lift0 = new Victor(4);
-	Victor lift1 = new Victor(5);
+	TalonSRX lift0 = new TalonSRX(4);
+	TalonSRX lift1 = new TalonSRX(5);
+	Victor intake0 = new Victor(4);
+	Victor intake1 = new Victor(5);
+	Victor foldoutL = new Victor(6);
+	Victor foldoutR = new Victor(7);
 	
 	Joystick stick0 = new Joystick(0);
 	Joystick stick1 = new Joystick(1);
+	Joystick jcv1 = new Joystick(2);
 	/* end of list */
 	
 	private String m_autoSelected;
@@ -63,26 +66,34 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		drive.tankDrive(-stick1.getY(), -stick0.getY());
 		
-		if (stick0.getRawButton(3)) {
-			lift0.set(1.0);
-			lift1.set(1.0);
-		} else if (stick0.getRawButton(2)) {
-			lift0.set(-0.3);
-			lift1.set(-0.3);
+		if (jcv1.getY() == -1.0) {
+			lift0.set(ControlMode.PercentOutput, 1.0);
+			lift1.set(ControlMode.PercentOutput, 1.0);
+		} else if (jcv1.getY() == 1.0) {
+			lift0.set(ControlMode.PercentOutput, -0.5);
+			lift1.set(ControlMode.PercentOutput, -0.5);;
 		} else {
-			lift0.set(0.0);
-			lift1.set(0.0);
+			lift0.set(ControlMode.PercentOutput, 0.0);
+			lift1.set(ControlMode.PercentOutput, 0.0);
 		}
 		
-		if (stick1.getRawButton(3)) {
-			intake0.set(ControlMode.PercentOutput, 1.0);
-			intake1.set(ControlMode.PercentOutput, 1.0);			
-		} else if (stick1.getRawButton(2)) {
-			intake0.set(ControlMode.PercentOutput, -1.0);
-			intake1.set(ControlMode.PercentOutput, -1.0);
+		if (jcv1.getRawButton(4)) {
+			intake0.set(1.0);
+			intake1.set(1.0);			
+		} else if (jcv1.getRawButton(5)) {
+			intake0.set(-1.0);
+			intake1.set(-1.0);
 		} else {
-			intake0.set(ControlMode.PercentOutput, 0.0);
-			intake1.set(ControlMode.PercentOutput, 0.0);
+			intake0.set(0);
+			intake1.set(0);
+		}
+		
+		if (jcv1.getRawButton(1)) {
+			foldoutL.set(0.4);
+			foldoutR.set(0.4);
+		} else {
+			foldoutL.set(0.0);
+			foldoutR.set(0.0);
 		}
 	}
 
