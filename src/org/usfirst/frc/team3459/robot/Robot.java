@@ -30,12 +30,11 @@ public class Robot extends IterativeRobot {
 	TalonSRX lift1 = new TalonSRX(5);
 	Victor intake0 = new Victor(4);
 	Victor intake1 = new Victor(5);
-	Victor foldoutL = new Victor(6);
-	Victor foldoutR = new Victor(7);
+	Victor foldout = new Victor(6);
 	
 	Joystick stick0 = new Joystick(0);
 	Joystick stick1 = new Joystick(1);
-	Joystick jcv1 = new Joystick(2);
+	Joystick stick2 = new Joystick(2);
 	/* end of list */
 	
 	private String m_autoSelected;
@@ -64,23 +63,15 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		drive.tankDrive(-stick1.getY(), -stick0.getY());
+		drive.tankDrive(-stick0.getY(), -stick1.getY());
 		
-		if (jcv1.getY() == -1.0) {
-			lift0.set(ControlMode.PercentOutput, 1.0);
-			lift1.set(ControlMode.PercentOutput, 1.0);
-		} else if (jcv1.getY() == 1.0) {
-			lift0.set(ControlMode.PercentOutput, -0.5);
-			lift1.set(ControlMode.PercentOutput, -0.5);;
-		} else {
-			lift0.set(ControlMode.PercentOutput, 0.0);
-			lift1.set(ControlMode.PercentOutput, 0.0);
-		}
+		lift0.set(ControlMode.PercentOutput, stick2.getY());
+		lift1.set(ControlMode.PercentOutput, stick2.getY());
 		
-		if (jcv1.getRawButton(4)) {
+		if (stick2.getRawButton(3)) {
 			intake0.set(1.0);
 			intake1.set(1.0);			
-		} else if (jcv1.getRawButton(5)) {
+		} else if (stick2.getRawButton(5)) {
 			intake0.set(-1.0);
 			intake1.set(-1.0);
 		} else {
@@ -88,12 +79,12 @@ public class Robot extends IterativeRobot {
 			intake1.set(0);
 		}
 		
-		if (jcv1.getRawButton(1)) {
-			foldoutL.set(0.4);
-			foldoutR.set(0.4);
+		if (stick2.getRawButton(4)) {
+			foldout.set(0.4);
+		} else if (stick2.getRawButton(6)){
+			foldout.set(-0.4);
 		} else {
-			foldoutL.set(0.0);
-			foldoutR.set(0.0);
+			foldout.set(0.0);
 		}
 	}
 
