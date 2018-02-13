@@ -7,8 +7,12 @@
 
 package org.usfirst.frc.team3459.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -20,6 +24,17 @@ public class Robot extends IterativeRobot {
 	/* list of autonomous choices go here */
 	private static final String kDefaultAuto = "Default";
 	private static final String kCustomAuto = "My Auto";
+	TankDrive drive = new TankDrive();
+	
+	TalonSRX lift0 = new TalonSRX(4);
+	TalonSRX lift1 = new TalonSRX(5);
+	Victor intake0 = new Victor(4);
+	Victor intake1 = new Victor(5);
+	Victor foldout = new Victor(6);
+	
+	Joystick stick0 = new Joystick(0);
+	Joystick stick1 = new Joystick(1);
+	Joystick stick2 = new Joystick(2);
 	/* end of list */
 
 	private String m_autoSelected;
@@ -52,6 +67,30 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		drive.tankDrive(-stick0.getY(), -stick1.getY());
+		
+		lift0.set(ControlMode.PercentOutput, stick2.getY());
+		lift1.set(ControlMode.PercentOutput, stick2.getY());
+		
+		if (stick2.getRawButton(3)) {
+			intake0.set(1.0);
+			intake1.set(1.0);			
+		} else if (stick2.getRawButton(5)) {
+			intake0.set(-1.0);
+			intake1.set(-1.0);
+		} else {
+			intake0.set(0);
+			intake1.set(0);
+		}
+		
+		if (stick2.getRawButton(4)) {
+			foldout.set(0.4);
+		} else if (stick2.getRawButton(6)){
+			foldout.set(-0.4);
+		} else {
+			foldout.set(0.0);
+		}
+
 		if (stick.getRawButton(RobotMap.POPCORN_OPEN)) {
 			popcorn.open();
 		}
