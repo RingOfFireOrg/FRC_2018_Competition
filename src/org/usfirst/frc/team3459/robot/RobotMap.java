@@ -28,8 +28,8 @@ public final class RobotMap {
 	public static final int LIFT_DOWN_BUTTON = 2;
 
 	//Popcorn JoyStick Buttons
-	public static final int POPCORN_OPEN = 11;
-	public static final int POPCORN_CLOSE = 10;
+	public static final int POPCORN_OPEN = 1;
+	public static final int POPCORN_CLOSE = 2;
 	
 	//Solenoids
 	public static final int OPEN_SOLENOID = 0;
