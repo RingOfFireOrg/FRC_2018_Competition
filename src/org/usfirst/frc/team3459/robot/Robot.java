@@ -91,10 +91,10 @@ public class Robot extends IterativeRobot {
 			foldout.set(0.0);
 		}
 
-		if (stick.getRawButton(RobotMap.POPCORN_OPEN)) {
+		if (stick2.getRawButton(RobotMap.POPCORN_OPEN)) {
 			popcorn.open();
 		}
-		if (stick.getRawButton(RobotMap.POPCORN_CLOSE)) {
+		if (stick2.getRawButton(RobotMap.POPCORN_CLOSE)) {
 			popcorn.close();
 		}
 	}
