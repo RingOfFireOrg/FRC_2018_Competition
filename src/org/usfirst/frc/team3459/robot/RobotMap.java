@@ -19,12 +19,22 @@ public final class RobotMap {
 	
 	public static final double DEFAULT_FIND_SPEED = 0.5;
 
+	public static final int DRIVE_LEFT_STICK = 0;
+	public static final int DRIVE_RIGHT_STICK = 1;
+	public static final int MANIPULATOR_STICK = 2;
 	//Joysticks
-	public static final int LIFT_JOYSTICK = 5;
-	public static final int LIFT_UP_BUTTON = 3;
-	public static final int LIFT_DOWN_BUTTON = 2;
+	public static final int LIFT_UP_BUTTON = 6;
+	public static final int LIFT_DOWN_BUTTON = 4;
 
-	
+	//Popcorn JoyStick Buttons
+	public static final int POPCORN_OPEN = 1;
+	public static final int POPCORN_CLOSE = 2;
+		
+	//Solenoids
+	public static final int OPEN_SOLENOID = 0;
+	public static final int CLOSE_SOLENOID = 1;
+
+
 
 	
 	

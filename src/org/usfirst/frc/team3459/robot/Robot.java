@@ -25,6 +25,8 @@ public class Robot extends IterativeRobot {
 	private static final String kDefaultAuto = "Default";
 	private static final String kCustomAuto = "My Auto";
 	private Lifter lifter;
+	private Popcorn popcorn;
+	
 
 	TankDrive drive = new TankDrive();
 /*	
@@ -34,9 +36,9 @@ public class Robot extends IterativeRobot {
 	Victor intake1 = new Victor(5);
 	Victor foldout = new Victor(6);
 */	
-	Joystick stick0 = new Joystick(0);
-	Joystick stick1 = new Joystick(1);
-	Joystick stick2 = new Joystick(2);
+	Joystick leftStick = new Joystick(RobotMap.DRIVE_LEFT_STICK);
+	Joystick rightStick = new Joystick(RobotMap.DRIVE_RIGHT_STICK);
+	Joystick manipulatorStick = new Joystick(RobotMap.MANIPULATOR_STICK);
 	/* end of list */
 	
 	private String m_autoSelected;
@@ -52,6 +54,8 @@ public class Robot extends IterativeRobot {
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
 		lifter = new Lifter();
+		popcorn = new Popcorn();
+		
 	}
 
 	/**
@@ -66,10 +70,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		drive.tankDrive(-stick0.getY(), -stick1.getY());
+		drive.tankDrive(-leftStick.getY(), -rightStick.getY());
 		
-		boolean upPressed = stick2.getRawButton(RobotMap.LIFT_UP_BUTTON);
-		boolean downPressed = stick2.getRawButton(RobotMap.LIFT_DOWN_BUTTON);
+		boolean upPressed = manipulatorStick.getRawButton(RobotMap.LIFT_UP_BUTTON);
+		boolean downPressed = manipulatorStick.getRawButton(RobotMap.LIFT_DOWN_BUTTON);
 		
 		if (upPressed) {
 			lifter.up();
@@ -77,6 +81,12 @@ public class Robot extends IterativeRobot {
 			lifter.down();
 		} else {
 			lifter.stop();
+		}
+		if (manipulatorStick.getRawButton(RobotMap.POPCORN_OPEN)) {
+			popcorn.open();
+		}
+		if (manipulatorStick.getRawButton(RobotMap.POPCORN_CLOSE)) {
+			popcorn.close();
 		}
 /*		
 		if (stick2.getRawButton(3)) {
