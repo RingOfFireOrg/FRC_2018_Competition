@@ -24,14 +24,16 @@ public class Robot extends IterativeRobot {
 	/* list of autonomous choices go here */
 	private static final String kDefaultAuto = "Default";
 	private static final String kCustomAuto = "My Auto";
+	private Lifter lifter;
+
 	TankDrive drive = new TankDrive();
-	
+/*	
 	TalonSRX lift0 = new TalonSRX(4);
 	TalonSRX lift1 = new TalonSRX(5);
 	Victor intake0 = new Victor(4);
 	Victor intake1 = new Victor(5);
 	Victor foldout = new Victor(6);
-	
+*/	
 	Joystick stick0 = new Joystick(0);
 	Joystick stick1 = new Joystick(1);
 	Joystick stick2 = new Joystick(2);
@@ -49,6 +51,7 @@ public class Robot extends IterativeRobot {
 		m_chooser.addDefault("Default Auto", kDefaultAuto);
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
+		lifter = new Lifter();
 	}
 
 	/**
@@ -65,9 +68,17 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		drive.tankDrive(-stick0.getY(), -stick1.getY());
 		
-		lift0.set(ControlMode.PercentOutput, stick2.getY());
-		lift1.set(ControlMode.PercentOutput, stick2.getY());
+		boolean upPressed = stick2.getRawButton(RobotMap.LIFT_UP_BUTTON);
+		boolean downPressed = stick2.getRawButton(RobotMap.LIFT_DOWN_BUTTON);
 		
+		if (upPressed) {
+			lifter.up();
+		} else if (downPressed) {
+			lifter.down();
+		} else {
+			lifter.stop();
+		}
+/*		
 		if (stick2.getRawButton(3)) {
 			intake0.set(1.0);
 			intake1.set(1.0);			
@@ -86,6 +97,7 @@ public class Robot extends IterativeRobot {
 		} else {
 			foldout.set(0.0);
 		}
+*/
 	}
 
 	/**
