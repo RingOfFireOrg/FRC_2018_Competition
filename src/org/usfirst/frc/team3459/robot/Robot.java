@@ -29,13 +29,7 @@ public class Robot extends IterativeRobot {
 	
 
 	TankDrive drive = new TankDrive();
-/*	
-	TalonSRX lift0 = new TalonSRX(4);
-	TalonSRX lift1 = new TalonSRX(5);
-	Victor intake0 = new Victor(4);
-	Victor intake1 = new Victor(5);
-	Victor foldout = new Victor(6);
-*/	
+
 	Joystick leftStick = new Joystick(RobotMap.DRIVE_LEFT_STICK);
 	Joystick rightStick = new Joystick(RobotMap.DRIVE_RIGHT_STICK);
 	Joystick manipulatorStick = new Joystick(RobotMap.MANIPULATOR_STICK);
@@ -88,26 +82,6 @@ public class Robot extends IterativeRobot {
 		if (manipulatorStick.getRawButton(RobotMap.POPCORN_CLOSE)) {
 			popcorn.close();
 		}
-/*		
-		if (stick2.getRawButton(3)) {
-			intake0.set(1.0);
-			intake1.set(1.0);			
-		} else if (stick2.getRawButton(5)) {
-			intake0.set(-1.0);
-			intake1.set(-1.0);
-		} else {
-			intake0.set(0);
-			intake1.set(0);
-		}
-		
-		if (stick2.getRawButton(4)) {
-			foldout.set(0.4);
-		} else if (stick2.getRawButton(6)){
-			foldout.set(-0.4);
-		} else {
-			foldout.set(0.0);
-		}
-*/
 	}
 
 	/**
@@ -122,6 +96,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+		LiveWindow.Ru
 	}
 	
 	/**
