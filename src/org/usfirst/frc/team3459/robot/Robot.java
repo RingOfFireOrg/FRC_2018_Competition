@@ -28,9 +28,8 @@ public class Robot extends IterativeRobot {
 	
 	TalonSRX lift0 = new TalonSRX(4);
 	TalonSRX lift1 = new TalonSRX(5);
-	Victor intake0 = new Victor(4);
-	Victor intake1 = new Victor(5);
-	Victor foldout = new Victor(6);
+	TalonSRX climb0 = new TalonSRX(6);
+	TalonSRX climb1 = new TalonSRX(7);
 	
 	Joystick stick0 = new Joystick(0);
 	Joystick stick1 = new Joystick(1);
@@ -40,7 +39,6 @@ public class Robot extends IterativeRobot {
 	private String m_autoSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 	private Popcorn popcorn;
-	private Joystick stick;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -52,7 +50,6 @@ public class Robot extends IterativeRobot {
 		m_chooser.addObject("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
 		popcorn = new Popcorn();
-		stick = new Joystick(RobotMap.POPCORN_JOYSTICK);
 	}
 
 	/**
@@ -71,31 +68,20 @@ public class Robot extends IterativeRobot {
 		
 		lift0.set(ControlMode.PercentOutput, stick2.getY());
 		lift1.set(ControlMode.PercentOutput, stick2.getY());
-		
-		if (stick2.getRawButton(3)) {
-			intake0.set(1.0);
-			intake1.set(1.0);			
-		} else if (stick2.getRawButton(5)) {
-			intake0.set(-1.0);
-			intake1.set(-1.0);
-		} else {
-			intake0.set(0);
-			intake1.set(0);
-		}
-		
-		if (stick2.getRawButton(4)) {
-			foldout.set(0.4);
-		} else if (stick2.getRawButton(6)){
-			foldout.set(-0.4);
-		} else {
-			foldout.set(0.0);
-		}
 
-		if (stick2.getRawButton(RobotMap.POPCORN_OPEN)) {
+		if (stick2.getRawButton(2)) {
 			popcorn.open();
 		}
-		if (stick2.getRawButton(RobotMap.POPCORN_CLOSE)) {
+		if (stick2.getRawButton(1)) {
 			popcorn.close();
+		}
+		
+		if (stick2.getRawButton(11)) {
+			climb0.set(ControlMode.PercentOutput, 0.0);
+			climb1.set(ControlMode.PercentOutput, 0.0);
+		} else if (stick2.getRawButton(12)) {
+			climb0.set(ControlMode.PercentOutput, 0.1);
+			climb1.set(ControlMode.PercentOutput, 0.1);
 		}
 	}
 
