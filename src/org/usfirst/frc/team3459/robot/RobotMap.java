@@ -3,8 +3,8 @@ package org.usfirst.frc.team3459.robot;
 public final class RobotMap {
 
 	//All PWMs for Robot
-	public static final int PWM_LIFTER_1 = 6;
-	public static final int PWM_LIFTER_2 = 5;
+	public static final int CAN_LIFTER_1 = 7;
+	public static final int CAN_LIFTER_2 = 8;
 	
 	//Digital I/O
 	public static final int INPUT_UPPER_LIMIT_SW = 2;

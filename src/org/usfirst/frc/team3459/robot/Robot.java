@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.CameraServer;
 
 /**
  * Don't change the name of this or it won't work. (The manifest looks for
@@ -26,6 +27,7 @@ public class Robot extends IterativeRobot {
 	private static final String kCustomAuto = "My Auto";
 	private Lifter lifter;
 	private Popcorn popcorn;
+	private Climber climber;
 	
 
 	TankDrive drive = new TankDrive();
@@ -49,7 +51,9 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Auto choices", m_chooser);
 		lifter = new Lifter();
 		popcorn = new Popcorn();
+		climber = new Climber();
 		
+		CameraServer.getInstance().startAutomaticCapture(); //camera code: NEEDS TO BE TESTED
 	}
 
 	/**
@@ -82,6 +86,10 @@ public class Robot extends IterativeRobot {
 		if (manipulatorStick.getRawButton(RobotMap.POPCORN_CLOSE)) {
 			popcorn.close();
 		}
+		boolean IsClimbPressed = manipulatorStick.getRawButton(11);
+		double climbSpeed = manipulatorStick.getThrottle();
+		
+		climber.climb(IsClimbPressed, climbSpeed);
 	}
 
 	/**
@@ -125,4 +133,5 @@ public class Robot extends IterativeRobot {
 				break;
 		}
 	}
+
 }

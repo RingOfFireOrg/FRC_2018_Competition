@@ -1,5 +1,8 @@
 package org.usfirst.frc.team3459.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
@@ -14,8 +17,8 @@ public class Lifter {
 	private DigitalInput upperLimitSwitch = new DigitalInput(RobotMap.INPUT_UPPER_LIMIT_SW);
 	private DigitalInput lowerLimitSwitch = new DigitalInput(RobotMap.INPUT_LOWER_LIMIT_SW);
 
-	private Talon controller1 = new Talon(RobotMap.PWM_LIFTER_1);
-	private Talon controller2 = new Talon(RobotMap.PWM_LIFTER_2);
+	private TalonSRX controller1 = new TalonSRX(RobotMap.CAN_LIFTER_1);
+	private TalonSRX controller2 = new TalonSRX(RobotMap.CAN_LIFTER_2);
 
 	Lifter() {
 		encoder.reset();
@@ -41,8 +44,8 @@ public class Lifter {
 		}
 
 		double speed = getSpeed(true);
-		controller1.set(speed);
-		controller2.set(speed);
+		controller1.set(ControlMode.PercentOutput, speed);
+		controller2.set(ControlMode.PercentOutput, speed);
 	}
 	
 	private double getSpeed(boolean goingUp) {
@@ -76,14 +79,14 @@ public class Lifter {
 			return;
 		}
 		double speed = getSpeed(false);
-		controller1.set(speed);
-		controller2.set(speed);
+		controller1.set(ControlMode.PercentOutput, speed);
+		controller2.set(ControlMode.PercentOutput, speed);
 	}
 
 	public void stop() {
 		debug();
-		controller1.set(0);
-		controller2.set(0);
+		controller1.set(ControlMode.PercentOutput, 0);
+		controller2.set(ControlMode.PercentOutput, 0);
 	}
 	
 	public void findTop() {
@@ -91,7 +94,7 @@ public class Lifter {
 			stop();
 			totalRotations = encoder.getDistance();
 		}
-		controller1.set(RobotMap.DEFAULT_FIND_SPEED);
-		controller2.set(RobotMap.DEFAULT_FIND_SPEED);		
+		controller1.set(ControlMode.PercentOutput, RobotMap.DEFAULT_FIND_SPEED);
+		controller2.set(ControlMode.PercentOutput, RobotMap.DEFAULT_FIND_SPEED);		
 	}
 }
