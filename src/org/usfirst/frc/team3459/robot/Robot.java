@@ -69,6 +69,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		drive.tankDrive(-leftStick.getY(), -rightStick.getY());
+		drive.printEncoderValue();
 		
 		boolean upPressed = manipulatorStick.getRawButton(RobotMap.LIFT_UP_BUTTON);
 		boolean downPressed = manipulatorStick.getRawButton(RobotMap.LIFT_DOWN_BUTTON);
