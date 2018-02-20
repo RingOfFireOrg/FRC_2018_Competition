@@ -83,10 +83,10 @@ public class Robot extends IterativeRobot {
 		if (manipulatorStick.getRawButton(RobotMap.POPCORN_OPEN)) {
 			popcorn.open();
 		}
-		if (manipulatorStick.getRawButton(RobotMap.POPCORN_CLOSE)) {
+		if (manipulatorStick.getRawButton(RobotMap.POPCORN_CLOSE)) { 
 			popcorn.close();
 		}
-		boolean IsClimbPressed = manipulatorStick.getRawButton(11);
+		boolean IsClimbPressed = manipulatorStick.getRawButton(RobotMap.CLIMB_BUTTON);
 		double climbSpeed = manipulatorStick.getThrottle();
 		
 		climber.climb(IsClimbPressed, climbSpeed);
