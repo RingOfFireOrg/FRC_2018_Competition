@@ -2,15 +2,15 @@ package org.usfirst.frc.team3459.robot;
 
 public final class RobotMap {
 
-	//All PWMs for Robot
+	//All CANs for Robot
 	public static final int CAN_LIFTER_1 = 7;
 	public static final int CAN_LIFTER_2 = 8;
 	public static final int CAN_CLIMBER_1 = 9;
 	public static final int CAN_CLIMBER_2 = 13;
 	
 	//Digital I/O
-	public static final int INPUT_UPPER_LIMIT_SW = 2;
-	public static final int INPUT_LOWER_LIMIT_SW = 3;
+	public static final int INPUT_UPPER_LIMIT_SW = 6;
+	public static final int INPUT_LOWER_LIMIT_SW = 7;
 	public static final int LIFT_ENCODER_A = 0;
 	public static final int LIFT_ENCODER_B = 1;
 	
