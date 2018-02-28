@@ -155,6 +155,7 @@ public class Robot extends IterativeRobot {
 		}
 		
 	}
+	double targetAngle = 0;
 	public void middleAuto()
 	{
 		switch(step) {
@@ -167,11 +168,11 @@ public class Robot extends IterativeRobot {
 				break;
 			}
 		case 1:
-			if( ) {
-				double targetAngle = 30;
+			if(FieldProperties.isLeftSwitchOurs() ) {
+				targetAngle = 30;
 				//random made up angle do math to find out
 			}else {
-				double targetAngle = -30;
+				targetAngle = -30;
 				//ditto
 			}
 			if(Math.abs(normalizeAngle(ahrs.getAngle() - targetAngle)) < 1) {
