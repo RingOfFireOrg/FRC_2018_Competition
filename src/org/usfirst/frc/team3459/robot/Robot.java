@@ -8,14 +8,18 @@
 package org.usfirst.frc.team3459.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import edu.wpi.first.wpilibj.DriverStation;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.CameraServer;
+
+
 
 /**
  * Don't change the name of this or it won't work. (The manifest looks for
@@ -24,11 +28,14 @@ import edu.wpi.first.wpilibj.CameraServer;
 public class Robot extends IterativeRobot {
 	/* list of autonomous choices go here */
 	private static final String kDefaultAuto = "Default";
-	private static final String kCustomAuto = "My Auto";
+	private static final String kLeftAuto = "Left Auto";
+	private static final String kMiddleAuto = "Middle Auto";
+	private static final String kRightAuto = "Right Auto";
 	private Lifter lifter;
 	private Popcorn popcorn;
 	private Climber climber;
-	
+	int step = 0;
+	UltrasonicSensor ultrasonic = new UltrasonicSensor(0);
 
 	TankDrive drive = new TankDrive();
 
@@ -116,6 +123,14 @@ public class Robot extends IterativeRobot {
 		m_autoSelected = m_chooser.getSelected();
 
 		System.out.println("Auto selected: " + m_autoSelected);
+		
+		String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		
+		if (gameData.length() > 0)
+		{
+			FieldProperties.initialize((gameData));
+			
+		}
 	}
 
 	/**
@@ -125,14 +140,134 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		switch (m_autoSelected) {
-			case kCustomAuto:
-				// Put custom auto code here
+			case kMiddleAuto:
+				middleAuto(); 
 				break;
+				
+			case kLeftAuto:
+				leftAuto();
+				break;
+				
 			case kDefaultAuto:
 			default:
 				// Put default auto code here
 				break;
 		}
+		
 	}
-
+	public void middleAuto()
+	{
+		switch(step) {
+		case 0:
+			if(ultrasonic.getDistance() >= 20) {
+				step++;
+				break;
+			}else {
+				drive.tankDrive(0.7, 0.7);
+				break;
+			}
+		case 1:
+			if( ) {
+				double targetAngle = 30;
+				//random made up angle do math to find out
+			}else {
+				double targetAngle = -30;
+				//ditto
+			}
+			if(Math.abs(normalizeAngle(ahrs.getAngle() - targetAngle)) < 1) {
+				step++;
+				break;
+			}else {
+				break;
+			}
+		case 2:
+			if() {
+				step++;
+				break;
+			}else {
+				break;
+			}
+		case 3:
+			if() {
+				step++;
+				break;
+			}else {
+				break;
+			}
+		case 4:
+			if() {
+				step++;
+				break;
+			}else {
+				break;
+			}	
+		
+		}
+		
+		
 }
+	public void leftAuto()
+	{
+		if(!FieldProperties.isLeftSwitchOurs()) //will be part of case step 1
+		{
+			//drive forward 15 ft 
+			//set step to 5
+		}
+		
+		/*step one: drive forward 8 ft and lift to switch height
+		 * step two: turn right 90 degrees
+		 * step three: drive forward 2 ft
+		 * step four: drop cube
+		 * step five: stop
+		 */
+	}
+	
+	public void rightAuto() 
+	{
+		switch(step) {
+		case 0:
+			if(!FieldProperties.isRightSwitchOurs()) //will be part of case step 1
+			{
+				if (ultrasonic.getDistance() >= 180)
+				{
+					step = 5;
+					drive.tankDrive(0, 0);
+				}
+				else {
+					drive.tankDrive(0.7, 0.7);
+				}
+			}
+				
+			else 
+			{
+				if (ultrasonic.getDistance() >= 96)
+				{
+					step++;
+					drive.tankDrive(0, 0);
+					//raise lifter to switch height
+				}
+				else {
+					drive.tankDrive(0.7, 0.7);
+				}
+			}
+			break;
+			
+		case 1:
+			//step two: turn left 90 degrees
+			break;
+			
+		case 2:
+			//step three: go forward two feet
+				break;
+		case 3:
+			//step four: open arms
+			break; 
+			
+		case 4:
+			//stop
+		break;
+		}
+	}
+}
+
+
