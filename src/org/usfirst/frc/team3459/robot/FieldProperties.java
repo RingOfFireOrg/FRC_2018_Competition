@@ -16,13 +16,19 @@ public class FieldProperties {
 		if (input.charAt(0) == 'L')
 		{
 			switchLeft = true;
-			switchRight = false;
+		}
+		else if (input.charAt(0) == 'R')
+		{
+			switchRight = true;
 		}
 		
 		if (input.charAt(1) == 'L')
 		{
 			scaleLeft = true;
-			scaleRight = false;
+		}
+		else if (input.charAt(1) == 'R')
+		{
+			scaleRight = true;
 		}
 		
 		return true;

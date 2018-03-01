@@ -13,6 +13,8 @@ public final class RobotMap {
 	public static final int INPUT_LOWER_LIMIT_SW = 7;
 	public static final int LIFT_ENCODER_A = 0;
 	public static final int LIFT_ENCODER_B = 1;
+	public static final int GYRO = 9;
+	public static final int ULTRASONIC_SENSOR = 8;
 	
 	//Motor Speed
 	public static final double DEFAULT_LIFT_SPEED = 0.5;

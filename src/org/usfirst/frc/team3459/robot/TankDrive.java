@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TankDrive extends DifferentialDrive {
 	
+	private static final int ROTATIONS_PER_INCH = 5;
 	private Encoder leftEncoder = new Encoder(RobotMap.DRIVE_TRAIN_LEFT_ENCODER_A, RobotMap.DRIVE_TRAIN_LEFT_ENCODER_B, false, Encoder.EncodingType.k1X);
 	private Encoder rightEncoder = new Encoder(RobotMap.DRIVE_TRAIN_RIGHT_ENCODER_A, RobotMap.DRIVE_TRAIN_RIGHT_ENCODER_B, false, Encoder.EncodingType.k1X);
 	
@@ -31,4 +32,16 @@ public class TankDrive extends DifferentialDrive {
 		SmartDashboard.putNumber("right rotations", rightEncoder.getDistance());
 	}
 
+	public double getLeftDistance() {
+		return leftEncoder.getDistance() * ROTATIONS_PER_INCH;
+	}
+	
+	public double getRightDistance() {
+		return rightEncoder.getDistance() * ROTATIONS_PER_INCH;
+	}
+	
+	public void resetEncoders() {
+		leftEncoder.reset();
+		rightEncoder.reset();
+	}
 }
