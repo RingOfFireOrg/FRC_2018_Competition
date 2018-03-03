@@ -56,7 +56,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Auto choices", m_chooser);
 		lifter = new Lifter();
 		popcorn = new Popcorn();
-		climber = new Climber();
+		//climber = new Climber();
 		
 		
 		
@@ -97,7 +97,7 @@ public class Robot extends IterativeRobot {
 		boolean IsClimbPressed = manipulatorStick.getRawButton(RobotMap.CLIMB_BUTTON);
 		double climbSpeed = manipulatorStick.getThrottle();
 		
-		climber.climb(IsClimbPressed, climbSpeed);
+		//climber.climb(IsClimbPressed, climbSpeed);
 	}
 
 	/**

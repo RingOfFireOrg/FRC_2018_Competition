@@ -58,7 +58,8 @@ public class Autonomous {
 			}
 			break;
 		case 2: // drive distance to left or right needs to be adjusted because of portal thing
-			if (driveTrain.getLeftDistance() > 60 && driveTrain.getRightDistance() > 60) {
+			if (FieldProperties.isRightSwitchOurs()) {
+				if (driveTrain.getLeftDistance() > 36 && driveTrain.getRightDistance() > 36)
 				driveTrain.tankDrive(0, 0);
 				autoStep++;
 			} else {
