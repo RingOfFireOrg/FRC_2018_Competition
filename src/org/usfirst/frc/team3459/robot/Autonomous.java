@@ -57,13 +57,21 @@ public class Autonomous {
 				}
 			}
 			break;
-		case 2: // drive distance to left or right needs to be adjusted because of portal thing
+		case 2: //drive forward 36 inches if right switch and 72 inches if left switch
 			if (FieldProperties.isRightSwitchOurs()) {
-				if (driveTrain.getLeftDistance() > 36 && driveTrain.getRightDistance() > 36)
+				if (driveTrain.getLeftDistance() >= 36 && driveTrain.getRightDistance() >= 36) {
 				driveTrain.tankDrive(0, 0);
 				autoStep++;
-			} else {
+				} else {
 				driveTrain.tankDrive(0.7, 0.7);
+				}
+			} else {
+				if (driveTrain.getLeftDistance() > 72 && driveTrain.getRightDistance() > 72) {
+					driveTrain.tankDrive(0, 0);
+					autoStep++;
+				} else {
+					driveTrain.tankDrive(0.7, 0.7);
+				}
 			}
 			break;
 
