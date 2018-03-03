@@ -8,6 +8,7 @@ public void climb(boolean button, double speed) {
 	TalonSRX climb0 = new TalonSRX(RobotMap.CAN_CLIMBER_1);
 	TalonSRX climb1 = new TalonSRX(RobotMap.CAN_CLIMBER_2);
 	if (button) {
+		
 		climb0.set(ControlMode.PercentOutput, speed);
 		climb1.set(ControlMode.PercentOutput, speed);
 	} else {
