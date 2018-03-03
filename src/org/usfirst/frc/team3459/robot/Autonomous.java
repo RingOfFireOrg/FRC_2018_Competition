@@ -110,49 +110,38 @@ public class Autonomous {
 	
 	public void rightAuto() 
 	{
+		
 		switch(step) {
-		case 0:
-			if(!FieldProperties.isRightSwitchOurs()) //will be part of case step 1
-			{
-				if (ultrasonic.getDistance() >= 180)
-				{
+		case 0: //drive to switch and or past auto line
+			if (ultrasonic.getDistance() >= 180){
+				drive.tankDrive(0, 0);
+				if(!FieldProperties.isRightSwitchOurs()) {
+					step++;
+				}else {
 					step = 5;
-					drive.tankDrive(0, 0);
-				}
-				else {
-					drive.tankDrive(0.7, 0.7);
 				}
 			}
-				
-			else 
-			{
-				if (ultrasonic.getDistance() >= 162)
-				{
-					step++;
-					drive.tankDrive(0, 0);
-					
-				}
-				else {
-					lifter.up();
-					drive.tankDrive(0.7, 0.7);
-				}
+			else {
+				drive.tankDrive(0.7, 0.7);
 			}
 			break;
-			
-		case 1:
-			if (ahrs.getAngle() >= -90)
-			{
+		case 1: //turn towards switch
+			if (ahrs.getAngle() >= -90){
 				drive.tankDrive(0, 0);
 				drive.resetEncoders();
 				step++;
 			}
-			else
-			{
+			else{
 				drive.tankDrive(-0.7, 0.7);
+				//probably too fast?  maybe proportional turning?  can we make a proportional method?
 			}
 			break;
 			
+		//where is case 2?????
 		case 2:
+			lifter.goTo("switch");
+			break;
+		case 3: //drive forward to switch
 			if (drive.getLeftDistance() >= 24)
 			{
 				drive.tankDrive(0, 0);
@@ -164,7 +153,7 @@ public class Autonomous {
 				drive.tankDrive(0.7, 0.7);
 			}
 				break;
-		case 3:
+		case 4: //open the grabber
 			popcorn.open();
 			break; 
 			

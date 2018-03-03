@@ -97,4 +97,18 @@ public class Lifter {
 		controller1.set(ControlMode.PercentOutput, RobotMap.DEFAULT_FIND_SPEED);
 		controller2.set(ControlMode.PercentOutput, RobotMap.DEFAULT_FIND_SPEED);		
 	}
+	
+	public void goTo(String level) {
+		switch(level) {
+		case "ground":
+			down();
+			break;
+		case "switch":
+			break;
+		case "scale":
+			up();
+			break;
+		}
+		
+	}
 }
