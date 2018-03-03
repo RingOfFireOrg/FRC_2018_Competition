@@ -1,8 +1,6 @@
 package org.usfirst.frc.team3459.robot;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.I2C;
 
 public class Autonomous {
 	TankDrive driveTrain;
@@ -25,6 +23,11 @@ public class Autonomous {
 	double targetAngle = 0;
 	int autoStep = 0;
 	double encoder90Value = 18.8;
+
+	public void initialize()
+	{
+		autoStep = 0;
+	}
 
 	public void middleAuto() {
 
@@ -82,7 +85,6 @@ public class Autonomous {
 			}
 			break;
 		case 4: //raise the lift
-			elevator.goTo("switch");
 			break;
 		case 5: //drive up against the switch
 			if (driveTrain.getLeftDistance() > 84.5 && driveTrain.getRightDistance() > 84.5) {
@@ -92,11 +94,43 @@ public class Autonomous {
 				driveTrain.tankDrive(0.7, 0.7);
 			}
 			break;
+		case 6:
+		default:
+			break;
+
+		}
+
+		
+		switch (autoStep) {
+		case 0: // move away from wall
+		case 1: //first turn
+			break;
+
+		case 2: //traverse
+		case 3: //second turn
+			elevator.goTo("switch");
+			break;
+
+		case 4: // move away from wall
+			elevator.goTo("switch");
+			if (Math.abs(elevator.getCurrentOutputPercent()) < 0.05)
+			{
+				autoStep++;
+			}
+			break;
+
+		case 5:
+			break;
+
 		case 6: //drop the cube
 			grabber.open();
 			break;
 
+		default:
+			break;
 		}
+		
+
 		/*
 		 * switch(step) { case 0: if(ultrasonic.getDistance() >= 20) { step++; break;
 		 * }else { drive.tankDrive(0.7, 0.7); break; } case 1:

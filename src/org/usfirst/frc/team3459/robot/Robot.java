@@ -112,7 +112,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-
+		if (leftStick.getTrigger())
+		{
+			lifter.calibrate();
+		}
 	}
 	
 	/**
@@ -125,6 +128,7 @@ public class Robot extends IterativeRobot {
 		System.out.println("Auto selected: " + m_autoSelected);
 		
 		auto = new Autonomous(drive, lifter, popcorn);
+		auto.initialize();
 	}
 
 	/**
