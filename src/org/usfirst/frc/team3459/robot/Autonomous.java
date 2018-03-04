@@ -15,7 +15,7 @@ public class Autonomous {
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 
 		if (gameData.length() > 0) {
-			FieldProperties.initialize((gameData));
+			//FieldProperties.initialize((gameData));
 
 		}
 	}

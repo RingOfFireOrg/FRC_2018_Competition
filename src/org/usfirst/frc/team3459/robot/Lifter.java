@@ -162,10 +162,11 @@ public class Lifter {
 		case 2:
 			bottomValue = bottomValue / 4;
 			topValue = topValue / 4;
+			calibrationStep++;
+			break;
+		case 3:
 			SmartDashboard.putNumber("bottom value", bottomValue);
 			SmartDashboard.putNumber("top value", topValue);
-			break;
-
 		}
 	}
 }
