@@ -32,6 +32,7 @@ public class Lifter {
 		controller2.setNeutralMode(NeutralMode.Brake);
 	}
 
+	//TODO: Consider reorganizing methods
 	private void debug() {
 		SmartDashboard.putNumber("lift Encoder", encoder.get());
 		SmartDashboard.putNumber("lift rotations", encoder.getDistance());
@@ -41,17 +42,19 @@ public class Lifter {
 		SmartDashboard.putBoolean("lower sw", lowerLimitSwitch.get());
 	}
 
-	public void up() {
+	public void up(double speed) {
 		debug();
 		if (upperLimitSwitch.get()) {
 			stop();
 			totalRotations = encoder.getDistance();
 			return;
 		}
-
-		double speed = getSpeed(true);
 		controller1.set(ControlMode.PercentOutput, speed);
 		controller2.set(ControlMode.PercentOutput, speed);
+	}
+
+	public void up() {
+		up(getSpeed(true));
 	}
 
 	private double getSpeed(boolean goingUp) {
@@ -75,7 +78,7 @@ public class Lifter {
 		return speed;
 	}
 
-	public void down() {
+	public void down(double speed) {
 		debug();
 
 		if (lowerLimitSwitch.get()) {
@@ -83,13 +86,17 @@ public class Lifter {
 			stop();
 			return;
 		}
-		double speed = getSpeed(false);
 		controller1.set(ControlMode.PercentOutput, speed);
 		controller2.set(ControlMode.PercentOutput, speed);
 	}
 
+	public void down() {
+		down(getSpeed(false));
+	}
+
 	private double encoderHeight;
 
+	//TODO: Consider redefining goTo(String) to goTo(double) and having callers specify the value of  encoderHeight 
 	public void goTo(String position) {
 		switch (position) {
 		case "floor":
@@ -125,16 +132,15 @@ public class Lifter {
 		controller1.set(ControlMode.PercentOutput, RobotMap.DEFAULT_FIND_SPEED);
 		controller2.set(ControlMode.PercentOutput, RobotMap.DEFAULT_FIND_SPEED);
 	}
-	
-	public double getCurrentOutputPercent()
-	{
+
+	public double getCurrentOutputPercent() {
 		return controller1.getMotorOutputPercent();
 	}
 
-	int calibrationStep = 0;
-	double bottomValue = 0.0;
-	double topValue = 0.0;
-	int calibrateTimes;
+	private int calibrationStep = 0;
+	private double bottomValue = 0.0;
+	private double topValue = 0.0;
+	private int calibrateTimes;
 
 	public void calibrate() {
 		switch (calibrationStep) {

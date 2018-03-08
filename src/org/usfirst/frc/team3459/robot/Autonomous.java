@@ -31,7 +31,7 @@ public class Autonomous {
 
 	public void middleAuto() {
 
-		switch (autoStep) {
+		switch (autoStep) { //TODO: driveTrain.resetEncoders() after each step
 		case 0: // move away from wall
 			if (driveTrain.getLeftDistance() > 17 && driveTrain.getRightDistance() > 17) {
 				driveTrain.tankDrive(0, 0);
@@ -60,10 +60,10 @@ public class Autonomous {
 		case 2: //drive forward 36 inches if right switch and 72 inches if left switch
 			if (FieldProperties.isRightSwitchOurs()) {
 				if (driveTrain.getLeftDistance() >= 36 && driveTrain.getRightDistance() >= 36) {
-				driveTrain.tankDrive(0, 0);
-				autoStep++;
+					driveTrain.tankDrive(0, 0);
+					autoStep++;
 				} else {
-				driveTrain.tankDrive(0.7, 0.7);
+					driveTrain.tankDrive(0.7, 0.7);
 				}
 			} else {
 				if (driveTrain.getLeftDistance() > 72 && driveTrain.getRightDistance() > 72) {
@@ -94,11 +94,12 @@ public class Autonomous {
 			}
 			break;
 		case 4: //raise the lift
-			break;
+			//break;
 		case 5: //drive up against the switch
 			if (driveTrain.getLeftDistance() > 84.5 && driveTrain.getRightDistance() > 84.5) {
 				driveTrain.tankDrive(0, 0);
-				autoStep++;
+				//autoStep++;
+				autoStep = 6; 
 			} else {
 				driveTrain.tankDrive(0.7, 0.7);
 			}
@@ -108,7 +109,7 @@ public class Autonomous {
 			break;
 
 		}
-
+/*
 		
 		switch (autoStep) {
 		case 0: // move away from wall
@@ -138,6 +139,7 @@ public class Autonomous {
 		default:
 			break;
 		}
+	*/
 		
 
 		/*
