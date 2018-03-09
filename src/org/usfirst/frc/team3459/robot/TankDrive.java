@@ -9,12 +9,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class TankDrive extends DifferentialDrive {
 	
 	private static final double ROTATIONS_PER_INCH = 19;
-	private Encoder leftEncoder = new Encoder(RobotMap.DRIVE_TRAIN_LEFT_ENCODER_A, RobotMap.DRIVE_TRAIN_LEFT_ENCODER_B, false, Encoder.EncodingType.k1X);
+	private Encoder leftEncoder = new Encoder(RobotMap.DRIVE_TRAIN_LEFT_ENCODER_A, RobotMap.DRIVE_TRAIN_LEFT_ENCODER_B, true, Encoder.EncodingType.k1X);
 	private Encoder rightEncoder = new Encoder(RobotMap.DRIVE_TRAIN_RIGHT_ENCODER_A, RobotMap.DRIVE_TRAIN_RIGHT_ENCODER_B, false, Encoder.EncodingType.k1X);
 	
 	TankDrive() {
 		super(new SpeedControllerGroup(new Victor(RobotMap.MOTOR_FRONT_LEFT), new Victor(RobotMap.MOTOR_BACK_LEFT)),
 				new SpeedControllerGroup(new Victor(RobotMap.MOTOR_FRONT_RIGHT), new Victor(RobotMap.MOTOR_BACK_RIGHT)));
+		initEncoder(leftEncoder);
+		initEncoder(rightEncoder);
+	}
+	public void setupEncoders() {
 		initEncoder(leftEncoder);
 		initEncoder(rightEncoder);
 	}
@@ -26,10 +30,13 @@ public class TankDrive extends DifferentialDrive {
 	}
 	
 	public void printEncoderValue() {
-		SmartDashboard.putNumber("left Encoder", leftEncoder.get());
+//		SmartDashboard.putNumber("left Encoder", leftEncoder.get());
 		SmartDashboard.putNumber("left rotations", leftEncoder.getDistance());
-		SmartDashboard.putNumber("right Encoder", rightEncoder.get());
+		SmartDashboard.putNumber("left distance", getLeftDistance());
+//		SmartDashboard.putNumber("right Encoder", rightEncoder.get());
 		SmartDashboard.putNumber("right rotations", rightEncoder.getDistance());
+		SmartDashboard.putNumber("right distance", getRightDistance());
+
 	}
 
 	public double getLeftDistance() {

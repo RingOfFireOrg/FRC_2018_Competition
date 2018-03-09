@@ -77,9 +77,9 @@ public class Robot extends IterativeRobot {
 
 		double lifterSpeed = manipulatorStick.getY();
 		if (lifterSpeed > 0) {
-			lifter.up(lifterSpeed);
+			lifter.up(Math.min(lifterSpeed, RobotMap.MAX_LIFT_SPEED));
 		} else if (lifterSpeed < 0) {
-			lifter.down(lifterSpeed);
+			lifter.down(Math.max(lifterSpeed, -RobotMap.MAX_LIFT_SPEED));
 		} else {
 			if (upPressed) {	//TODO: Consider 4 case if statements to make behavior explicit
 				lifter.up();
@@ -113,9 +113,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		if (leftStick.getTrigger()) {
-			lifter.calibrate();
-		}
+//		if (leftStick.getTrigger()) {
+//			lifter.calibrate();
+//		}
+		drive.printEncoderValue();
 	}
 
 	/**
@@ -138,6 +139,8 @@ public class Robot extends IterativeRobot {
 	// center of switch 14 ft from alliance station
 	@Override
 	public void autonomousPeriodic() {
+		drive.printEncoderValue();
+
 		switch (m_autoSelected) {
 		case kMiddleAuto:
 			auto.middleAuto();
@@ -153,7 +156,7 @@ public class Robot extends IterativeRobot {
 
 		case kDefaultAuto:
 		default:
-			// Put default auto code here
+			auto.defaultAuto();
 			break;
 		}
 

@@ -1,11 +1,13 @@
 package org.usfirst.frc.team3459.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Autonomous {
 	TankDrive driveTrain;
 	Lifter elevator;
 	Popcorn grabber;
+	long endTime;
 
 	public Autonomous(TankDrive drive, Lifter lifter, Popcorn popcorn) {
 		driveTrain = drive;
@@ -27,15 +29,21 @@ public class Autonomous {
 	public void initialize()
 	{
 		autoStep = 0;
+		driveTrain.resetEncoders();
+		defaultInit();
 	}
 
 	public void middleAuto() {
 
+		SmartDashboard.putNumber("step", autoStep);
+		
 		switch (autoStep) { //TODO: driveTrain.resetEncoders() after each step
 		case 0: // move away from wall
+			driveTrain.printEncoderValue();
 			if (driveTrain.getLeftDistance() > 17 && driveTrain.getRightDistance() > 17) {
 				driveTrain.tankDrive(0, 0);
 				autoStep++;
+				driveTrain.resetEncoders();
 			} else {
 				driveTrain.tankDrive(0.7, 0.7);
 			}
@@ -45,6 +53,7 @@ public class Autonomous {
 				if (driveTrain.getLeftDistance() >= encoder90Value) {
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
+					driveTrain.resetEncoders();
 				} else {
 					driveTrain.tankDrive(0.7, -0.7);
 				}
@@ -52,6 +61,7 @@ public class Autonomous {
 				if (driveTrain.getRightDistance() >= encoder90Value) {
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
+					driveTrain.resetEncoders();
 				} else {
 					driveTrain.tankDrive(-0.7, 0.7);
 				}
@@ -62,6 +72,7 @@ public class Autonomous {
 				if (driveTrain.getLeftDistance() >= 36 && driveTrain.getRightDistance() >= 36) {
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
+					driveTrain.resetEncoders();
 				} else {
 					driveTrain.tankDrive(0.7, 0.7);
 				}
@@ -69,6 +80,7 @@ public class Autonomous {
 				if (driveTrain.getLeftDistance() > 72 && driveTrain.getRightDistance() > 72) {
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
+					driveTrain.resetEncoders();
 				} else {
 					driveTrain.tankDrive(0.7, 0.7);
 				}
@@ -80,6 +92,7 @@ public class Autonomous {
 				if (driveTrain.getRightDistance() >= encoder90Value) {
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
+					driveTrain.resetEncoders();
 				} else {
 					driveTrain.tankDrive(-0.7, 0.7);
 				}
@@ -88,6 +101,7 @@ public class Autonomous {
 				if (driveTrain.getLeftDistance() >= encoder90Value) {
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
+					driveTrain.resetEncoders();
 				} else {
 					driveTrain.tankDrive(0.7, -0.7);
 				}
@@ -100,6 +114,7 @@ public class Autonomous {
 				driveTrain.tankDrive(0, 0);
 				//autoStep++;
 				autoStep = 6; 
+				driveTrain.resetEncoders();
 			} else {
 				driveTrain.tankDrive(0.7, 0.7);
 			}
@@ -184,6 +199,23 @@ public class Autonomous {
 			driveTrain.tankDrive(0.7, 0.7);
 		}
 	}
+	
+	public void defaultInit() {
+		long start = System.currentTimeMillis();
+		endTime = start + 4500;
+	}
+	
+	public void defaultAuto() {
+		long time = System.currentTimeMillis();
+		
+		if (time < endTime) {
+			driveTrain.tankDrive(0.6, 0.6);
+		}
+		else {
+			driveTrain.tankDrive(0, 0);
+		}
+	}
+	
 
 	public static double normalizeAngle(double input) {
 		double output = input;
