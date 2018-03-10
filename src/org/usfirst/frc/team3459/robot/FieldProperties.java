@@ -31,6 +31,8 @@ public class FieldProperties {
 			DriverStation.reportError("Unable to Determine Scale position from: " + input.charAt(1), false);
 		}
 
+		DriverStation.reportError("Setup as " + switchLeft + " " + switchRight + " " + scaleLeft + " " + scaleRight, false);
+		
 		return true;
 
 	}

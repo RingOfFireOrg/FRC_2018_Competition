@@ -13,13 +13,6 @@ public class Autonomous {
 		driveTrain = drive;
 		elevator = lifter;
 		grabber = popcorn;
-
-		String gameData = DriverStation.getInstance().getGameSpecificMessage();
-
-		if (gameData.length() > 0) {
-			FieldProperties.initialize((gameData));
-
-		}
 	}
 
 	double targetAngle = 0;
@@ -31,6 +24,13 @@ public class Autonomous {
 		autoStep = 0;
 		driveTrain.resetEncoders();
 		defaultInit();
+		
+		String gameData = DriverStation.getInstance().getGameSpecificMessage();
+
+		if (gameData.length() > 0) {
+			FieldProperties.initialize((gameData));
+
+		}
 	}
 
 	public void middleAuto() {
@@ -216,7 +216,7 @@ public class Autonomous {
 		long time = System.currentTimeMillis();
 		
 		if (time < endTime) {
-			driveTrain.tankDrive(0.58, 0.6);
+			driveTrain.tankDrive(0.58, 0.62);
 		}
 		else {
 			driveTrain.tankDrive(0, 0);
