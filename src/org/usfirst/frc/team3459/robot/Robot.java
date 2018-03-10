@@ -52,7 +52,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Auto choices", m_chooser);
 		lifter = new Lifter();
 		popcorn = new Popcorn();
-		// climber = new Climber();
+		climber = new Climber(manipulatorStick);
 
 		CameraServer.getInstance().startAutomaticCapture(); // camera code: NEEDS TO BE TESTED
 	}
@@ -75,7 +75,7 @@ public class Robot extends IterativeRobot {
 		boolean upPressed = manipulatorStick.getRawButton(RobotMap.LIFT_UP_BUTTON);
 		boolean downPressed = manipulatorStick.getRawButton(RobotMap.LIFT_DOWN_BUTTON);
 
-		double lifterSpeed = manipulatorStick.getX();
+		double lifterSpeed = -manipulatorStick.getY();
 		if (lifterSpeed > 0) {
 			lifter.up(Math.min(lifterSpeed, RobotMap.MAX_LIFT_SPEED));
 		} else if (lifterSpeed < 0) {
@@ -95,10 +95,8 @@ public class Robot extends IterativeRobot {
 		if (manipulatorStick.getRawButton(RobotMap.POPCORN_CLOSE)) {
 			popcorn.close();
 		}
-		boolean IsClimbPressed = manipulatorStick.getRawButton(RobotMap.CLIMB_BUTTON);
-		double climbSpeed = manipulatorStick.getThrottle();
 
-		// climber.climb(IsClimbPressed, climbSpeed);
+		climber.climb();
 	}
 
 	/**

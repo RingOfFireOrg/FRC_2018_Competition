@@ -32,7 +32,7 @@ public class Lifter {
 		controller2.setNeutralMode(NeutralMode.Brake);
 	}
 
-	//TODO: Consider reorganizing methods
+	// TODO: Consider reorganizing methods
 	private void debug() {
 		SmartDashboard.putNumber("lift Encoder", encoder.get());
 		SmartDashboard.putNumber("lift rotations", encoder.getDistance());
@@ -96,7 +96,8 @@ public class Lifter {
 
 	private double encoderHeight;
 
-	//TODO: Consider redefining goTo(String) to goTo(double) and having callers specify the value of  encoderHeight 
+	// TODO: Consider redefining goTo(String) to goTo(double) and having callers
+	// specify the value of encoderHeight
 	public void goTo(String position) {
 		switch (position) {
 		case "floor":

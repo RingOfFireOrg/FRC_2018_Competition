@@ -41,6 +41,7 @@ public final class RobotMap {
 	public static final int LIFT_SWITCH_BUTTON = 5;
 	public static final int LIFT_DOWN_BUTTON = 4;
 	public static final int CLIMB_BUTTON = 11;
+	public static final int CLIMB_LIMIT_OVERRIDE = 12;
 	
 	//Popcorn JoyStick Buttons
 	public static final int POPCORN_OPEN = 1;
