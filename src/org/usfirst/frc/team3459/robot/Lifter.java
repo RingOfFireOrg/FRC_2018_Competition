@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Lifter {
@@ -24,7 +25,10 @@ public class Lifter {
 	private TalonSRX controller1 = new TalonSRX(RobotMap.CAN_LIFTER_1);
 	private TalonSRX controller2 = new TalonSRX(RobotMap.CAN_LIFTER_2);
 
-	Lifter() {
+	private Joystick manipulatorStick;
+
+	Lifter(Joystick manipulatorStick) {
+		this.manipulatorStick = manipulatorStick;
 		encoder.reset();
 		encoder.setSamplesToAverage(5); // noise reduction?
 		encoder.setDistancePerPulse(1.0 / 360); // should see 1 pulse per rotation
@@ -44,7 +48,7 @@ public class Lifter {
 
 	public void up(double speed) {
 		debug();
-		if (upperLimitSwitch.get()) {
+		if (upperLimitSwitch.get() && !manipulatorStick.getRawButton(RobotMap.LIFT_LIMIT_OVERRIDE)) {
 			stop();
 			totalRotations = encoder.getDistance();
 			return;
@@ -81,7 +85,7 @@ public class Lifter {
 	public void down(double speed) {
 		debug();
 
-		if (lowerLimitSwitch.get()) {
+		if (lowerLimitSwitch.get() && !manipulatorStick.getRawButton(RobotMap.LIFT_LIMIT_OVERRIDE)) {
 			encoder.reset();
 			stop();
 			return;

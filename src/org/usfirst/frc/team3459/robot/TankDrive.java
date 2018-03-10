@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TankDrive extends DifferentialDrive {
 
-	private static final double ROTATIONS_PER_INCH = 19;
+	private static final double TIRE_DIAMETER = 6 * Math.PI;
 	private Encoder leftEncoder = new Encoder(RobotMap.DRIVE_TRAIN_LEFT_ENCODER_A, RobotMap.DRIVE_TRAIN_LEFT_ENCODER_B,
 			true, Encoder.EncodingType.k1X);
 	private Encoder rightEncoder = new Encoder(RobotMap.DRIVE_TRAIN_RIGHT_ENCODER_A,
@@ -30,25 +30,28 @@ public class TankDrive extends DifferentialDrive {
 	private void initEncoder(Encoder encoder) {
 		encoder.reset();
 		encoder.setSamplesToAverage(5); // noise reduction?
+		//Set Distance to one tire diameter
 		encoder.setDistancePerPulse(1.0 / 360); // should see 1 pulse per rotation
 	}
 
 	public void printEncoderValue() {
 		// SmartDashboard.putNumber("left Encoder", leftEncoder.get());
 		SmartDashboard.putNumber("left rotations", leftEncoder.getDistance());
-		SmartDashboard.putNumber("left distance", getLeftDistance());
+		SmartDashboard.putNumber("left distance inches", getLeftInches());
 		// SmartDashboard.putNumber("right Encoder", rightEncoder.get());
 		SmartDashboard.putNumber("right rotations", rightEncoder.getDistance());
-		SmartDashboard.putNumber("right distance", getRightDistance());
+		SmartDashboard.putNumber("right distance inches", getRightInches());
 
 	}
 
-	public double getLeftDistance() {
-		return leftEncoder.getDistance() * ROTATIONS_PER_INCH;
+	public double getLeftInches() {
+		//Tire Rotations divided by Tire Diameter = Inches
+		return leftEncoder.getDistance() * TIRE_DIAMETER;
 	}
 
-	public double getRightDistance() {
-		return rightEncoder.getDistance() * ROTATIONS_PER_INCH;
+	public double getRightInches() {
+		//Tire Rotations divided by Tire Diameter = Inches
+		return rightEncoder.getDistance() * TIRE_DIAMETER;
 	}
 
 	public void resetEncoders() {

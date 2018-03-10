@@ -1,5 +1,7 @@
 package org.usfirst.frc.team3459.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
 public class FieldProperties {
 
 	private static boolean switchLeft = false;
@@ -9,6 +11,7 @@ public class FieldProperties {
 
 	public static boolean initialize(String input) {
 		if (input == null || input.length() < 3) {
+			DriverStation.reportError("Unable to Determine Field Properties from: " + input, false);
 			return false;
 		}
 
@@ -16,12 +19,16 @@ public class FieldProperties {
 			switchLeft = true;
 		} else if (input.charAt(0) == 'R') {
 			switchRight = true;
+		} else {
+			DriverStation.reportError("Unable to Determine Switch position from: " + input.charAt(0), false);
 		}
 
 		if (input.charAt(1) == 'L') {
 			scaleLeft = true;
 		} else if (input.charAt(1) == 'R') {
 			scaleRight = true;
+		} else {
+			DriverStation.reportError("Unable to Determine Scale position from: " + input.charAt(1), false);
 		}
 
 		return true;

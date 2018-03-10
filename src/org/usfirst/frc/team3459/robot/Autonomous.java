@@ -36,11 +36,14 @@ public class Autonomous {
 	public void middleAuto() {
 
 		SmartDashboard.putNumber("step", autoStep);
-		
-		switch (autoStep) { //TODO: driveTrain.resetEncoders() after each step
+		driveTrain.printEncoderValue();
+
+		/*
+		 * This switch statement controls robot speed and turning
+		 */
+		switch (autoStep) {
 		case 0: // move away from wall
-			driveTrain.printEncoderValue();
-			if (driveTrain.getLeftDistance() > 17 && driveTrain.getRightDistance() > 17) {
+			if (driveTrain.getLeftInches() > 17 && driveTrain.getRightInches() > 17) {
 				driveTrain.tankDrive(0, 0);
 				autoStep++;
 				driveTrain.resetEncoders();
@@ -50,15 +53,15 @@ public class Autonomous {
 			break;
 		case 1://turn 90 degrees
 			if (FieldProperties.isRightSwitchOurs()) {
-				if (driveTrain.getLeftDistance() >= encoder90Value) {
+				if (driveTrain.getLeftInches() >= encoder90Value) {
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
 					driveTrain.resetEncoders();
 				} else {
 					driveTrain.tankDrive(-0.7, 0.7);
 				}
-			} else {
-				if (driveTrain.getRightDistance() >= encoder90Value) {
+			} else { // assume FieldProperties.isLeftSwitchOurs()
+				if (driveTrain.getRightInches() >= encoder90Value) {
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
 					driveTrain.resetEncoders();
@@ -66,10 +69,11 @@ public class Autonomous {
 					driveTrain.tankDrive(0.7, -0.7);
 				}
 			}
+			
 			break;
 		case 2: //drive forward 36 inches if right switch and 72 inches if left switch
 			if (FieldProperties.isRightSwitchOurs()) {
-				if (driveTrain.getLeftDistance() >= 36 && driveTrain.getRightDistance() >= 36) {
+				if (driveTrain.getLeftInches() >= 36 && driveTrain.getRightInches() >= 36) {
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
 					driveTrain.resetEncoders();
@@ -77,7 +81,7 @@ public class Autonomous {
 					driveTrain.tankDrive(0.7, 0.7);
 				}
 			} else {
-				if (driveTrain.getLeftDistance() > 72 && driveTrain.getRightDistance() > 72) {
+				if (driveTrain.getLeftInches() > 72 && driveTrain.getRightInches() > 72) {
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
 					driveTrain.resetEncoders();
@@ -89,7 +93,7 @@ public class Autonomous {
 
 		case 3: //turn 90 degrees towards switch
 			if (FieldProperties.isRightSwitchOurs()) {
-				if (driveTrain.getRightDistance() >= encoder90Value) {
+				if (driveTrain.getRightInches() >= encoder90Value) {
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
 					driveTrain.resetEncoders();
@@ -98,7 +102,7 @@ public class Autonomous {
 				}
 
 			} else {
-				if (driveTrain.getLeftDistance() >= encoder90Value) {
+				if (driveTrain.getLeftInches() >= encoder90Value) {
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
 					driveTrain.resetEncoders();
@@ -108,12 +112,14 @@ public class Autonomous {
 			}
 			break;
 		case 4: //raise the lift
-			//break;
+			/*
+			 * Advancement from step 4 to step 5 handled below
+			 */
+			break;
 		case 5: //drive up against the switch
-			if (driveTrain.getLeftDistance() > 84.5 && driveTrain.getRightDistance() > 84.5) {
+			if (driveTrain.getLeftInches() > 84.5 && driveTrain.getRightInches() > 84.5) {
 				driveTrain.tankDrive(0, 0);
-				//autoStep++;
-				autoStep = 6; 
+				autoStep++;
 				driveTrain.resetEncoders();
 			} else {
 				driveTrain.tankDrive(0.7, 0.7);
@@ -124,8 +130,10 @@ public class Autonomous {
 			break;
 
 		}
-/*
 		
+		/*
+		 * This switch statement handles the lifter
+		 */
 		switch (autoStep) {
 		case 0: // move away from wall
 		case 1: //first turn
@@ -136,7 +144,7 @@ public class Autonomous {
 			elevator.goTo("switch");
 			break;
 
-		case 4: // move away from wall
+		case 4: //Make sure lift is complete before we drive in to drop
 			elevator.goTo("switch");
 			if (Math.abs(elevator.getCurrentOutputPercent()) < 0.05)
 			{
@@ -154,7 +162,6 @@ public class Autonomous {
 		default:
 			break;
 		}
-	*/
 		
 
 		/*
@@ -173,7 +180,7 @@ public class Autonomous {
 	}
 
 	public void leftAuto() {
-		if (driveTrain.getLeftDistance() > 180 && driveTrain.getRightDistance() > 180) {
+		if (driveTrain.getLeftInches() > 180 && driveTrain.getRightInches() > 180) {
 			driveTrain.tankDrive(0, 0);
 			autoStep++;
 		} else {
@@ -192,7 +199,7 @@ public class Autonomous {
 	}
 
 	public void rightAuto() {
-		if (driveTrain.getLeftDistance() > 180 && driveTrain.getRightDistance() > 180) {
+		if (driveTrain.getLeftInches() > 180 && driveTrain.getRightInches() > 180) {
 			driveTrain.tankDrive(0, 0);
 			autoStep++;
 		} else {
@@ -209,7 +216,7 @@ public class Autonomous {
 		long time = System.currentTimeMillis();
 		
 		if (time < endTime) {
-			driveTrain.tankDrive(0.6, 0.6);
+			driveTrain.tankDrive(0.58, 0.6);
 		}
 		else {
 			driveTrain.tankDrive(0, 0);

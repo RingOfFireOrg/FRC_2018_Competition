@@ -27,6 +27,7 @@ public class Robot extends IterativeRobot {
 	private Popcorn popcorn;
 	private Climber climber;
 	private Autonomous auto;
+	private TestMode testMode;
 
 	TankDrive drive = new TankDrive();
 
@@ -49,9 +50,11 @@ public class Robot extends IterativeRobot {
 		m_chooser.addObject("Left Auto", kLeftAuto);
 		m_chooser.addObject("Middle Auto", kMiddleAuto);
 		m_chooser.addObject("Right Auto", kRightAuto);
-		SmartDashboard.putData("Auto choices", m_chooser);
-		lifter = new Lifter();
+		SmartDashboard.putData("Auto choice", m_chooser);
+		
+		lifter = new Lifter(manipulatorStick);
 		popcorn = new Popcorn();
+		popcorn.close();
 		climber = new Climber(manipulatorStick);
 
 		CameraServer.getInstance().startAutomaticCapture(); // camera code: NEEDS TO BE TESTED
@@ -104,6 +107,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testInit() {
+		testMode = new TestMode(drive, lifter, popcorn);
+		testMode.initialize();
 	}
 
 	/**
@@ -111,10 +116,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-//		if (leftStick.getTrigger()) {
-//			lifter.calibrate();
-//		}
 		drive.printEncoderValue();
+		testMode.run();
 	}
 
 	/**
