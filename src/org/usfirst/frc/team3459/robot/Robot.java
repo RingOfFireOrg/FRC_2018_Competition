@@ -55,7 +55,6 @@ public class Robot extends IterativeRobot {
 		
 		lifter = new Lifter(manipulatorStick);
 		popcorn = new Popcorn();
-		popcorn.close();
 		climber = new Climber(manipulatorStick);
 
 		CameraServer.getInstance().startAutomaticCapture(); // camera code: NEEDS TO BE TESTED
@@ -66,7 +65,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopInit() {
+		targetHeight = 0;
 	}
+
+	public double targetHeight = 0;
 
 	/**
 	 * This function is called periodically during operator control (approx 20ms)
@@ -108,7 +110,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testInit() {
-		testMode = new TestMode(drive, lifter, popcorn);
+		testMode = new TestMode(manipulatorStick, drive, lifter, popcorn);
 		testMode.initialize();
 	}
 
@@ -132,6 +134,7 @@ public class Robot extends IterativeRobot {
 
 		auto = new Autonomous(drive, lifter, popcorn);
 		auto.initialize();
+		popcorn.close();
 	}
 
 	/**

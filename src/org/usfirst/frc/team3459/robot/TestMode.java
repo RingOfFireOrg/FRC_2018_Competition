@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3459.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TestMode {
@@ -10,7 +11,10 @@ public class TestMode {
 	Popcorn grabber;
 	long endTime;
 
-	public TestMode(TankDrive drive, Lifter lifter, Popcorn popcorn) {
+	private Joystick manipulatorStick;
+
+	public TestMode(Joystick manipulatorStick, TankDrive drive, Lifter lifter, Popcorn popcorn) {
+		this.manipulatorStick = manipulatorStick;
 		driveTrain = drive;
 		elevator = lifter;
 		grabber = popcorn;
@@ -32,10 +36,21 @@ public class TestMode {
 		defaultInit();
 	}
 
+	public double targetHeight = 0;
+	
 	public void run() {
 
 		SmartDashboard.putNumber("step", autoStep);
 		driveTrain.printEncoderValue();
+		SmartDashboard.putNumber("target Lift Location", targetHeight);
+		
+		if (manipulatorStick.getRawButton(RobotMap.TEST_UP)) {
+			targetHeight++;
+		}
+		if (manipulatorStick.getRawButton(RobotMap.TEST_DOWN)) {
+			targetHeight--;
+		}
+		
 
 //		switch (autoStep) {
 //		case 0: // move away from wall

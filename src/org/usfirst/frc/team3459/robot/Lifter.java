@@ -15,7 +15,7 @@ public class Lifter {
 	private static final double TOP_LIFTER_VALUE = 3;
 
 	// Encoder.
-	private Encoder encoder = new Encoder(RobotMap.LIFT_ENCODER_A, RobotMap.LIFT_ENCODER_B, false,
+	private Encoder encoder = new Encoder(RobotMap.LIFT_ENCODER_A, RobotMap.LIFT_ENCODER_B, true,
 			Encoder.EncodingType.k1X);
 	private double totalRotations = 0;
 
@@ -98,11 +98,11 @@ public class Lifter {
 		down(getSpeed(false));
 	}
 
-	private double encoderHeight;
 
 	// TODO: Consider redefining goTo(String) to goTo(double) and having callers
 	// specify the value of encoderHeight
 	public void goTo(String position) {
+		double encoderHeight = 0;
 		switch (position) {
 		case "floor":
 			encoderHeight = 0;
@@ -111,12 +111,16 @@ public class Lifter {
 			encoderHeight = 0;
 			break;
 		case "switch":
-			encoderHeight = 0;
+			encoderHeight = 6;
 			break;
 		}
-		if (encoder.getDistance() < encoderHeight + 1) {
+		goTo(encoderHeight);
+	}
+
+	public void goTo(double encoderHeight) {
+		if (encoder.getDistance() < encoderHeight - 1) {
 			up();
-		} else if (encoder.getDistance() > encoderHeight - 1) {
+		} else if (encoder.getDistance() > encoderHeight + 1) {
 			down();
 		} else {
 			stop();
@@ -179,5 +183,10 @@ public class Lifter {
 			SmartDashboard.putNumber("bottom value", bottomValue);
 			SmartDashboard.putNumber("top value", topValue);
 		}
+	}
+	
+	public double getEncoderValue()
+	{
+		return encoder.getDistance();
 	}
 }

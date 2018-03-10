@@ -7,12 +7,12 @@ public class Popcorn {
 	private Solenoid openSolenoid = new Solenoid(RobotMap.OPEN_SOLENOID);
 	private Solenoid closeSolenoid = new Solenoid(RobotMap.CLOSE_SOLENOID);
 
-	public void open() {
+	public void close() {
 		closeSolenoid.set(false);
 		openSolenoid.set(true);
 	}
 
-	public void close() {
+	public void open() {
 		openSolenoid.set(false);
 		closeSolenoid.set(true);
 	}

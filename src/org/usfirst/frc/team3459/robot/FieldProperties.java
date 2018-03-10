@@ -10,6 +10,10 @@ public class FieldProperties {
 	private static boolean scaleRight = false;
 
 	public static boolean initialize(String input) {
+		switchLeft = false;
+		switchRight = false;
+		scaleLeft = false;
+		scaleRight = false;
 		if (input == null || input.length() < 3) {
 			DriverStation.reportError("Unable to Determine Field Properties from: " + input, false);
 			return false;

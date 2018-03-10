@@ -58,16 +58,19 @@ public class Autonomous {
 					autoStep++;
 					driveTrain.resetEncoders();
 				} else {
-					driveTrain.tankDrive(-0.7, 0.7);
+					driveTrain.tankDrive(0.7, -0.7);
 				}
-			} else { // assume FieldProperties.isLeftSwitchOurs()
+			} else if (FieldProperties.isLeftSwitchOurs()) {
 				if (driveTrain.getRightInches() >= encoder90Value) {
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
 					driveTrain.resetEncoders();
 				} else {
-					driveTrain.tankDrive(0.7, -0.7);
+					driveTrain.tankDrive(-0.7, 0.7);
 				}
+			} else {
+				DriverStation.reportError("Got confusing Switch State: " + FieldProperties.isLeftSwitchOurs() + " "
+						+ FieldProperties.isRightSwitchOurs(), false);
 			}
 			
 			break;
@@ -98,7 +101,7 @@ public class Autonomous {
 					autoStep++;
 					driveTrain.resetEncoders();
 				} else {
-					driveTrain.tankDrive(0.7, -0.7);
+					driveTrain.tankDrive(-0.7, 0.7);
 				}
 
 			} else {
@@ -107,7 +110,7 @@ public class Autonomous {
 					autoStep++;
 					driveTrain.resetEncoders();
 				} else {
-					driveTrain.tankDrive(-0.7, 0.7);
+					driveTrain.tankDrive(0.7, -0.7);
 				}
 			}
 			break;
