@@ -17,7 +17,7 @@ public class Autonomous {
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 
 		if (gameData.length() > 0) {
-			//FieldProperties.initialize((gameData));
+			FieldProperties.initialize((gameData));
 
 		}
 	}
@@ -55,7 +55,7 @@ public class Autonomous {
 					autoStep++;
 					driveTrain.resetEncoders();
 				} else {
-					driveTrain.tankDrive(0.7, -0.7);
+					driveTrain.tankDrive(-0.7, 0.7);
 				}
 			} else {
 				if (driveTrain.getRightDistance() >= encoder90Value) {
@@ -63,7 +63,7 @@ public class Autonomous {
 					autoStep++;
 					driveTrain.resetEncoders();
 				} else {
-					driveTrain.tankDrive(-0.7, 0.7);
+					driveTrain.tankDrive(0.7, -0.7);
 				}
 			}
 			break;
@@ -94,7 +94,7 @@ public class Autonomous {
 					autoStep++;
 					driveTrain.resetEncoders();
 				} else {
-					driveTrain.tankDrive(-0.7, 0.7);
+					driveTrain.tankDrive(0.7, -0.7);
 				}
 
 			} else {
@@ -103,7 +103,7 @@ public class Autonomous {
 					autoStep++;
 					driveTrain.resetEncoders();
 				} else {
-					driveTrain.tankDrive(0.7, -0.7);
+					driveTrain.tankDrive(-0.7, 0.7);
 				}
 			}
 			break;
