@@ -58,6 +58,8 @@ public class Robot extends IterativeRobot {
 		climber = new Climber(manipulatorStick);
 
 		CameraServer.getInstance().startAutomaticCapture(); // camera code: NEEDS TO BE TESTED
+		
+		
 	}
 
 	/**

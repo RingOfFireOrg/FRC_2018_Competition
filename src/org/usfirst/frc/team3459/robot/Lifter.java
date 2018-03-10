@@ -13,15 +13,13 @@ public class Lifter {
 
 	private static final double BOTTOM_LIFTER_VALUE = 0;
 	private static final double TOP_LIFTER_VALUE = 3;
-
-	// Encoder.
-	private Encoder encoder = new Encoder(RobotMap.LIFT_ENCODER_A, RobotMap.LIFT_ENCODER_B, true,
-			Encoder.EncodingType.k1X);
+	
+	private Encoder encoder = new Encoder(RobotMap.LIFT_ENCODER_A, RobotMap.LIFT_ENCODER_B, true, Encoder.EncodingType.k1X);
 	private double totalRotations = 0;
-
+	
 	private DigitalInput upperLimitSwitch = new DigitalInput(RobotMap.INPUT_UPPER_LIMIT_SW);
 	private DigitalInput lowerLimitSwitch = new DigitalInput(RobotMap.INPUT_LOWER_LIMIT_SW);
-
+	
 	private TalonSRX controller1 = new TalonSRX(RobotMap.CAN_LIFTER_1);
 	private TalonSRX controller2 = new TalonSRX(RobotMap.CAN_LIFTER_2);
 
@@ -98,20 +96,20 @@ public class Lifter {
 		down(getSpeed(false));
 	}
 
-
+	double encoderHeight = 0;
 	// TODO: Consider redefining goTo(String) to goTo(double) and having callers
-	// specify the value of encoderHeight
 	public void goTo(String position) {
-		double encoderHeight = 0;
+		
 		switch (position) {
 		case "floor":
 			encoderHeight = 0;
 			break;
-		case "scale":
-			encoderHeight = 0;
-			break;
 		case "switch":
 			encoderHeight = 6;
+			break;
+		case "scale":
+			encoderHeight = 0;
+			//needs a real value here not 0
 			break;
 		}
 		goTo(encoderHeight);

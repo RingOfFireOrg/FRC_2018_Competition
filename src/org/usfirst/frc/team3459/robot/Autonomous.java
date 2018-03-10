@@ -17,7 +17,8 @@ public class Autonomous {
 
 	double targetAngle = 0;
 	int autoStep = 0;
-	double encoder90Value = 18.8;
+	double encoder90Value = 17;
+	//changed from 18.8
 
 	public void initialize()
 	{
@@ -160,6 +161,7 @@ public class Autonomous {
 
 		case 6: //drop the cube
 			grabber.open();
+			elevator.goTo("switch");
 			break;
 
 		default:
