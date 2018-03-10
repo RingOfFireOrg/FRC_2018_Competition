@@ -75,7 +75,7 @@ public class Robot extends IterativeRobot {
 		boolean upPressed = manipulatorStick.getRawButton(RobotMap.LIFT_UP_BUTTON);
 		boolean downPressed = manipulatorStick.getRawButton(RobotMap.LIFT_DOWN_BUTTON);
 
-		double lifterSpeed = manipulatorStick.getY();
+		double lifterSpeed = manipulatorStick.getX();
 		if (lifterSpeed > 0) {
 			lifter.up(Math.min(lifterSpeed, RobotMap.MAX_LIFT_SPEED));
 		} else if (lifterSpeed < 0) {
