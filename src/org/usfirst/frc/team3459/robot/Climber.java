@@ -24,13 +24,13 @@ public class Climber {
 		double speed = manipulatorStick.getThrottle();
 		debug(climbButton, speed);
 		if (climbButton) {
-			if (limitSwitch.get() && !switchOverride) {
-				climb0.set(ControlMode.PercentOutput, 0.0);
-				climb1.set(ControlMode.PercentOutput, 0.0);
-			} else {
+			//if (limitSwitch.get() && !switchOverride) {
+				//climb0.set(ControlMode.PercentOutput, 0.0);
+				//climb1.set(ControlMode.PercentOutput, 0.0);
+			//} else {
 				climb0.set(ControlMode.PercentOutput, speed);
 				climb1.set(ControlMode.PercentOutput, speed);
-			}
+			//}
 		} else {
 			climb0.set(ControlMode.PercentOutput, 0.0);
 			climb1.set(ControlMode.PercentOutput, 0.0);
