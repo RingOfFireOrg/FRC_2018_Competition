@@ -33,6 +33,65 @@ public class Autonomous {
 		}
 	}
 
+	double ninetyDegrees = 0;
+	public void sideAuto(boolean switchPriority, boolean rightPosition) {
+		switch(autoStep) {
+		case 0: //drive past auto line no matter what
+			if (driveTrain.getRightInches() <= 141) {
+				driveTrain.tankDrive(0.7, 0.7);
+			} else {
+				driveTrain.resetEncoders();
+				driveTrain.tankDrive(0, 0);
+				autoStep++;
+			}
+			break;
+		case 1: //logic for what to do now
+			if(switchPriority) {
+				if(rightPosition){
+					ninetyDegrees = 20; //arbitrary value
+					if(FieldProperties.isRightSwitchOurs()) {
+						autoStep = 4;
+					} else if(FieldProperties.isRightScaleOurs()) {
+						autoStep = 3;
+					}
+				}
+			} else if(!switchPriority) {
+				if(!rightPosition){
+					ninetyDegrees = -20; //arbitrary value
+					if(FieldProperties.isLeftScaleOurs()) {
+						autoStep = 3;
+					} else if(FieldProperties.isLeftSwitchOurs()) {
+						autoStep = 2;
+					}
+				}
+			}
+		case 2:
+			
+		
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public void middleAuto() {
 
 		SmartDashboard.putNumber("step", autoStep);
