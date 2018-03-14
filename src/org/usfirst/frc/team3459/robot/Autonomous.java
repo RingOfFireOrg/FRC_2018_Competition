@@ -48,7 +48,6 @@ public class Autonomous {
 		case 1: //logic for what to do now
 			if(switchPriority) {
 				if(rightPosition){
-					ninetyDegrees = 20; //arbitrary value
 					if(FieldProperties.isRightSwitchOurs()) {
 						autoStep = 4;
 					} else if(FieldProperties.isRightScaleOurs()) {
@@ -57,7 +56,6 @@ public class Autonomous {
 				}
 			} else if(!switchPriority) {
 				if(!rightPosition){
-					ninetyDegrees = -20; //arbitrary value
 					if(FieldProperties.isLeftScaleOurs()) {
 						autoStep = 3;
 					} else if(FieldProperties.isLeftSwitchOurs()) {
@@ -66,7 +64,11 @@ public class Autonomous {
 				}
 			}
 		case 2:
-			
+			if(rightPosition) {
+				if() {
+					
+				}
+			}
 		
 		}
 	}
