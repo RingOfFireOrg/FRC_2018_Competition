@@ -61,7 +61,7 @@ public class Robot extends IterativeRobot {
 		popcorn = new Popcorn();
 		climber = new Climber(manipulatorStick);
 
-		CameraServer.getInstance().startAutomaticCapture(); // camera code: NEEDS TO BE TESTED
+		CameraServer.getInstance().startAutomaticCapture(); 
 		
 		
 	}

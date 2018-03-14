@@ -63,7 +63,7 @@ public class Autonomous {
 					}
 				}
 			}
-		case 2: //extra drive distance for scale only
+	/*	case 2: //extra drive distance for scale only
 			if (driveTrain.getRightInches() <= 100) {
 				driveTrain.tankDrive(0.7, 0.7);
 			} else {
@@ -99,8 +99,9 @@ public class Autonomous {
 				autoStep++;
 			}
 			break;
-		
+		*/
 		}
+		
 	}
 	
 	
