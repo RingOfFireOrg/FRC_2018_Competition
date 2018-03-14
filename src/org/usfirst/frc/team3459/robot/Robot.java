@@ -24,6 +24,7 @@ public class Robot extends IterativeRobot {
 	private static final String kLeftAuto = "Left Auto";
 	private static final String kMiddleAuto = "Middle Auto";
 	private static final String kRightAuto = "Right Auto";
+	private static final String kSideAuto = "Side Auto";
 	private Lifter lifter;
 	private Popcorn popcorn;
 	private Climber climber;
@@ -53,6 +54,7 @@ public class Robot extends IterativeRobot {
 		m_chooser.addObject("Right Auto", kRightAuto);
 		m_chooser.addObject("Elims Left", kLeftAuto);
 		m_chooser.addObject("Elims Right Auto", kLeftAuto);
+		m_chooser.addObject("Side Auto", kSideAuto);
 		SmartDashboard.putData("Auto choice", m_chooser);
 		
 		lifter = new Lifter(manipulatorStick);

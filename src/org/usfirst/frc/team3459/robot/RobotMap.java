@@ -28,7 +28,7 @@ public final class RobotMap {
 	//Motor Speed
 	public static final double DEFAULT_LIFT_SPEED = 0.5;
 	public static final double MIN_LIFT_SPEED = 0.5;
-	public static final double MAX_LIFT_SPEED = 0.8;
+	public static final double MAX_LIFT_SPEED = 1.0;
 	
 	public static final double DEFAULT_FIND_SPEED = 0.5;
 

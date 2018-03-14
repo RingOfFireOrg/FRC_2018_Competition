@@ -33,10 +33,10 @@ public class Autonomous {
 		}
 	}
 
-	double ninetyDegrees = 0;
+	double ninetyValue = 0;
 	public void sideAuto(boolean switchPriority, boolean rightPosition) {
 		switch(autoStep) {
-		case 0: //drive past auto line no matter what
+		case 0: //drive past auto line to correct position for switch
 			if (driveTrain.getRightInches() <= 141) {
 				driveTrain.tankDrive(0.7, 0.7);
 			} else {
@@ -49,26 +49,56 @@ public class Autonomous {
 			if(switchPriority) {
 				if(rightPosition){
 					if(FieldProperties.isRightSwitchOurs()) {
-						autoStep = 4;
-					} else if(FieldProperties.isRightScaleOurs()) {
 						autoStep = 3;
+					} else if(FieldProperties.isRightScaleOurs()) {
+						autoStep = 2;
 					}
 				}
 			} else if(!switchPriority) {
 				if(!rightPosition){
 					if(FieldProperties.isLeftScaleOurs()) {
-						autoStep = 3;
-					} else if(FieldProperties.isLeftSwitchOurs()) {
 						autoStep = 2;
+					} else if(FieldProperties.isLeftSwitchOurs()) {
+						autoStep = 3;
 					}
 				}
 			}
-		case 2:
+		case 2: //extra drive distance for scale only
+			if (driveTrain.getRightInches() <= 100) {
+				driveTrain.tankDrive(0.7, 0.7);
+			} else {
+				driveTrain.resetEncoders();
+				driveTrain.tankDrive(0, 0);
+				autoStep++;
+			}
+			break;
+		case 3: //turn 90 degrees toward target
 			if(rightPosition) {
-				if() {
-					
+				if(driveTrain.getRightInches() <= ninetyValue) {
+					driveTrain.tankDrive(0, 0.5);
+				} else {
+					driveTrain.resetEncoders();
+					driveTrain.tankDrive(0, 0);
+					autoStep++;
+				}
+			} else {
+				if(driveTrain.getLeftInches() <= ninetyValue) {
+					driveTrain.tankDrive(0.5, 0);
+				} else {
+					driveTrain.resetEncoders();
+					driveTrain.tankDrive(0, 0);
+					autoStep++;
 				}
 			}
+		case 4: //drive towards target final navigation
+			if (driveTrain.getRightInches() <= 20) {
+				driveTrain.tankDrive(0.7, 0.7);
+			} else {
+				driveTrain.resetEncoders();
+				driveTrain.tankDrive(0, 0);
+				autoStep++;
+			}
+			break;
 		
 		}
 	}
