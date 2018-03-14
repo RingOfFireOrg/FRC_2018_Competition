@@ -17,8 +17,8 @@ public class Autonomous {
 
 	double targetAngle = 0;
 	int autoStep = 0;
-	double encoder90Value = 12 ;
-	// changed from 18.8 to 17 to 8 to 
+	double encoder90Value = 12;
+	// changed from 18.8 to 17 to 8 to
 
 	public void initialize() {
 		autoStep = 0;
@@ -41,129 +41,72 @@ public class Autonomous {
 		/*
 		 * This switch statement controls robot speed and turning
 		 */
-		switch (autoStep) {
-		
-		
-		
-
-		case 0: // move away from wall
-			if (driveTrain.getLeftInches() > 17 && driveTrain.getRightInches() > 17) {
-				driveTrain.tankDrive(0, 0);
-				autoStep++;
-				driveTrain.resetEncoders();
-			} else {
-				driveTrain.tankDrive(0.7, 0.7);
+		if (FieldProperties.isRightSwitchOurs()) {
+			switch (autoStep) {
+			case 0:
+				if (driveTrain.getLeftInches() <= 54) {
+					driveTrain.tankDrive(0.7, 0.46);
+				} else {
+					driveTrain.resetEncoders();
+					driveTrain.tankDrive(0, 0);
+					autoStep++;
+				}
+				break;
+			case 1:
+				if (driveTrain.getRightInches() <= 54) {
+					driveTrain.tankDrive(0.46, 0.7);
+				} else {
+					driveTrain.resetEncoders();
+					driveTrain.tankDrive(0, 0);
+					autoStep++;
+				}
+				break;
+			case 2:
+				if (driveTrain.getLeftInches() <= 20) {
+					driveTrain.tankDrive(0.5, 0.5);
+				}
+				break;
 			}
-			break;
-		case 1:// turn 90 degrees
-			if (FieldProperties.isRightSwitchOurs()) {
-				if (driveTrain.getLeftInches() >= encoder90Value) {
+		} else if (FieldProperties.isLeftSwitchOurs()) {
+			switch (autoStep) {
+			case 0:
+				if (driveTrain.getLeftInches() <= 82) {
+					driveTrain.tankDrive(0.7, 0.46);
+				} else {
+					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
-					driveTrain.resetEncoders();
-				} else {
-					driveTrain.tankDrive(0.7, -0.7);
 				}
-			} else if (FieldProperties.isLeftSwitchOurs()) {
-				if (driveTrain.getRightInches() >= encoder90Value) {
+				break;
+			case 1:
+				if (driveTrain.getRightInches() <= 82) {
+					driveTrain.tankDrive(0.46, 0.7);
+				} else {
+					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
-					driveTrain.resetEncoders();
-				} else {
-					driveTrain.tankDrive(-0.7, 0.7);
 				}
-			} else {
-				DriverStation.reportError("Got confusing Switch State: " + FieldProperties.isLeftSwitchOurs() + " "
-						+ FieldProperties.isRightSwitchOurs(), false);
+				break;
+			case 2:
+				if (driveTrain.getLeftInches() <= 20) {
+					driveTrain.tankDrive(0.5, 0.5);
+				}
+				break;
 			}
-
-			break;
-		case 2: // drive forward 36 inches if right switch and 72 inches if left switch
-			if (FieldProperties.isRightSwitchOurs()) {
-				if (driveTrain.getLeftInches() >= 36 && driveTrain.getRightInches() >= 36) {
-					driveTrain.tankDrive(0, 0);
-					autoStep++;
-					driveTrain.resetEncoders();
-				} else {
-					driveTrain.tankDrive(0.7, 0.7);
-				}
-			} else {
-				if (driveTrain.getLeftInches() > 72 && driveTrain.getRightInches() > 72) {
-					driveTrain.tankDrive(0, 0);
-					autoStep++;
-					driveTrain.resetEncoders();
-				} else {
-					driveTrain.tankDrive(0.7, 0.7);
-				}
-			}
-			break;
-
-		case 3: // turn 90 degrees towards switch
-			if (FieldProperties.isRightSwitchOurs()) {
-				if (driveTrain.getRightInches() >= encoder90Value) {
-					driveTrain.tankDrive(0, 0);
-					autoStep++;
-					driveTrain.resetEncoders();
-				} else {
-					driveTrain.tankDrive(-0.7, 0.7);
-				}
-
-			} else {
-				if (driveTrain.getLeftInches() >= encoder90Value) {
-					driveTrain.tankDrive(0, 0);
-					autoStep++;
-					driveTrain.resetEncoders();
-				} else {
-					driveTrain.tankDrive(0.7, -0.7);
-				}
-			}
-			break;
-		case 4: // raise the lift
-			/*
-			 * Advancement from step 4 to step 5 handled below
-			 */
-			break;
-		case 5: // drive up against the switch
-			if (driveTrain.getLeftInches() > 84.5 && driveTrain.getRightInches() > 84.5) {
-				driveTrain.tankDrive(0, 0);
-				autoStep++;
-				driveTrain.resetEncoders();
-			} else {
-				driveTrain.tankDrive(0.7, 0.7);
-			}
-			break;
-		case 6:
-		default:
-			break;
-		
 		}
 
-		/*
-		 * This switch statement handles the lifter
-		 */
+		// This switch statement handles the lifter
 		switch (autoStep) {
-		case 0: // move away from wall
-		case 1: // first turn
-			break;
-
-		case 2: // traverse
-		case 3: // second turn
+		case 0:
+			// fall through and raise lift to switch height
+		case 1:
+			//ditto
+		case 2:
 			elevator.goTo("switch");
 			break;
 
-		case 4: // Make sure lift is complete before we drive in to drop
-			elevator.goTo("switch");
-			if (Math.abs(elevator.getCurrentOutputPercent()) < 0.05) {
-				autoStep++;
-			}
-			break;
-
-		case 5:
-			break;
-
-		case 6: // drop the cube
+		case 3:
 			grabber.open();
-			elevator.goTo("switch");
 			break;
 
 		default:
@@ -185,35 +128,71 @@ public class Autonomous {
 
 	}
 
+	public void eliminations(boolean leftPosition) {
+		switch(autoStep) {
+		case 0:
+			//120 inches to auto line our robot is 49" long 120 - 49 = 71
+			if(driveTrain.getLeftInches() <= 75) {
+				driveTrain.tankDrive(0.7, 0.7);
+			} else {
+				driveTrain.tankDrive(0, 0);
+				if((FieldProperties.isLeftSwitchOurs() && leftPosition == true) || (FieldProperties.isRightSwitchOurs() && leftPosition == false)) {
+					autoStep++;
+				}
+			}
+			break;
+		case 1:
+			if(Math.abs(elevator.getCurrentOutputPercent()) < 0.5) {
+				elevator.goTo("switch");
+			} else {
+				autoStep++;
+			}
+			break;
+		case 2:
+			if(driveTrain.getLeftInches() <= 15) {
+				driveTrain.tankDrive(0.7, 0.7);
+			} else {
+					autoStep++;
+			}
+			break;
+		case 3: 
+				grabber.open();
+				break;
+		}
+	}
+	
 	public void leftAuto() {
-		if (driveTrain.getLeftInches() >= encoder90Value) {
-			driveTrain.tankDrive(0, 0);
-			//autoStep++;
-			//driveTrain.resetEncoders();
-		} else {
-			driveTrain.tankDrive(0.7, -0.7);
+		switch(autoStep) {
+		case 0:
+			//120 inches to auto line our robot is 49" long 120 - 49 = 71
+			if(driveTrain.getLeftInches() <= 75) {
+				driveTrain.tankDrive(0.7, 0.7);
+			} else {
+				driveTrain.tankDrive(0, 0);
+				if(FieldProperties.isLeftSwitchOurs()) {
+					autoStep++;
+				}
+			}
+			break;
+		case 1:
+			if(Math.abs(elevator.getCurrentOutputPercent()) < 0.5) {
+				elevator.goTo("switch");
+			} else {
+				autoStep++;
+			}
+			break;
+		case 2:
+			if(driveTrain.getLeftInches() <= 15 && driveTrain.getRightInches() <= 15) {
+				driveTrain.tankDrive(0.7, 0.7);
+			} else {
+				driveTrain.tankDrive(0, 0);	
+				autoStep++;
+			}
+			break;
+		case 3: 
+				grabber.open();
+				break;
 		}
-		
-		
-		
-		/*
-		if (driveTrain.getLeftInches() > 180 && driveTrain.getRightInches() > 180) {
-			driveTrain.tankDrive(0, 0);
-			autoStep++;
-		} else {
-			driveTrain.tankDrive(0.7, 0.7);
-		}
-		*/
-
-		/*
-		 * if(!FieldProperties.isLeftSwitchOurs()) //will be part of case step 1 {
-		 * //drive forward 15 ft //set step to 5 }
-		 */
-		/*
-		 * step one: lift to switch height and drive forward 8 ft step two: turn right
-		 * 90 degrees step three: drive forward 2 ft step four: drop cube step five:
-		 * stop
-		 */
 	}
 
 	public void rightAuto() {

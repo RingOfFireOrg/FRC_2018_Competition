@@ -51,6 +51,8 @@ public class Robot extends IterativeRobot {
 		m_chooser.addObject("Left Auto", kLeftAuto);
 		m_chooser.addObject("Middle Auto", kMiddleAuto);
 		m_chooser.addObject("Right Auto", kRightAuto);
+		m_chooser.addObject("Elims Left", kLeftAuto);
+		m_chooser.addObject("Elims Right Auto", kLeftAuto);
 		SmartDashboard.putData("Auto choice", m_chooser);
 		
 		lifter = new Lifter(manipulatorStick);

@@ -58,5 +58,7 @@ public final class RobotMap {
 	public static final int MOTOR_FRONT_RIGHT = 0;
 	public static final int MOTOR_BACK_LEFT = 3;
 	public static final int MOTOR_BACK_RIGHT = 1;
+	
+	public static final double TIRE_DIAMETER = 6 * Math.PI;
 
 }

@@ -7,8 +7,6 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TankDrive extends DifferentialDrive {
-
-	private static final double TIRE_DIAMETER = 6 * Math.PI;
 	private Encoder leftEncoder = new Encoder(RobotMap.DRIVE_TRAIN_LEFT_ENCODER_A, RobotMap.DRIVE_TRAIN_LEFT_ENCODER_B,
 			true, Encoder.EncodingType.k1X);
 	private Encoder rightEncoder = new Encoder(RobotMap.DRIVE_TRAIN_RIGHT_ENCODER_A,
@@ -46,12 +44,12 @@ public class TankDrive extends DifferentialDrive {
 
 	public double getLeftInches() {
 		//Tire Rotations divided by Tire Diameter = Inches
-		return leftEncoder.getDistance() * TIRE_DIAMETER;
+		return leftEncoder.getDistance() * RobotMap.TIRE_DIAMETER;
 	}
 
 	public double getRightInches() {
 		//Tire Rotations divided by Tire Diameter = Inches
-		return rightEncoder.getDistance() * TIRE_DIAMETER;
+		return rightEncoder.getDistance() * RobotMap.TIRE_DIAMETER;
 	}
 
 	public void resetEncoders() {
