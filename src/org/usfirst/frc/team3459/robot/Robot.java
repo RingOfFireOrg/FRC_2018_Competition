@@ -23,7 +23,6 @@ public class Robot extends IterativeRobot {
 	private static final String kDefaultAuto = "Default";
 	private static final String kLeftAuto = "Left Auto";
 	private static final String kRightAuto = "Right Auto";
-	private static final String kSideAuto = "Side Auto";
 	private static final String kSwitch = "switch";
 	private static final String kScale = "scale";
 	private Lifter lifter;
