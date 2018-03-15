@@ -24,6 +24,8 @@ public class Autonomous {
 
 	public void initialize() {
 		autoStep = 0;
+		doingSwitch = false;
+		doingScale = false;
 		driveTrain.resetEncoders();
 
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
@@ -34,9 +36,11 @@ public class Autonomous {
 		}
 	}
 
-	double ninetyValue = 0;
+	double ninetyValue = 36;
 
 	public void sideAuto(boolean switchPriority, boolean rightPosition) {
+		SmartDashboard.putNumber("Auto Step", autoStep);
+
 		switch (autoStep) {
 		case 0: // drive past auto line to correct position for switch
 			if (driveTrain.getRightInches() <= 101) {
@@ -58,9 +62,25 @@ public class Autonomous {
 						doingScale = true;
 						autoStep = 2;
 					}
+				} else if (!rightPosition) {
+					if (FieldProperties.isLeftSwitchOurs()) {
+						doingSwitch = true;
+						autoStep = 3;
+					} else if (FieldProperties.isLeftScaleOurs()) {
+						doingScale = true;
+						autoStep = 2;
+					}
 				}
-			} else if (!switchPriority) {
-				if (!rightPosition) {
+			} else {// if (!switchPriority) {
+				if (rightPosition) {
+					if (FieldProperties.isRightScaleOurs()) {
+						doingScale = true;
+						autoStep = 2;
+					} else if (FieldProperties.isRightSwitchOurs()) {
+						doingSwitch = true;
+						autoStep = 3;
+					}
+				} else if (!rightPosition) {
 					if (FieldProperties.isLeftScaleOurs()) {
 						doingScale = true;
 						autoStep = 2;
@@ -70,9 +90,11 @@ public class Autonomous {
 					}
 				}
 			}
+			break;
+
 		case 2: // extra drive distance for scale only
 			if (driveTrain.getRightInches() <= 100) {
-				driveTrain.tankDrive(0.475, 0.5);
+				driveTrain.tankDrive(0.475, 0.5, false);
 			} else {
 				driveTrain.resetEncoders();
 				driveTrain.tankDrive(0, 0);
@@ -83,7 +105,7 @@ public class Autonomous {
 		case 3: // turn 90 degrees toward target
 			if (rightPosition) {
 				if (driveTrain.getRightInches() <= ninetyValue) {
-					driveTrain.tankDrive(0, 0.5);
+					driveTrain.tankDrive(0, 0.5, false);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
@@ -91,36 +113,39 @@ public class Autonomous {
 				}
 			} else {
 				if (driveTrain.getLeftInches() <= ninetyValue) {
-					driveTrain.tankDrive(0.5, 0);
+					driveTrain.tankDrive(0.5, 0, false);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
 				}
 			}
+			break;
+
 		case 4: // drive towards target final navigation
 			if (driveTrain.getRightInches() <= 20) {
-				driveTrain.tankDrive(0.7, 0.7);
+				driveTrain.tankDrive(0.7, 0.7, false);
 			} else {
 				driveTrain.resetEncoders();
 				driveTrain.tankDrive(0, 0);
 				autoStep++;
 			}
 			break;
-
 		}
-		
-		switch(autoStep) {
+
+		switch (autoStep) {
 		case 0:
 		case 1:
+			break;
 		case 2:
 		case 3:
-		case 4: 
-			if(doingSwitch) {
+		case 4:
+			if (doingSwitch) {
 				elevator.goTo("switch");
-			} else if(doingScale) {
+			} else if (doingScale) {
 				elevator.goTo("scale");
-			} 
+			}
+			break;
 		case 5:
 			grabber.open();
 		}

@@ -7,8 +7,8 @@
 
 package org.usfirst.frc.team3459.robot;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -31,7 +31,6 @@ public class Robot extends IterativeRobot {
 	private Climber climber;
 	private Autonomous auto;
 	private TestMode testMode;
-	
 
 	TankDrive drive = new TankDrive();
 
@@ -45,7 +44,7 @@ public class Robot extends IterativeRobot {
 	private String m_preferenceSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 	private SendableChooser<String> m_preference = new SendableChooser<>();
-	
+
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
@@ -55,22 +54,18 @@ public class Robot extends IterativeRobot {
 		m_chooser.addDefault("Default Auto", kDefaultAuto);
 		m_chooser.addObject("Left Auto", kLeftAuto);
 		m_chooser.addObject("Right Auto", kRightAuto);
-		m_chooser.addObject("Elims Left", kLeftAuto);
-		m_chooser.addObject("Elims Right Auto", kLeftAuto);
-		m_chooser.addObject("Side Auto", kSideAuto);
 		SmartDashboard.putData("Auto choice", m_chooser);
-		
+
 		m_preference.addDefault("Switch Priority", kSwitch);
 		m_preference.addObject("Scale Priority", kScale);
 		SmartDashboard.putData("Auto Priorities", m_preference);
-		
+
 		lifter = new Lifter(manipulatorStick);
 		popcorn = new Popcorn();
 		climber = new Climber(manipulatorStick);
 
-		CameraServer.getInstance().startAutomaticCapture(); 
-		
-		
+		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+		camera.setResolution(320, 240);
 	}
 
 	/**
@@ -100,7 +95,7 @@ public class Robot extends IterativeRobot {
 		} else if (lifterSpeed < 0) {
 			lifter.down(Math.max(lifterSpeed, -RobotMap.MAX_LIFT_SPEED));
 		} else {
-			if (upPressed) {	//TODO: Consider 4 case if statements to make behavior explicit
+			if (upPressed) { // TODO: Consider 4 case if statements to make behavior explicit
 				lifter.up();
 			} else if (downPressed) {
 				lifter.down();
@@ -160,38 +155,34 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		drive.printEncoderValue();
 
-		switch(m_preferenceSelected) {
-		case kSwitch:
-			
-			break;
-		case kScale:
-			break;
-		}
-		
 		switch (m_autoSelected) {
 
 		case kDefaultAuto:
 			auto.defaultAuto();
 			break;
-			
+
 		case kLeftAuto:
-			switch(m_preferenceSelected) {
+			switch (m_preferenceSelected) {
 			case kSwitch:
 				auto.sideAuto(true, false);
 				break;
 			case kScale:
-				auto.sideAuto(true, false);
+				auto.sideAuto(false, false);
 				break;
 			}
-			
 			break;
-			
+
 		case kRightAuto:
-			auto.sideAuto(false, false);
+			switch (m_preferenceSelected) {
+			case kSwitch:
+				auto.sideAuto(true, true);
+				break;
+			case kScale:
+				auto.sideAuto(false, true);
+				break;
+			}
 			break;
 		}
-		
-		
 
 	}
 }
