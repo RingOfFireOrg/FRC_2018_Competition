@@ -160,6 +160,14 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		drive.printEncoderValue();
 
+		switch(m_preferenceSelected) {
+		case kSwitch:
+			
+			break;
+		case kScale:
+			break;
+		}
+		
 		switch (m_autoSelected) {
 
 		case kDefaultAuto:
@@ -167,7 +175,15 @@ public class Robot extends IterativeRobot {
 			break;
 			
 		case kLeftAuto:
-			auto.sideAuto(true, false);
+			switch(m_preferenceSelected) {
+			case kSwitch:
+				auto.sideAuto(true, false);
+				break;
+			case kScale:
+				auto.sideAuto(true, false);
+				break;
+			}
+			
 			break;
 			
 		case kRightAuto:
@@ -175,12 +191,7 @@ public class Robot extends IterativeRobot {
 			break;
 		}
 		
-		switch(m_preferenceSelected) {
-		case kSwitch:
-			break;
-		case kScale:
-			break;
-		}
+		
 
 	}
 }
