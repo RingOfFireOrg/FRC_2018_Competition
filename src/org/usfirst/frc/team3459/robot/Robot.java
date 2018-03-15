@@ -22,14 +22,16 @@ public class Robot extends IterativeRobot {
 	/* list of autonomous choices go here */
 	private static final String kDefaultAuto = "Default";
 	private static final String kLeftAuto = "Left Auto";
-	private static final String kMiddleAuto = "Middle Auto";
 	private static final String kRightAuto = "Right Auto";
 	private static final String kSideAuto = "Side Auto";
+	private static final String kSwitch = "switch";
+	private static final String kScale = "scale";
 	private Lifter lifter;
 	private Popcorn popcorn;
 	private Climber climber;
 	private Autonomous auto;
 	private TestMode testMode;
+	
 
 	TankDrive drive = new TankDrive();
 
@@ -40,8 +42,10 @@ public class Robot extends IterativeRobot {
 	/* end of list */
 
 	private String m_autoSelected;
+	private String m_preferenceSelected;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
-
+	private SendableChooser<String> m_preference = new SendableChooser<>();
+	
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
@@ -50,12 +54,15 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		m_chooser.addDefault("Default Auto", kDefaultAuto);
 		m_chooser.addObject("Left Auto", kLeftAuto);
-		m_chooser.addObject("Middle Auto", kMiddleAuto);
 		m_chooser.addObject("Right Auto", kRightAuto);
 		m_chooser.addObject("Elims Left", kLeftAuto);
 		m_chooser.addObject("Elims Right Auto", kLeftAuto);
 		m_chooser.addObject("Side Auto", kSideAuto);
 		SmartDashboard.putData("Auto choice", m_chooser);
+		
+		m_preference.addDefault("Switch Priority", kSwitch);
+		m_preference.addObject("Scale Priority", kScale);
+		SmartDashboard.putData("Auto Priorities", m_preference);
 		
 		lifter = new Lifter(manipulatorStick);
 		popcorn = new Popcorn();
@@ -135,6 +142,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		m_autoSelected = m_chooser.getSelected();
+		m_preferenceSelected = m_preference.getSelected();
 
 		System.out.println("Auto selected: " + m_autoSelected);
 
@@ -153,21 +161,24 @@ public class Robot extends IterativeRobot {
 		drive.printEncoderValue();
 
 		switch (m_autoSelected) {
-		case kMiddleAuto:
-			auto.middleAuto();
-			break;
-
-		case kLeftAuto:
-			auto.leftAuto();
-			break;
-
-		case kRightAuto:
-			auto.rightAuto();
-			break;
 
 		case kDefaultAuto:
-		default:
 			auto.defaultAuto();
+			break;
+			
+		case kLeftAuto:
+			auto.sideAuto(true, false);
+			break;
+			
+		case kRightAuto:
+			auto.sideAuto(false, false);
+			break;
+		}
+		
+		switch(m_preferenceSelected) {
+		case kSwitch:
+			break;
+		case kScale:
 			break;
 		}
 
