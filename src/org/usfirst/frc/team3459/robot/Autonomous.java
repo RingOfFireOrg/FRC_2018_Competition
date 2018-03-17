@@ -20,11 +20,13 @@ public class Autonomous {
 	double targetAngle = 0;
 	int autoStep = 0;
 	long time;
+	long totalTime;
 	// changed from 18.8 to 17 to 8 to
 
 	public void initialize() {
 		autoStep = 0;
 		time = 0;
+		totalTime = 0;
 		doingSwitch = false;
 		doingScale = false;
 		driveTrain.resetEncoders();
@@ -135,7 +137,7 @@ public class Autonomous {
 					time = System.currentTimeMillis();
 					autoStep++;
 				}
-			} else {
+			} else { //if(leftPosistion)
 				if (driveTrain.getLeftInches() <= ninetyValue) {
 					driveTrain.tankDrive(0.5, -0.1, false);
 				} else {
@@ -176,6 +178,10 @@ public class Autonomous {
 			} else //if (doingScale) 
 			{
 				elevator.goTo("scale");
+			}
+			if(totalTime >= 13000) {
+				grabber.open();
+				autoStep = 8;
 			}
 			break;
 		case 7:
