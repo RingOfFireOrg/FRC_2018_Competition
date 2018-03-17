@@ -133,7 +133,7 @@ public class Autonomous {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
 					time = System.currentTimeMillis();
-					autoStep = 8;
+					autoStep++;
 				}
 			} else {
 				if (driveTrain.getLeftInches() <= ninetyValue) {
@@ -142,7 +142,7 @@ public class Autonomous {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
 					time = System.currentTimeMillis();
-					autoStep = 8;
+					autoStep++;
 				}
 			}
 			break;

@@ -47,6 +47,7 @@ public class Lifter {
 
 	public void up(double speed) {
 		debug();
+		//TODO Modify Number here (for power limit)
 		if (upperLimitSwitch.get() && !manipulatorStick.getRawButton(RobotMap.LIFT_LIMIT_OVERRIDE)) {
 			stop();
 			totalRotations = encoder.getDistance();
@@ -83,6 +84,7 @@ public class Lifter {
 
 	public void down(double speed) {
 		debug();
+		//TODO Modify Number here (for power limit)
 
 		if (lowerLimitSwitch.get() && !manipulatorStick.getRawButton(RobotMap.LIFT_LIMIT_OVERRIDE)) {
 			encoder.reset();

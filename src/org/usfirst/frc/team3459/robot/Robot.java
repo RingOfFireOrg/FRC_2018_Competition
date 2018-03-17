@@ -11,6 +11,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -30,6 +31,7 @@ public class Robot extends IterativeRobot {
 	private Climber climber;
 	private Autonomous auto;
 	private TestMode testMode;
+	private PowerControl powerControl;
 
 	TankDrive drive = new TankDrive();
 
@@ -62,6 +64,7 @@ public class Robot extends IterativeRobot {
 		lifter = new Lifter(manipulatorStick);
 		popcorn = new Popcorn();
 		climber = new Climber(manipulatorStick);
+		powerControl = new PowerControl();
 
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(320, 240);
@@ -90,6 +93,9 @@ public class Robot extends IterativeRobot {
 			rightSpeed *= 0.8;
 		}
 		
+		//TODO Modify speed for brown out
+		leftSpeed = powerControl.correctForBrownout(leftSpeed);
+		rightSpeed = powerControl.correctForBrownout(rightSpeed);
 		drive.tankDrive(leftSpeed, rightSpeed);
 		drive.printEncoderValue();
 
