@@ -23,7 +23,7 @@ public class Autonomous {
 	// changed from 18.8 to 17 to 8 to
 
 	public void initialize() {
-		autoStep = -3;
+		autoStep = 0;
 		time = 0;
 		doingSwitch = false;
 		doingScale = false;
@@ -43,11 +43,11 @@ public class Autonomous {
 		SmartDashboard.putNumber("Auto Step", autoStep);
 
 		switch (autoStep) {	
-		case -3:
+		case 0:
 			time = System.currentTimeMillis();
 			autoStep++;
 			
-		case -2:
+		case 1:
 			if (System.currentTimeMillis() - time <= 500) {
 				driveTrain.tankDrive(1, 1);
 			} else {
@@ -57,16 +57,16 @@ public class Autonomous {
 			}
 			break;
 			
-		case -1:
+		case 2:
 			if (System.currentTimeMillis() - time <= 500) {
 			} else {
 				autoStep++;
 			}
 			break;
 		
-		case 0: // drive past auto line to correct position for switch
+		case 3: // drive past auto line to correct position for switch
 			if (driveTrain.getRightInches() <= 107) {
-				driveTrain.tankDrive(0.45, 0.51, false);
+				driveTrain.tankDrive(0.5, 0.5, false);
 			} else {
 				driveTrain.resetEncoders();
 				driveTrain.tankDrive(0, 0);
@@ -74,49 +74,49 @@ public class Autonomous {
 			}
 			break;
 
-		case 1: // logic for what to do now
+		case 4: // logic for what to do now
 			if (switchPriority) {
 				if (rightPosition) {
 					if (FieldProperties.isRightSwitchOurs()) {
 						doingSwitch = true;
-						autoStep = 3;
+						autoStep = 6;
 					} else if (FieldProperties.isRightScaleOurs()) {
 						doingScale = true;
-						autoStep = 2;
+						autoStep = 5;
 					}
 				} else if (!rightPosition) {
 					if (FieldProperties.isLeftSwitchOurs()) {
 						doingSwitch = true;
-						autoStep = 3;
+						autoStep = 6;
 					} else if (FieldProperties.isLeftScaleOurs()) {
 						doingScale = true;
-						autoStep = 2;
+						autoStep = 5;
 					}
 				}
 			} else {// if (!switchPriority) {
 				if (rightPosition) {
 					if (FieldProperties.isRightScaleOurs()) {
 						doingScale = true;
-						autoStep = 2;
+						autoStep = 5;
 					} else if (FieldProperties.isRightSwitchOurs()) {
 						doingSwitch = true;
-						autoStep = 3;
+						autoStep = 6;
 					}
 				} else if (!rightPosition) {
 					if (FieldProperties.isLeftScaleOurs()) {
 						doingScale = true;
-						autoStep = 2;
+						autoStep = 5;
 					} else if (FieldProperties.isLeftSwitchOurs()) {
 						doingSwitch = true;
-						autoStep = 3;
+						autoStep = 6;
 					}
 				}
 			}
 			break;
 
-		case 2: // extra drive distance for scale only
+		case 5: // extra drive distance for scale only
 			if (driveTrain.getRightInches() <= 160) {
-				driveTrain.tankDrive(0.45, 0.51, false);
+				driveTrain.tankDrive(0.5, 0.5, false);
 			} else {
 				driveTrain.resetEncoders();
 				driveTrain.tankDrive(0, 0);
@@ -124,10 +124,10 @@ public class Autonomous {
 			}
 			break;
 
-		case 3: // turn 90 degrees toward target
+		case 6: // turn 90 degrees toward target
 			if (rightPosition) {
 				if (driveTrain.getRightInches() <= ninetyValue) {
-					driveTrain.tankDrive(-0.1, 0.5, false);
+					driveTrain.tankDrive(-0.5, 0.5, false);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
@@ -136,7 +136,7 @@ public class Autonomous {
 				}
 			} else {
 				if (driveTrain.getLeftInches() <= ninetyValue) {
-					driveTrain.tankDrive(0.5, -0.1, false);
+					driveTrain.tankDrive(0.5, -0.5, false);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
@@ -146,32 +146,28 @@ public class Autonomous {
 			}
 			break;
 			
-			
-		/*case 4: //back into the wall
-			if(System.currentTimeMillis() - time <= 2000) {
-				driveTrain.tankDrive(-0.5, -0.5);
-			}
-		*/
-		case 4: // drive towards target final navigation
+		case 7: // drive towards target final navigation
 			if (System.currentTimeMillis() - time <= 1000) {
-				driveTrain.tankDrive(0.45, 0.51, false);
+				driveTrain.tankDrive(0.5, 0.5, false);
 			} else {
 				driveTrain.resetEncoders();
 				driveTrain.tankDrive(0, 0);
 				autoStep++;
 			}
 			break;
-		case 6:
+		case 8:
 			driveTrain.tankDrive(0, 0);
 		}
 
 		switch (autoStep) {
 		case 0:
 		case 1:
-			break;
 		case 2:
 		case 3:
 		case 4:
+			break;
+		case 5:
+		case 6:
 			if (doingSwitch) {
 				elevator.goTo("switch");
 			} else //if (doingScale) 
@@ -179,11 +175,11 @@ public class Autonomous {
 				elevator.goTo("scale");
 			}
 			break;
-		case 5:
+		case 7:
 			grabber.open();
 			autoStep++;
 			break;
-		case 6:
+		case 8:
 			elevator.stop();
 		}
 	}
