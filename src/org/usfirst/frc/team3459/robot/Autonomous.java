@@ -37,7 +37,8 @@ public class Autonomous {
 		}
 	}
 
-	double ninetyValue = 56;
+	double ninetyValue = 44; 
+	
 
 	public void sideAuto(boolean switchPriority, boolean rightPosition) {
 		SmartDashboard.putNumber("Auto Step", autoStep);
@@ -65,7 +66,7 @@ public class Autonomous {
 			break;
 		
 		case 3: // drive past auto line to correct position for switch
-			if (driveTrain.getRightInches() <= 107) {
+			if (driveTrain.getRightInches() <= 107) { 
 				driveTrain.tankDrive(0.5, 0.5, false);
 			} else {
 				driveTrain.resetEncoders();
@@ -115,7 +116,7 @@ public class Autonomous {
 			break;
 
 		case 5: // extra drive distance for scale only
-			if (driveTrain.getRightInches() <= 160) {
+			if (driveTrain.getRightInches() <= 160) { 
 				driveTrain.tankDrive(0.5, 0.5, false);
 			} else {
 				driveTrain.resetEncoders();
@@ -126,22 +127,22 @@ public class Autonomous {
 
 		case 6: // turn 90 degrees toward target
 			if (rightPosition) {
-				if (driveTrain.getRightInches() <= ninetyValue) {
-					driveTrain.tankDrive(-0.5, 0.5, false);
+				if (driveTrain.getRightInches() <= 56) {
+					driveTrain.tankDrive(-0.1, 0.5, false);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
 					time = System.currentTimeMillis();
-					autoStep++;
+					autoStep = 8;
 				}
 			} else {
 				if (driveTrain.getLeftInches() <= ninetyValue) {
-					driveTrain.tankDrive(0.5, -0.5, false);
+					driveTrain.tankDrive(0.5, -0.1, false);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
 					time = System.currentTimeMillis();
-					autoStep++;
+					autoStep = 8;
 				}
 			}
 			break;
