@@ -31,7 +31,7 @@ public class Robot extends IterativeRobot {
 	private Climber climber;
 	private Autonomous auto;
 	private TestMode testMode;
-	private PowerControl powerControl;
+//	private PowerControl powerControl;
 
 	TankDrive drive = new TankDrive();
 
@@ -64,7 +64,7 @@ public class Robot extends IterativeRobot {
 		lifter = new Lifter(manipulatorStick);
 		popcorn = new Popcorn();
 		climber = new Climber(manipulatorStick);
-		powerControl = new PowerControl();
+	//	powerControl = new PowerControl();
 
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(320, 240);
@@ -94,8 +94,8 @@ public class Robot extends IterativeRobot {
 		}
 		
 		//TODO Modify speed for brown out
-		leftSpeed = powerControl.correctForBrownout(leftSpeed);
-		rightSpeed = powerControl.correctForBrownout(rightSpeed);
+		//leftSpeed = powerControl.correctForBrownout(leftSpeed);
+		//rrightSpeed = powerControl.correctForBrownout(rightSpeed);
 		drive.tankDrive(leftSpeed, rightSpeed);
 		drive.printEncoderValue();
 

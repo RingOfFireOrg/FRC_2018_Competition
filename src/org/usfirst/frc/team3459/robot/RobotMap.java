@@ -7,7 +7,7 @@ public final class RobotMap {
 	public static final int CAN_LIFTER_2 = 8;
 	public static final int CAN_CLIMBER_1 = 9;
 	public static final int CAN_CLIMBER_2 = 13;
-	public static final int PDP = 0;
+//	public static final int PDP = 0;
 	
 	//Digital I/O Encoders
 	public static final int LIFT_ENCODER_A = 0;
@@ -61,7 +61,7 @@ public final class RobotMap {
 	public static final int MOTOR_BACK_RIGHT = 1;
 	
 	public static final double TIRE_DIAMETER = 6 * Math.PI;
-	public static final double MAX_POWER = 235;
-	public static final double BROWN_OUT_SCALE = 0.7;
+//	public static final double MAX_POWER = 235;
+//	public static final double BROWN_OUT_SCALE = 0.7;
 
 }

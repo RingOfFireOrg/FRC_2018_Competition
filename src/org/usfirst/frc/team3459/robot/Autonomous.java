@@ -161,14 +161,16 @@ public class Autonomous {
 		}
 
 		switch (autoStep) {
-		case 0:
-		case 1:
-		case 2:
-		case 3:
-		case 4:
+		case 0: //shake
+		case 1: //shake
+		case 2: //shake
 			break;
-		case 5:
-		case 6:
+		case 3: //across auto line
+		case 4: //logic
+			elevator.goTo("switch");
+			break;
+		case 5: //extra drive distance
+		case 6://turn
 			if (doingSwitch) {
 				elevator.goTo("switch");
 			} else //if (doingScale) 
@@ -180,7 +182,7 @@ public class Autonomous {
 			grabber.open();
 			autoStep++;
 			break;
-		case 8:
+		case 8: //terminate everything case used for testing
 			elevator.stop();
 		}
 	}

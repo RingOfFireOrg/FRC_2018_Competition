@@ -1,4 +1,4 @@
-package org.usfirst.frc.team3459.robot;
+/* package org.usfirst.frc.team3459.robot;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
@@ -16,3 +16,4 @@ public class PowerControl {
 		return motorSpeed;
 	}
 }
+*/
