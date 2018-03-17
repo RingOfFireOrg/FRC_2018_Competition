@@ -88,7 +88,8 @@ public class Robot extends IterativeRobot {
 		double leftSpeed = -leftStick.getY();
 		double rightSpeed = -rightStick.getY();
 		
-		if (leftStick.getRawButton(1) && rightStick.getRawButton(1)) {
+		if ((leftStick.getRawButton(1) && rightStick.getRawButton(1)) || lifter.getSpeed(true) >= 0.2 || lifter.getSpeed(false) >= 0.2) {
+			//this does the triggers as well as preventing the brownouts by slowing down while the lift is running
 			leftSpeed *= 0.8;
 			rightSpeed *= 0.8;
 		}

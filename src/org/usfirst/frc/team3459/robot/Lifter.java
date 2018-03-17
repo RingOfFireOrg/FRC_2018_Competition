@@ -61,7 +61,7 @@ public class Lifter {
 		up(getSpeed(true));
 	}
 
-	private double getSpeed(boolean goingUp) {
+	public double getSpeed(boolean goingUp) {
 		double speed = RobotMap.DEFAULT_LIFT_SPEED;
 		if (goingUp) {
 			if (totalRotations == 0) {
