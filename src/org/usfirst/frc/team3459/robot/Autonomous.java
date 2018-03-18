@@ -37,7 +37,7 @@ public class Autonomous {
 		}
 	}
 
-	double ninetyValue = 44; //for left turn
+	double ninetyValue = 43; //for left turn
 	
 
 	public void sideAuto(boolean switchPriority, boolean rightPosition) {
@@ -76,7 +76,9 @@ public class Autonomous {
 			}
 			break;
 
-		case 4: // logic for what to do now
+		case 4: // logic for what to do now 
+			//after elims pembroke change all 9s to 5s so the scale logic comes back
+			//currently doesnt do scale in auto
 			if (switchPriority) {
 				if (rightPosition) {
 					if (FieldProperties.isRightSwitchOurs()) {
@@ -84,7 +86,7 @@ public class Autonomous {
 						autoStep = 6;
 					} else if (FieldProperties.isRightScaleOurs()) {
 						doingScale = true;
-						autoStep = 5;
+						autoStep = 9;
 					}
 				} else if (!rightPosition) {
 					if (FieldProperties.isLeftSwitchOurs()) {
@@ -92,14 +94,14 @@ public class Autonomous {
 						autoStep = 6;
 					} else if (FieldProperties.isLeftScaleOurs()) {
 						doingScale = true;
-						autoStep = 5;
+						autoStep = 9;
 					}
 				}
 			} else {// if (!switchPriority) {
 				if (rightPosition) {
 					if (FieldProperties.isRightScaleOurs()) {
 						doingScale = true;
-						autoStep = 5;
+						autoStep = 9;
 					} else if (FieldProperties.isRightSwitchOurs()) {
 						doingSwitch = true;
 						autoStep = 6;
@@ -107,7 +109,7 @@ public class Autonomous {
 				} else if (!rightPosition) {
 					if (FieldProperties.isLeftScaleOurs()) {
 						doingScale = true;
-						autoStep = 5;
+						autoStep = 9;
 					} else if (FieldProperties.isLeftSwitchOurs()) {
 						doingSwitch = true;
 						autoStep = 6;
@@ -160,12 +162,14 @@ public class Autonomous {
 				driveTrain.tankDrive(0, 0);
 				autoStep++;
 			}
-			if(System.currentTimeMillis() - startTime >= 13000) {
+			if(System.currentTimeMillis() - startTime >= 6000) {
 				autoStep++;
 			}
 			break;
+			
 		case 8:
 			//Progression from 8 to 9 controlled by elevator switch statement
+			
 		case 9:
 			driveTrain.tankDrive(0, 0);
 		}

@@ -31,7 +31,7 @@ public class Robot extends IterativeRobot {
 	private Climber climber;
 	private Autonomous auto;
 	private TestMode testMode;
-//	private PowerControl powerControl;
+	// private PowerControl powerControl;
 
 	TankDrive drive = new TankDrive();
 
@@ -64,7 +64,7 @@ public class Robot extends IterativeRobot {
 		lifter = new Lifter(manipulatorStick);
 		popcorn = new Popcorn();
 		climber = new Climber(manipulatorStick);
-	//	powerControl = new PowerControl();
+		// powerControl = new PowerControl();
 
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(320, 240);
@@ -87,16 +87,18 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		double leftSpeed = -leftStick.getY();
 		double rightSpeed = -rightStick.getY();
-		
-		if ((leftStick.getRawButton(1) && rightStick.getRawButton(1)) || lifter.getSpeed(true) >= 0.2 || lifter.getSpeed(false) >= 0.2) {
-			//this does the triggers as well as preventing the brownouts by slowing down while the lift is running
+
+		if ((leftStick.getRawButton(1) && rightStick.getRawButton(1)) || lifter.getSpeed(true) >= 0.2
+				|| lifter.getSpeed(false) >= 0.2) {
+			// this does the triggers as well as preventing the brownouts by slowing down
+			// while the lift is running
 			leftSpeed *= 0.8;
 			rightSpeed *= 0.8;
 		}
-		
-		//TODO Modify speed for brown out
-		//leftSpeed = powerControl.correctForBrownout(leftSpeed);
-		//rrightSpeed = powerControl.correctForBrownout(rightSpeed);
+
+		// TODO Modify speed for brown out
+		// leftSpeed = powerControl.correctForBrownout(leftSpeed);
+		// rrightSpeed = powerControl.correctForBrownout(rightSpeed);
 		drive.tankDrive(leftSpeed, rightSpeed);
 		drive.printEncoderValue();
 
