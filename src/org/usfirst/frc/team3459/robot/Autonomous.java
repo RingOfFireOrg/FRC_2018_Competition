@@ -20,13 +20,12 @@ public class Autonomous {
 	double targetAngle = 0;
 	int autoStep = 0;
 	long time;
-	long totalTime;
+	long startTime;
 	// changed from 18.8 to 17 to 8 to
 
 	public void initialize() {
 		autoStep = 0;
 		time = 0;
-		totalTime = 0;
 		doingSwitch = false;
 		doingScale = false;
 		driveTrain.resetEncoders();
@@ -47,6 +46,7 @@ public class Autonomous {
 		switch (autoStep) {	
 		case 0:
 			time = System.currentTimeMillis();
+			startTime = System.currentTimeMillis();
 			autoStep++;
 			
 		case 1:
@@ -128,7 +128,7 @@ public class Autonomous {
 
 		case 6: // turn 90 degrees toward target
 			if (rightPosition) {
-				if (driveTrain.getRightInches() <= 66) {
+				if (driveTrain.getRightInches() <= 56) {
 					driveTrain.tankDrive(-0.1, 0.5, false);
 				} else {
 					driveTrain.resetEncoders();
@@ -146,7 +146,7 @@ public class Autonomous {
 					autoStep++;
 				}
 			}
-			if(totalTime >= 12000) {
+			if(System.currentTimeMillis() - startTime >= 12000) {
 				time = System.currentTimeMillis();
 				autoStep++;
 			}
@@ -160,7 +160,7 @@ public class Autonomous {
 				driveTrain.tankDrive(0, 0);
 				autoStep++;
 			}
-			if(totalTime >= 13000) {
+			if(System.currentTimeMillis() - startTime >= 13000) {
 				autoStep++;
 			}
 			break;
