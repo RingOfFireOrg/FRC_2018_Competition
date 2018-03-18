@@ -117,7 +117,7 @@ public class Autonomous {
 			break;
 
 		case 5: // extra drive distance for scale only
-			if (driveTrain.getRightInches() <= 160) { 
+			if (driveTrain.getRightInches() <= 150) { 
 				driveTrain.tankDrive(0.5, 0.5, false);
 			} else {
 				driveTrain.resetEncoders();
