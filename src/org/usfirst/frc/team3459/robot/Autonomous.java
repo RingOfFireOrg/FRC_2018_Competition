@@ -35,15 +35,14 @@ public class Autonomous {
 
 		if (gameData.length() > 0) {
 			FieldProperties.initialize((gameData));
-
 		}
 	}
 
-	double ninetyValue = 44; 
+	double ninetyValue = 44; //for left turn
 	
 
 	public void sideAuto(boolean switchPriority, boolean rightPosition) {
-		SmartDashboard.putNumber("Auto Step", autoStep);
+		SmartDashboard.putNumber("Auto Step: ", autoStep);
 
 		switch (autoStep) {	
 		case 0:
@@ -129,7 +128,7 @@ public class Autonomous {
 
 		case 6: // turn 90 degrees toward target
 			if (rightPosition) {
-				if (driveTrain.getRightInches() <= 56) {
+				if (driveTrain.getRightInches() <= 66) {
 					driveTrain.tankDrive(-0.1, 0.5, false);
 				} else {
 					driveTrain.resetEncoders();
@@ -147,6 +146,10 @@ public class Autonomous {
 					autoStep++;
 				}
 			}
+			if(totalTime >= 12000) {
+				time = System.currentTimeMillis();
+				autoStep++;
+			}
 			break;
 			
 		case 7: // drive towards target final navigation
@@ -157,8 +160,13 @@ public class Autonomous {
 				driveTrain.tankDrive(0, 0);
 				autoStep++;
 			}
+			if(totalTime >= 13000) {
+				autoStep++;
+			}
 			break;
 		case 8:
+			//Progression from 8 to 9 controlled by elevator switch statement
+		case 9:
 			driveTrain.tankDrive(0, 0);
 		}
 
@@ -172,23 +180,22 @@ public class Autonomous {
 			elevator.goTo("switch");
 			break;
 		case 5: //extra drive distance
+			elevator.goTo("scale");
+			break;
 		case 6://turn
+		case 7://last drive
 			if (doingSwitch) {
 				elevator.goTo("switch");
 			} else //if (doingScale) 
 			{
 				elevator.goTo("scale");
 			}
-			if(totalTime >= 13000) {
-				grabber.open();
-				autoStep = 8;
-			}
 			break;
-		case 7:
+		case 8:
 			grabber.open();
 			autoStep++;
 			break;
-		case 8: //terminate everything case used for testing
+		case 9: //terminate everything case used for testing
 			elevator.stop();
 		}
 	}
