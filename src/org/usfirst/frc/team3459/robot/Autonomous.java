@@ -148,7 +148,7 @@ public class Autonomous {
 					autoStep++;
 				}
 			}
-			if(System.currentTimeMillis() - startTime >= 12000) {
+			if(System.currentTimeMillis() - startTime >= 8000) {
 				time = System.currentTimeMillis();
 				autoStep++;
 			}
@@ -162,7 +162,7 @@ public class Autonomous {
 				driveTrain.tankDrive(0, 0);
 				autoStep++;
 			}
-			if(System.currentTimeMillis() - startTime >= 6000) {
+			if(System.currentTimeMillis() - startTime >= 9000) {
 				autoStep++;
 			}
 			break;
