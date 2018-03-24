@@ -38,6 +38,13 @@ public final class RobotMap {
 	public static final int DRIVE_RIGHT_STICK = 1;
 	public static final int MANIPULATOR_STICK = 2;
 
+	//Left Driver Joystick Buttons
+	public static final int LEFT_SPEED_CONTROL = 1;
+	public static final int ENCODER_RESET = 8;
+	
+	//Right Driver Joystick Buttons
+	public static final int RIGHT_SPEED_CONTROL = 1;
+
 	//Popcorn JoyStick Buttons
 	public static final int POPCORN_OPEN = 2;
 	public static final int POPCORN_CLOSE = 1;
