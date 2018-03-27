@@ -28,7 +28,7 @@ public class TankDrive extends DifferentialDrive {
 	private void initEncoder(Encoder encoder) {
 		encoder.reset();
 		encoder.setSamplesToAverage(5); // noise reduction?
-		//Set Distance to one tire diameter
+		// Set Distance to one tire diameter
 		encoder.setDistancePerPulse(1.0 / 360); // should see 1 pulse per rotation
 	}
 
@@ -43,17 +43,23 @@ public class TankDrive extends DifferentialDrive {
 	}
 
 	public double getLeftInches() {
-		//Tire Rotations divided by Tire Diameter = Inches
+		// Tire Rotations divided by Tire Diameter = Inches
 		return leftEncoder.getDistance() * RobotMap.TIRE_DIAMETER;
 	}
 
 	public double getRightInches() {
-		//Tire Rotations divided by Tire Diameter = Inches
+		// Tire Rotations divided by Tire Diameter = Inches
 		return rightEncoder.getDistance() * RobotMap.TIRE_DIAMETER;
 	}
 
 	public void resetEncoders() {
 		leftEncoder.reset();
 		rightEncoder.reset();
+	}
+
+	public void driveStraight(double speed) {
+		double difference = this.getLeftInches() - this.getRightInches();
+		double speedDifference = difference / 10;
+		this.tankDrive(speed - speedDifference, speed, false);
 	}
 }

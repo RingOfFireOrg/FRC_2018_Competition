@@ -88,8 +88,7 @@ public class Robot extends IterativeRobot {
 		double leftSpeed = -leftStick.getY();
 		double rightSpeed = -rightStick.getY();
 
-		if (leftStick.getRawButton(RobotMap.ENCODER_RESET))
-		{
+		if (leftStick.getRawButton(RobotMap.ENCODER_RESET)) {
 			drive.resetEncoders();
 		}
 		boolean isSpeedControlRequested = leftStick.getRawButton(RobotMap.LEFT_SPEED_CONTROL)
@@ -150,10 +149,15 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		drive.printEncoderValue();
 		testMode.run();
+		if (drive.getLeftInches() <= 60) {
+			drive.driveStraight(.6);
+			//drive.tankDrive(.6, .6);
+		}
 	}
 
 	/**
-	 * This function is called once when we go into the Autonomous mode
+	 * This function is called once whe
+	 * n we go into the Autonomous mode
 	 */
 	@Override
 	public void autonomousInit() {

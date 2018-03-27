@@ -51,7 +51,7 @@ public class Autonomous {
 			
 		case 1:
 			if (System.currentTimeMillis() - time <= 500) {
-				driveTrain.tankDrive(1, 1);
+				driveTrain.driveStraight(1);
 			} else {
 				driveTrain.tankDrive(0, 0);
 				autoStep++;
@@ -68,7 +68,7 @@ public class Autonomous {
 		
 		case 3: // drive past auto line to correct position for switch
 			if (driveTrain.getRightInches() <= 107) { 
-				driveTrain.tankDrive(0.5, 0.5, false);
+				driveTrain.driveStraight(0.5);
 			} else {
 				driveTrain.resetEncoders();
 				driveTrain.tankDrive(0, 0);
@@ -77,8 +77,6 @@ public class Autonomous {
 			break;
 
 		case 4: // logic for what to do now 
-			//after elims pembroke change all 9s to 5s so the scale logic comes back
-			//currently doesnt do scale in auto
 			if (switchPriority) {
 				if (rightPosition) {
 					if (FieldProperties.isRightSwitchOurs()) {
@@ -86,7 +84,7 @@ public class Autonomous {
 						autoStep = 6;
 					} else if (FieldProperties.isRightScaleOurs()) {
 						doingScale = true;
-						autoStep = 9;
+						autoStep = 5;
 					}
 				} else if (!rightPosition) {
 					if (FieldProperties.isLeftSwitchOurs()) {
@@ -94,7 +92,7 @@ public class Autonomous {
 						autoStep = 6;
 					} else if (FieldProperties.isLeftScaleOurs()) {
 						doingScale = true;
-						autoStep = 9;
+						autoStep = 5;
 					}
 				}
 			} else {// if (!switchPriority) {
@@ -120,7 +118,7 @@ public class Autonomous {
 
 		case 5: // extra drive distance for scale only
 			if (driveTrain.getRightInches() <= 150) { 
-				driveTrain.tankDrive(0.5, 0.5, false);
+				driveTrain.driveStraight(0.5);
 			} else {
 				driveTrain.resetEncoders();
 				driveTrain.tankDrive(0, 0);
@@ -156,7 +154,7 @@ public class Autonomous {
 			
 		case 7: // drive towards target final navigation
 			if (System.currentTimeMillis() - time <= 1000) {
-				driveTrain.tankDrive(0.5, 0.5, false);
+				driveTrain.driveStraight(0.5);
 			} else {
 				driveTrain.resetEncoders();
 				driveTrain.tankDrive(0, 0);
@@ -208,7 +206,7 @@ public class Autonomous {
 		if (driveTrain.getLeftInches() > 180 && driveTrain.getRightInches() > 180) {
 			driveTrain.tankDrive(0, 0);
 		} else {
-			driveTrain.tankDrive(0.5, 0.5);
+			driveTrain.driveStraight(0.5);
 		}
 	}
 
