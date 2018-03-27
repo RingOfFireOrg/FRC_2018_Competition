@@ -140,6 +140,7 @@ public class Robot extends IterativeRobot {
 	public void testInit() {
 		testMode = new TestMode(manipulatorStick, drive, lifter, popcorn);
 		testMode.initialize();
+		drive.resetEncoders();
 	}
 
 	/**
@@ -150,8 +151,14 @@ public class Robot extends IterativeRobot {
 		drive.printEncoderValue();
 		testMode.run();
 		if (drive.getLeftInches() <= 60) {
-			drive.driveStraight(.6);
+			//drive.driveStraight(.6);
 			//drive.tankDrive(.6, .6);
+			/*if (drive.getRightInches() <= 6.8 * Math.PI) {
+				drive.pivotTurn(-0.5);
+			} else {
+				drive.pivotTurn(0);
+			}
+			*/
 		}
 	}
 

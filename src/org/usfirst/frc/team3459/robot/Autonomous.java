@@ -24,7 +24,7 @@ public class Autonomous {
 	// changed from 18.8 to 17 to 8 to
 
 	public void initialize() {
-		autoStep = 0;
+		autoStep = 6;
 		time = 0;
 		doingSwitch = false;
 		doingScale = false;
@@ -36,10 +36,7 @@ public class Autonomous {
 			FieldProperties.initialize((gameData));
 		}
 	}
-
-	double ninetyValue = 43; //for left turn
 	
-
 	public void sideAuto(boolean switchPriority, boolean rightPosition) {
 		SmartDashboard.putNumber("Auto Step: ", autoStep);
 
@@ -128,27 +125,27 @@ public class Autonomous {
 
 		case 6: // turn 90 degrees toward target
 			if (rightPosition) {
-				if (driveTrain.getRightInches() <= 56) {
-					driveTrain.tankDrive(-0.1, 0.5, false);
+				if (driveTrain.getRightInches() <= 6.8 * Math.PI) {
+					driveTrain.pivotTurn(-0.5);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
 					time = System.currentTimeMillis();
-					autoStep++;
+					autoStep = 9;
 				}
 			} else { //if(leftPosistion)
-				if (driveTrain.getLeftInches() <= ninetyValue) {
-					driveTrain.tankDrive(0.5, -0.1, false);
+				if (driveTrain.getLeftInches() <= 6.8 * Math.PI) {
+					driveTrain.pivotTurn(0.5);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
 					time = System.currentTimeMillis();
-					autoStep++;
+					autoStep = 9;
 				}
 			}
 			if(System.currentTimeMillis() - startTime >= 8000) {
 				time = System.currentTimeMillis();
-				autoStep++;
+				autoStep = 9;
 			}
 			break;
 			
@@ -221,3 +218,4 @@ public class Autonomous {
 		return output;
 	}
 }
+
