@@ -26,7 +26,6 @@ public class Autonomous {
 		doingSwitch = false;
 		doingScale = false;
 		driveTrain.resetEncoders();
-
 		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 
 		if (gameData.length() > 0) {
@@ -35,13 +34,13 @@ public class Autonomous {
 	}
 
 	public void centerAuto() {
+		SmartDashboard.putNumber("Auto Step: ", autoStep);
 		switch (autoStep) {
 		case 0:
 			time = System.currentTimeMillis();
 			startTime = System.currentTimeMillis();
 			autoStep++;
 			break;
-
 		case 1:
 			if (System.currentTimeMillis() - time <= 500) {
 				driveTrain.driveStraight(1);
@@ -51,10 +50,10 @@ public class Autonomous {
 				time = System.currentTimeMillis();
 			}
 			break;
-
 		case 2:
 			if (System.currentTimeMillis() - time <= 500) {
 			} else {
+				driveTrain.resetEncoders();
 				autoStep++;
 			}
 			break;
@@ -77,10 +76,9 @@ public class Autonomous {
 				}
 			}
 			break;
-
 		case 4: // TODO REPLACE 0s!!!!!!!
 			if (FieldProperties.isLeftSwitchOurs()) {
-				if (driveTrain.getRightInches() <= 0) {
+				if (driveTrain.getRightInches() <= 72) {
 					driveTrain.driveStraight(0.5);
 				} else {
 					driveTrain.resetEncoders();
@@ -88,7 +86,7 @@ public class Autonomous {
 					autoStep++;
 				}
 			} else { // if(FieldProperties.isRightSwitchOurs())
-				if (driveTrain.getLeftInches() <= 0) {
+				if (driveTrain.getLeftInches() <= 36) {
 					driveTrain.driveStraight(0.5);
 				} else {
 					driveTrain.resetEncoders();
@@ -97,7 +95,6 @@ public class Autonomous {
 				}
 			}
 			break;
-
 		case 5:
 			if (FieldProperties.isRightSwitchOurs()) {
 				if (driveTrain.getRightInches() <= ninetyDegreeInches) {
@@ -117,7 +114,6 @@ public class Autonomous {
 				}
 			}
 			break;
-
 		case 6:
 			if (System.currentTimeMillis() - time <= 3000) {
 				driveTrain.driveStraight(0.5);
@@ -163,14 +159,12 @@ public class Autonomous {
 
 	public void sideAuto(boolean switchPriority, boolean rightPosition) {
 		SmartDashboard.putNumber("Auto Step: ", autoStep);
-
 		switch (autoStep) {
 		case 0:
 			time = System.currentTimeMillis();
 			startTime = System.currentTimeMillis();
 			autoStep++;
 			break;
-
 		case 1:
 			if (System.currentTimeMillis() - time <= 500) {
 				driveTrain.driveStraight(1);
@@ -180,14 +174,12 @@ public class Autonomous {
 				time = System.currentTimeMillis();
 			}
 			break;
-
 		case 2:
 			if (System.currentTimeMillis() - time <= 500) {
 			} else {
 				autoStep++;
 			}
 			break;
-
 		case 3: // drive past auto line to correct position for switch
 			if (driveTrain.getRightInches() <= 155) {
 				driveTrain.driveStraight(0.5);
@@ -197,7 +189,6 @@ public class Autonomous {
 				autoStep++;
 			}
 			break;
-
 		case 4: // logic for what to do now
 			if (switchPriority) {
 				if (rightPosition) {
@@ -237,7 +228,6 @@ public class Autonomous {
 				}
 			}
 			break;
-
 		case 5: // extra drive distance for scale only
 			if (driveTrain.getRightInches() <= 145) {
 				driveTrain.driveStraight(0.5);
@@ -247,7 +237,6 @@ public class Autonomous {
 				autoStep++;
 			}
 			break;
-
 		case 6: // turn 90 degrees toward target
 			if (rightPosition) {
 				if (driveTrain.getRightInches() <= ninetyDegreeInches) {
@@ -300,20 +289,25 @@ public class Autonomous {
 				autoStep++;
 			}
 			break;
-
 		case 9:
 			// Progression from 9 to 10 controlled by elevator switch statement
 			break;
-
 		case 10:
+			if (System.currentTimeMillis() - time >= 1000) {
+				time = System.currentTimeMillis();
+				autoStep++;
+			}
+			break;
+		case 11:
 			if (System.currentTimeMillis() - time <= 1000) {
 				driveTrain.driveStraight(-0.5);
 			} else {
 				autoStep++;
 			}
 			break;
-		case 11:
+		case 12:
 			driveTrain.tankDrive(0, 0);
+			break;
 		}
 
 		switch (autoStep) {
@@ -341,8 +335,9 @@ public class Autonomous {
 			time = System.currentTimeMillis();
 			break;
 		case 10:
+		case 11:
 			break;
-		case 11: // terminate everything case used for testing
+		case 12: // terminate everything case used for testing
 			elevator.stop();
 		}
 
