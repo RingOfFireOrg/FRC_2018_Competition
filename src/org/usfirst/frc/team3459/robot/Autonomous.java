@@ -4,25 +4,22 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Autonomous {
-	TankDrive driveTrain;
-	Lifter elevator;
-	Popcorn grabber;
-	long endTime;
-	boolean doingSwitch = false;
-	boolean doingScale = false;
+	private TankDrive driveTrain;
+	private Lifter elevator;
+	private Popcorn grabber;
+	private boolean doingSwitch = false;
+	private boolean doingScale = false;
+	private double ninetyDegreeInches = 6.8 * Math.PI;
+	private int autoStep = 0;
+	private long time;
+	private long startTime;
 
 	public Autonomous(TankDrive drive, Lifter lifter, Popcorn popcorn) {
 		driveTrain = drive;
 		elevator = lifter;
 		grabber = popcorn;
 	}
-
-	double targetAngle = 0;
-	int autoStep = 0;
-	long time;
-	long startTime;
-	// changed from 18.8 to 17 to 8 to
-
+	
 	public void initialize() {
 		autoStep = 0;
 		time = 0;
@@ -63,25 +60,25 @@ public class Autonomous {
 			break;
 		case 3: // turn 90 degrees
 			if (FieldProperties.isLeftSwitchOurs()) {
-				if (driveTrain.getRightInches() <= 6.8 * Math.PI) {
+				if (driveTrain.getRightInches() <= ninetyDegreeInches) {
 					driveTrain.pivotTurn(-0.5);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
-					autoStep = 7;
+					autoStep++;
 				}
 			} else { // if(FieldProperties.isRightSwitchOurs())
-				if (driveTrain.getLeftInches() <= 6.8 * Math.PI) {
+				if (driveTrain.getLeftInches() <= ninetyDegreeInches) {
 					driveTrain.pivotTurn(0.5);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
-					autoStep = 7;
+					autoStep++;
 				}
 			}
 			break;
-			
-		case 4: //REPLACE 0s!!!!!!!
+
+		case 4: // TODO REPLACE 0s!!!!!!!
 			if (FieldProperties.isLeftSwitchOurs()) {
 				if (driveTrain.getRightInches() <= 0) {
 					driveTrain.driveStraight(0.5);
@@ -100,27 +97,27 @@ public class Autonomous {
 				}
 			}
 			break;
-			
+
 		case 5:
 			if (FieldProperties.isRightSwitchOurs()) {
-				if (driveTrain.getRightInches() <= 6.8 * Math.PI) {
+				if (driveTrain.getRightInches() <= ninetyDegreeInches) {
 					driveTrain.pivotTurn(-0.5);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
-					autoStep = 7;
+					autoStep++;
 				}
 			} else { // if(FieldProperties.isLeftSwitchOurs())
-				if (driveTrain.getLeftInches() <= 6.8 * Math.PI) {
+				if (driveTrain.getLeftInches() <= ninetyDegreeInches) {
 					driveTrain.pivotTurn(0.5);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
-					autoStep = 7;
+					autoStep++;
 				}
 			}
 			break;
-		
+
 		case 6:
 			if (System.currentTimeMillis() - time <= 3000) {
 				driveTrain.driveStraight(0.5);
@@ -129,9 +126,20 @@ public class Autonomous {
 				driveTrain.tankDrive(0, 0);
 				autoStep++;
 			}
+		case 7:
+			// Progression from 7 to 8 controlled by elevator switch statement
+		case 8:
+			if (System.currentTimeMillis() - time <= 1000) {
+				driveTrain.driveStraight(-0.5);
+			} else {
+				autoStep++;
+			}
+			break;
+		case 9:
+			driveTrain.tankDrive(0, 0);
 		}
-		
-		switch(autoStep) {
+
+		switch (autoStep) {
 		case 0:
 		case 1:
 		case 2:
@@ -144,11 +152,15 @@ public class Autonomous {
 			break;
 		case 7:
 			grabber.open();
+			autoStep++;
+			time = System.currentTimeMillis();
+			break;
+		case 8:
+		case 9:
+			elevator.stop();
 		}
 	}
 
-	
-	
 	public void sideAuto(boolean switchPriority, boolean rightPosition) {
 		SmartDashboard.putNumber("Auto Step: ", autoStep);
 
@@ -238,30 +250,30 @@ public class Autonomous {
 
 		case 6: // turn 90 degrees toward target
 			if (rightPosition) {
-				if (driveTrain.getRightInches() <= 6.8 * Math.PI) {
+				if (driveTrain.getRightInches() <= ninetyDegreeInches) {
 					driveTrain.pivotTurn(-0.5);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
 					time = System.currentTimeMillis();
-					autoStep = 7;
+					autoStep++;
 				}
 			} else { // if(leftPosistion)
-				if (driveTrain.getLeftInches() <= 6.8 * Math.PI) {
+				if (driveTrain.getLeftInches() <= ninetyDegreeInches) {
 					driveTrain.pivotTurn(0.5);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
 					time = System.currentTimeMillis();
-					autoStep = 7;
+					autoStep++;
 				}
 			}
 			/*
 			 * if(System.currentTimeMillis() - startTime >= 8000) { time =
-			 * System.currentTimeMillis(); autoStep = 9; }
+			 * System.currentTimeMillis(); autoStep = 11; }
 			 */
 			break;
-		case 7: //back up
+		case 7: // back up
 			if (doingScale) {
 				if (System.currentTimeMillis() - time <= 1000) {
 					driveTrain.driveStraight(-0.5);
@@ -290,9 +302,17 @@ public class Autonomous {
 			break;
 
 		case 9:
-			// Progression from 8 to 9 controlled by elevator switch statement
+			// Progression from 9 to 10 controlled by elevator switch statement
+			break;
 
 		case 10:
+			if (System.currentTimeMillis() - time <= 1000) {
+				driveTrain.driveStraight(-0.5);
+			} else {
+				autoStep++;
+			}
+			break;
+		case 11:
 			driveTrain.tankDrive(0, 0);
 		}
 
@@ -318,8 +338,11 @@ public class Autonomous {
 		case 9:
 			grabber.open();
 			autoStep++;
+			time = System.currentTimeMillis();
 			break;
-		case 10: // terminate everything case used for testing
+		case 10:
+			break;
+		case 11: // terminate everything case used for testing
 			elevator.stop();
 		}
 
@@ -331,16 +354,5 @@ public class Autonomous {
 		} else {
 			driveTrain.driveStraight(0.5);
 		}
-	}
-
-	public static double normalizeAngle(double input) {
-		double output = input;
-		while (output > 180) {
-			output = output - 360;
-		}
-		while (output < -180) {
-			output = output + 360;
-		}
-		return output;
 	}
 }

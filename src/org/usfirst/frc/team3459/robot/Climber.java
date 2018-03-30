@@ -19,7 +19,6 @@ public class Climber {
 	}
 
 	public void climb() {
-		boolean switchOverride = manipulatorStick.getRawButton(RobotMap.CLIMB_LIMIT_OVERRIDE);
 		boolean climbButton = manipulatorStick.getRawButton(RobotMap.CLIMB_BUTTON);
 		double speed = 1;
 		debug(climbButton, speed);

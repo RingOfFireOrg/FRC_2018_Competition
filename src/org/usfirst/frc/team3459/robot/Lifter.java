@@ -11,9 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Lifter {
 
-	private static final double BOTTOM_LIFTER_VALUE = 0;
-	private static final double TOP_LIFTER_VALUE = 3;
-
 	private Encoder encoder = new Encoder(RobotMap.LIFT_ENCODER_A, RobotMap.LIFT_ENCODER_B, true,
 			Encoder.EncodingType.k1X);
 	private double totalRotations = 0;
