@@ -66,7 +66,11 @@ public class TankDrive extends DifferentialDrive {
 	public void pivotTurn(double speed) {
 		double diff = getRightInches() + getLeftInches();
 		double speedDiff = diff / 10;
-		this.tankDrive(speed - speedDiff, -speed, false);
+		if (speed > 0) {
+			this.tankDrive(speed - speedDiff, -speed, false);
+		} else {
+			this.tankDrive(speed, -speed + speedDiff, false);
+		}
 
 	}
 }

@@ -9,7 +9,7 @@ public class Autonomous {
 	private Popcorn grabber;
 	private boolean doingSwitch = false;
 	private boolean doingScale = false;
-	private double ninetyDegreeInches = 6.8 * Math.PI;
+	private double ninetyDegreeInches = 6 * Math.PI;
 	private int autoStep = 0;
 	private long time;
 	private long startTime;
@@ -19,7 +19,7 @@ public class Autonomous {
 		elevator = lifter;
 		grabber = popcorn;
 	}
-	
+
 	public void initialize() {
 		autoStep = 0;
 		time = 0;
@@ -33,6 +33,37 @@ public class Autonomous {
 		}
 	}
 
+	public void testTurn(boolean right) {
+		switch (autoStep) {
+		case 0:
+			if (right) {
+				if (driveTrain.getLeftInches() <= ninetyDegreeInches) {
+					driveTrain.pivotTurn(0.5);
+				} else {
+					driveTrain.resetEncoders();
+					driveTrain.tankDrive(0, 0);
+					time = System.currentTimeMillis();
+					autoStep++;
+				}
+			} else {
+				if (driveTrain.getRightInches() <= ninetyDegreeInches) {
+					driveTrain.pivotTurn(-0.5);
+				} else {
+					driveTrain.resetEncoders();
+					driveTrain.tankDrive(0, 0);
+					autoStep++;
+				}
+			}
+			break;
+		case 1:
+			driveTrain.tankDrive(0, 0);
+			break;
+
+		}
+	}
+
+	double centerAutoSpeed = 0.3;
+
 	public void centerAuto() {
 		SmartDashboard.putNumber("Auto Step: ", autoStep);
 		switch (autoStep) {
@@ -41,8 +72,8 @@ public class Autonomous {
 			startTime = System.currentTimeMillis();
 			autoStep++;
 			break;
-		case 1:
-			if (System.currentTimeMillis() - time <= 500) {
+		case 1: // drive forward
+			if (System.currentTimeMillis() - time <= 250) {
 				driveTrain.driveStraight(1);
 			} else {
 				driveTrain.tankDrive(0, 0);
@@ -60,7 +91,7 @@ public class Autonomous {
 		case 3: // turn 90 degrees
 			if (FieldProperties.isLeftSwitchOurs()) {
 				if (driveTrain.getRightInches() <= ninetyDegreeInches) {
-					driveTrain.pivotTurn(-0.5);
+					driveTrain.pivotTurn(-centerAutoSpeed);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
@@ -68,7 +99,7 @@ public class Autonomous {
 				}
 			} else { // if(FieldProperties.isRightSwitchOurs())
 				if (driveTrain.getLeftInches() <= ninetyDegreeInches) {
-					driveTrain.pivotTurn(0.5);
+					driveTrain.pivotTurn(centerAutoSpeed);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
@@ -76,10 +107,10 @@ public class Autonomous {
 				}
 			}
 			break;
-		case 4: // TODO REPLACE 0s!!!!!!!
+		case 4: // drive sideways
 			if (FieldProperties.isLeftSwitchOurs()) {
 				if (driveTrain.getRightInches() <= 72) {
-					driveTrain.driveStraight(0.5);
+					driveTrain.driveStraight(centerAutoSpeed);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
@@ -87,7 +118,7 @@ public class Autonomous {
 				}
 			} else { // if(FieldProperties.isRightSwitchOurs())
 				if (driveTrain.getLeftInches() <= 36) {
-					driveTrain.driveStraight(0.5);
+					driveTrain.driveStraight(centerAutoSpeed);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
@@ -95,38 +126,41 @@ public class Autonomous {
 				}
 			}
 			break;
-		case 5:
+		case 5: // turn towards switch
 			if (FieldProperties.isRightSwitchOurs()) {
 				if (driveTrain.getRightInches() <= ninetyDegreeInches) {
-					driveTrain.pivotTurn(-0.5);
+					driveTrain.pivotTurn(-centerAutoSpeed);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
+					time = System.currentTimeMillis();
 				}
 			} else { // if(FieldProperties.isLeftSwitchOurs())
 				if (driveTrain.getLeftInches() <= ninetyDegreeInches) {
-					driveTrain.pivotTurn(0.5);
+					driveTrain.pivotTurn(centerAutoSpeed);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
+					time = System.currentTimeMillis();
 				}
 			}
 			break;
-		case 6:
+		case 6: // drive toward switch
 			if (System.currentTimeMillis() - time <= 3000) {
-				driveTrain.driveStraight(0.5);
+				driveTrain.driveStraight(centerAutoSpeed);
 			} else {
 				driveTrain.resetEncoders();
 				driveTrain.tankDrive(0, 0);
 				autoStep++;
+				time = System.currentTimeMillis();
 			}
 		case 7:
 			// Progression from 7 to 8 controlled by elevator switch statement
 		case 8:
-			if (System.currentTimeMillis() - time <= 1000) {
-				driveTrain.driveStraight(-0.5);
+			if (System.currentTimeMillis() - time <= 500) {
+				driveTrain.driveStraight(-centerAutoSpeed);
 			} else {
 				autoStep++;
 			}
@@ -148,14 +182,17 @@ public class Autonomous {
 			break;
 		case 7:
 			grabber.open();
-			autoStep++;
 			time = System.currentTimeMillis();
+			autoStep++;
+
 			break;
 		case 8:
 		case 9:
 			elevator.stop();
 		}
 	}
+
+	double sideAutoSpeed = 0.5;
 
 	public void sideAuto(boolean switchPriority, boolean rightPosition) {
 		SmartDashboard.putNumber("Auto Step: ", autoStep);
@@ -182,7 +219,7 @@ public class Autonomous {
 			break;
 		case 3: // drive past auto line to correct position for switch
 			if (driveTrain.getRightInches() <= 155) {
-				driveTrain.driveStraight(0.5);
+				driveTrain.driveStraight(sideAutoSpeed);
 			} else {
 				driveTrain.resetEncoders();
 				driveTrain.tankDrive(0, 0);
@@ -230,7 +267,7 @@ public class Autonomous {
 			break;
 		case 5: // extra drive distance for scale only
 			if (driveTrain.getRightInches() <= 145) {
-				driveTrain.driveStraight(0.5);
+				driveTrain.driveStraight(sideAutoSpeed);
 			} else {
 				driveTrain.resetEncoders();
 				driveTrain.tankDrive(0, 0);
@@ -265,7 +302,7 @@ public class Autonomous {
 		case 7: // back up
 			if (doingScale) {
 				if (System.currentTimeMillis() - time <= 1000) {
-					driveTrain.driveStraight(-0.5);
+					driveTrain.driveStraight(-sideAutoSpeed);
 				} else {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
@@ -279,7 +316,7 @@ public class Autonomous {
 			break;
 		case 8: // drive towards target final navigation
 			if (System.currentTimeMillis() - time <= 1000) {
-				driveTrain.driveStraight(0.5);
+				driveTrain.driveStraight(sideAutoSpeed);
 			} else {
 				driveTrain.resetEncoders();
 				driveTrain.tankDrive(0, 0);
@@ -299,8 +336,8 @@ public class Autonomous {
 			}
 			break;
 		case 11:
-			if (System.currentTimeMillis() - time <= 1000) {
-				driveTrain.driveStraight(-0.5);
+			if (System.currentTimeMillis() - time <= 500) {
+				driveTrain.driveStraight(-sideAutoSpeed);
 			} else {
 				autoStep++;
 			}

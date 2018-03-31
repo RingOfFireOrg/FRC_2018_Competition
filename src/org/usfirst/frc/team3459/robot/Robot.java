@@ -26,6 +26,9 @@ public class Robot extends IterativeRobot {
 	private static final String kMiddleAuto = "Middle Auto";
 	private static final String kSwitch = "switch";
 	private static final String kScale = "scale";
+	private static final String kTurnRight = "right turn";
+	private static final String kTurnLeft = "left turn";
+	
 	private Lifter lifter;
 	private Popcorn popcorn;
 	private Climber climber;
@@ -56,6 +59,8 @@ public class Robot extends IterativeRobot {
 		m_chooser.addObject("Left Auto", kLeftAuto);
 		m_chooser.addObject("Right Auto", kRightAuto);
 		m_chooser.addObject("Middle Auto", kMiddleAuto);
+		m_chooser.addObject("Right Turn", kTurnRight);
+		m_chooser.addObject("Left Turn", kTurnLeft);
 		SmartDashboard.putData("Auto choice", m_chooser);
 
 		m_preference.addDefault("Switch Priority", kSwitch);
@@ -142,8 +147,10 @@ public class Robot extends IterativeRobot {
 		testMode = new TestMode(manipulatorStick, drive, lifter, popcorn);
 		testMode.initialize();
 		drive.resetEncoders();
+		step = 0;
 	}
-
+	int step = 0;
+	double time = 0;
 	/**
 	 * This function is called periodically during test mode, approximate every 20ms
 	 */
@@ -151,21 +158,38 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		drive.printEncoderValue();
 		testMode.run();
-		if (drive.getLeftInches() <= 60) {
-			//drive.driveStraight(.6);
-			//drive.tankDrive(.6, .6);
+		/*switch (step) {
+		case 0:
+			if (drive.getLeftInches() <= 6.8 * Math.PI) {
+				drive.pivotTurn(0.5);
+			} else {
+				drive.resetEncoders();
+				drive.tankDrive(0, 0);
+				time = System.currentTimeMillis();
+				step++;
+			}
+			break;
+		case 1:
+			if ((System.currentTimeMillis() - time) <= 5000) {
+				drive.tankDrive(0, 0);
+			} else {
+				step++;
+			}
+			break;
+		case 2:
 			if (drive.getRightInches() <= 6.8 * Math.PI) {
 				drive.pivotTurn(-0.5);
 			} else {
-				drive.pivotTurn(0);
+				drive.resetEncoders();
+				drive.tankDrive(0, 0);
+				step++;
 			}
-			
 		}
+		*/
 	}
 
 	/**
-	 * This function is called once whe
-	 * n we go into the Autonomous mode
+	 * This function is called once when we go into the Autonomous mode
 	 */
 	@Override
 	public void autonomousInit() {
@@ -215,8 +239,17 @@ public class Robot extends IterativeRobot {
 				break;
 			}
 			break;
+			
 		case kMiddleAuto:
 			auto.centerAuto();
+			break;
+			
+		case kTurnRight:
+			auto.testTurn(true);
+			break;
+			
+		case kTurnLeft:
+			auto.testTurn(false);
 			break;
 		}
 
