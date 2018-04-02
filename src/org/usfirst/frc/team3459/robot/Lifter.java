@@ -14,14 +14,12 @@ public class Lifter {
 	private Encoder encoder = new Encoder(RobotMap.LIFT_ENCODER_A, RobotMap.LIFT_ENCODER_B, true,
 			Encoder.EncodingType.k1X);
 	private double totalRotations = 0;
-
 	private DigitalInput upperLimitSwitch = new DigitalInput(RobotMap.INPUT_UPPER_LIMIT_SW);
 	private DigitalInput lowerLimitSwitch = new DigitalInput(RobotMap.INPUT_LOWER_LIMIT_SW);
-
 	private TalonSRX controller1 = new TalonSRX(RobotMap.CAN_LIFTER_1);
 	private TalonSRX controller2 = new TalonSRX(RobotMap.CAN_LIFTER_2);
-
 	private Joystick manipulatorStick;
+	private double encoderHeight = 0;
 
 	Lifter(Joystick manipulatorStick) {
 		this.manipulatorStick = manipulatorStick;
@@ -30,32 +28,6 @@ public class Lifter {
 		encoder.setDistancePerPulse(1.0 / 360); // should see 1 pulse per rotation
 		controller1.setNeutralMode(NeutralMode.Brake);
 		controller2.setNeutralMode(NeutralMode.Brake);
-	}
-
-	// TODO: Consider reorganizing methods
-	private void debug() {
-		SmartDashboard.putNumber("lift Encoder", encoder.get());
-		SmartDashboard.putNumber("lift rotations", encoder.getDistance());
-		SmartDashboard.putNumber("top", totalRotations);
-
-		SmartDashboard.putBoolean("upper sw", upperLimitSwitch.get());
-		SmartDashboard.putBoolean("lower sw", lowerLimitSwitch.get());
-	}
-
-	public void up(double speed) {
-		debug();
-		//TODO Modify Number here (for power limit)
-		if (upperLimitSwitch.get() && !manipulatorStick.getRawButton(RobotMap.LIFT_LIMIT_OVERRIDE)) {
-			stop();
-			totalRotations = encoder.getDistance();
-			return;
-		}
-		controller1.set(ControlMode.PercentOutput, speed);
-		controller2.set(ControlMode.PercentOutput, speed);
-	}
-
-	public void up() {
-		up(getSpeed(true));
 	}
 
 	public double getSpeed(boolean goingUp) {
@@ -78,6 +50,31 @@ public class Lifter {
 		}
 		return speed;
 	}
+	
+	public double getCurrentOutputPercent() {
+		return controller1.getMotorOutputPercent();
+	}
+
+	public double getEncoderValue() {
+		return encoder.getDistance();
+	}
+	
+	public void up(double speed) {
+		debug();
+		//TODO Modify Number here (for power limit)
+		if (upperLimitSwitch.get() && !manipulatorStick.getRawButton(RobotMap.LIFT_LIMIT_OVERRIDE)) {
+			stop();
+			totalRotations = encoder.getDistance();
+			return;
+		}
+		controller1.set(ControlMode.PercentOutput, speed);
+		controller2.set(ControlMode.PercentOutput, speed);
+	}
+
+	
+	public void up() {
+		up(getSpeed(true));
+	}
 
 	public void down(double speed) {
 		debug();
@@ -96,11 +93,8 @@ public class Lifter {
 		down(getSpeed(false));
 	}
 
-	double encoderHeight = 0;
-
 	// TODO: Consider redefining goTo(String) to goTo(double) and having callers
 	public void goTo(String position) {
-
 		switch (position) {
 		case "floor":
 			down();
@@ -120,12 +114,6 @@ public class Lifter {
 		}
 	}
 
-	public void stop() {
-		debug();
-		controller1.set(ControlMode.PercentOutput, 0);
-		controller2.set(ControlMode.PercentOutput, 0);
-	}
-
 	public void findTop() {
 		if (upperLimitSwitch.get()) {
 			stop();
@@ -134,51 +122,18 @@ public class Lifter {
 		controller1.set(ControlMode.PercentOutput, RobotMap.DEFAULT_FIND_SPEED);
 		controller2.set(ControlMode.PercentOutput, RobotMap.DEFAULT_FIND_SPEED);
 	}
-
-	public double getCurrentOutputPercent() {
-		return controller1.getMotorOutputPercent();
+	
+	public void stop() {
+		debug();
+		controller1.set(ControlMode.PercentOutput, 0);
+		controller2.set(ControlMode.PercentOutput, 0);
 	}
-
-	private int calibrationStep = 0;
-	private double bottomValue = 0.0;
-	private double topValue = 0.0;
-	private int calibrateTimes;
-
-	public void calibrate() {
-		switch (calibrationStep) {
-		case 0:
-			if (lowerLimitSwitch.get()) {
-				bottomValue += encoder.getDistance();
-				calibrationStep++;
-			} else {
-				down();
-			}
-			break;
-		case 1:
-			if (upperLimitSwitch.get()) {
-				topValue += encoder.getDistance();
-				if (calibrateTimes <= 3) {
-					calibrationStep = 0;
-					calibrateTimes++;
-				} else {
-					calibrationStep = 2;
-				}
-			} else {
-				up();
-			}
-			break;
-		case 2:
-			bottomValue = bottomValue / 4;
-			topValue = topValue / 4;
-			calibrationStep++;
-			break;
-		case 3:
-			SmartDashboard.putNumber("bottom value", bottomValue);
-			SmartDashboard.putNumber("top value", topValue);
-		}
-	}
-
-	public double getEncoderValue() {
-		return encoder.getDistance();
+	
+	private void debug() {
+		SmartDashboard.putNumber("lift Encoder", encoder.get());
+		SmartDashboard.putNumber("lift rotations", encoder.getDistance());
+		SmartDashboard.putNumber("top", totalRotations);
+		SmartDashboard.putBoolean("upper sw", upperLimitSwitch.get());
+		SmartDashboard.putBoolean("lower sw", lowerLimitSwitch.get());
 	}
 }

@@ -13,6 +13,7 @@ public class Autonomous {
 	private int autoStep = 0;
 	private long time;
 	private long startTime;
+	
 
 	public Autonomous(TankDrive drive, Lifter lifter, Popcorn popcorn) {
 		driveTrain = drive;
@@ -70,9 +71,8 @@ public class Autonomous {
 		}
 	}
 
-	double centerAutoSpeed = 0.3;
-
 	public void centerAuto() {
+		double centerAutoSpeed = 0.3;
 		SmartDashboard.putNumber("Auto Step: ", autoStep);
 		switch (autoStep) {
 		case 0:
@@ -199,10 +199,9 @@ public class Autonomous {
 			elevator.stop();
 		}
 	}
-
-	double sideAutoSpeed = 0.5;
-
+	
 	public void sideAuto(boolean switchPriority, boolean rightPosition) {
+		double sideAutoSpeed = 0.5;
 		SmartDashboard.putNumber("Auto Step: ", autoStep);
 		switch (autoStep) {
 		case 0:

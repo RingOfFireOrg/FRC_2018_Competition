@@ -18,7 +18,6 @@ public class FieldProperties {
 			DriverStation.reportError("Unable to Determine Field Properties from: " + input, false);
 			return false;
 		}
-
 		if (input.charAt(0) == 'L') {
 			switchLeft = true;
 		} else if (input.charAt(0) == 'R') {
@@ -26,7 +25,6 @@ public class FieldProperties {
 		} else {
 			DriverStation.reportError("Unable to Determine Switch position from: " + input.charAt(0), false);
 		}
-
 		if (input.charAt(1) == 'L') {
 			scaleLeft = true;
 		} else if (input.charAt(1) == 'R') {
@@ -34,11 +32,9 @@ public class FieldProperties {
 		} else {
 			DriverStation.reportError("Unable to Determine Scale position from: " + input.charAt(1), false);
 		}
-
-		DriverStation.reportError("Setup as " + switchLeft + " " + switchRight + " " + scaleLeft + " " + scaleRight, false);
-		
+		DriverStation.reportError("Setup as " + switchLeft + " " + switchRight + " " + scaleLeft + " " + scaleRight,
+				false);
 		return true;
-
 	}
 
 	public static boolean isLeftSwitchOurs() {

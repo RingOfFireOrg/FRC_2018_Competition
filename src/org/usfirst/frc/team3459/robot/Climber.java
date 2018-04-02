@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Climber {
-
 	private DigitalInput limitSwitch = new DigitalInput(RobotMap.CLIMBER_LIMIT_SW);
 	private TalonSRX climb0 = new TalonSRX(RobotMap.CAN_CLIMBER_1);
 	private TalonSRX climb1 = new TalonSRX(RobotMap.CAN_CLIMBER_2);
@@ -23,8 +22,8 @@ public class Climber {
 		double speed = 1;
 		debug(climbButton, speed);
 		if (climbButton) {
-				climb0.set(ControlMode.PercentOutput, speed);
-				climb1.set(ControlMode.PercentOutput, speed);
+			climb0.set(ControlMode.PercentOutput, speed);
+			climb1.set(ControlMode.PercentOutput, speed);
 		} else {
 			climb0.set(ControlMode.PercentOutput, 0.0);
 			climb1.set(ControlMode.PercentOutput, 0.0);
