@@ -24,6 +24,7 @@ public class Robot extends IterativeRobot {
 	private static final String kLeftAuto = "Left Auto";
 	private static final String kRightAuto = "Right Auto";
 	private static final String kMiddleAuto = "Middle Auto";
+	private static final String kTestStraight = "Twenty inches forward";
 	private static final String kSwitch = "switch";
 	private static final String kScale = "scale";
 	private static final String kTurnRight = "right turn";
@@ -61,6 +62,7 @@ public class Robot extends IterativeRobot {
 		m_chooser.addObject("Middle Auto", kMiddleAuto);
 		m_chooser.addObject("Right Turn", kTurnRight);
 		m_chooser.addObject("Left Turn", kTurnLeft);
+		m_chooser.addObject("20 Inches Straight Test", kTestStraight);
 		SmartDashboard.putData("Auto choice", m_chooser);
 
 		m_preference.addDefault("Switch Priority", kSwitch);
@@ -250,6 +252,10 @@ public class Robot extends IterativeRobot {
 			
 		case kTurnLeft:
 			auto.testTurn(false);
+			break;
+			
+		case kTestStraight:
+			auto.twentyInches();
 			break;
 		}
 

@@ -33,6 +33,14 @@ public class Autonomous {
 		}
 	}
 
+	public void twentyInches() {
+		if(driveTrain.getRightInches() <= 20) {
+			driveTrain.driveStraight(0.5);
+		} else {
+			driveTrain.tankDrive(0,0);
+		}
+	}
+	
 	public void testTurn(boolean right) {
 		switch (autoStep) {
 		case 0:
