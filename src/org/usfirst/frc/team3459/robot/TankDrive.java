@@ -12,6 +12,8 @@ public class TankDrive extends DifferentialDrive {
 	private Encoder rightEncoder = new Encoder(RobotMap.DRIVE_TRAIN_RIGHT_ENCODER_A,
 			RobotMap.DRIVE_TRAIN_RIGHT_ENCODER_B, false, Encoder.EncodingType.k1X);
 
+	private double accumulatedError;
+
 	TankDrive() {
 		super(new SpeedControllerGroup(new Victor(RobotMap.MOTOR_FRONT_LEFT), new Victor(RobotMap.MOTOR_BACK_LEFT)),
 				new SpeedControllerGroup(new Victor(RobotMap.MOTOR_FRONT_RIGHT),
@@ -55,12 +57,13 @@ public class TankDrive extends DifferentialDrive {
 	public void resetEncoders() {
 		leftEncoder.reset();
 		rightEncoder.reset();
+		accumulatedError = 0.0;
 	}
 
 	public void driveStraight(double speed) {
 		double difference = this.getLeftInches() - this.getRightInches();
 		double speedDifference = difference / 10;
-		double accumulatedError =+ difference;
+		accumulatedError = +difference;
 		SmartDashboard.putNumber("Accumulated Error", accumulatedError);
 		this.tankDrive(speed - speedDifference, speed, false);
 	}
@@ -71,11 +74,11 @@ public class TankDrive extends DifferentialDrive {
 		if (speed >= 0 && speedDiff <= 0) { // right turn left wheel too slow
 			this.tankDrive(speed - speedDiff, -speed, false);
 		} else if (speed >= 0 && speedDiff >= 0) { // right turn right wheel too slow
-			this.tankDrive(speed, -speed + speedDiff, false);
+			this.tankDrive(speed, -speed - speedDiff, false);
 		} else if (speed <= 0 && speedDiff <= 0) { // left turn left wheel too slow
-			this.tankDrive(-speed + speedDiff, speed, false);
+			this.tankDrive(speed, -speed - speedDiff, false);
 		} else { // left turn right wheel too slow
-			this.tankDrive(-speed, speed - speedDiff, false);
+			this.tankDrive(speed - speedDiff, -speed, false);
 		}
 	}
 }
