@@ -31,7 +31,6 @@ public class TestMode {
 	}
 	
 	public void run() {
-		SmartDashboard.putNumber("step", autoStep);
 		driveTrain.printEncoderValue();
 		SmartDashboard.putNumber("target Lift Location", targetHeight);
 		
