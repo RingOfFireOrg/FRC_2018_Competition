@@ -61,16 +61,17 @@ public class TankDrive extends DifferentialDrive {
 	}
 
 	public void driveStraight(double speed) {
-		double difference = this.getLeftInches() - this.getRightInches();
-		double speedDifference = difference / 10;
-		accumulatedError = +difference;
-		SmartDashboard.putNumber("Accumulated Error", accumulatedError);
-		this.tankDrive(speed - speedDifference, speed, false);
+		this.tankDrive(speed, speed * 1.17, false);
+//		double difference = this.getLeftInches() - this.getRightInches();
+//		double speedDifference = difference / 10;
+//		accumulatedError += speedDifference;
+//		SmartDashboard.putNumber("Accumulated Error", accumulatedError);
+//		this.tankDrive(speed - speedDifference, speed, false);
 	}
 
 	public void pivotTurn(double speed) {
 		double diff = getRightInches() + getLeftInches();
-		double speedDiff = diff / 10;
+		double speedDiff = diff / 100;
 		if (speed >= 0 && speedDiff <= 0) { // right turn left wheel too slow
 			this.tankDrive(speed - speedDiff, -speed, false);
 		} else if (speed >= 0 && speedDiff >= 0) { // right turn right wheel too slow
