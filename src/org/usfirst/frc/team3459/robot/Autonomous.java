@@ -9,7 +9,7 @@ public class Autonomous {
 	private Popcorn grabber;
 	private boolean doingSwitch = false;
 	private boolean doingScale = false;
-	private double ninetyDegreeInches = 6 * Math.PI;
+	private double ninetyDegreeInches = 5 * Math.PI;
 	private int autoStep = 0;
 	private long time;
 	private long startTime;
@@ -127,6 +127,7 @@ public class Autonomous {
 					driveTrain.resetEncoders();
 					driveTrain.tankDrive(0, 0);
 					autoStep++;
+					time = System.currentTimeMillis();
 				}
 			} else { // if(FieldProperties.isRightSwitchOurs())
 				if (driveTrain.getLeftInches() <= 36) {
@@ -178,8 +179,16 @@ public class Autonomous {
 				autoStep++;
 				time = System.currentTimeMillis();
 			}
+			break;
 		case 8:
-			// Progression from 7 to 8 controlled by elevator switch statement
+			// open arms
+			if(System.currentTimeMillis() - time >= 3000) {
+				driveTrain.resetEncoders();
+				autoStep++;
+				time = System.currentTimeMillis();
+			}
+			driveTrain.tankDrive(0, 0);
+			break;
 		case 9:
 			if (System.currentTimeMillis() - time <= 500) {
 				driveTrain.driveStraight(-centerAutoSpeed);
@@ -205,8 +214,6 @@ public class Autonomous {
 			break;
 		case 8:
 			grabber.open();
-			time = System.currentTimeMillis();
-			autoStep++;
 			break;
 		case 9:
 		case 10:
@@ -239,7 +246,7 @@ public class Autonomous {
 			}
 			break;
 		case 3: // drive past auto line to correct position for switch
-			if (driveTrain.getRightInches() <= 155) {
+			if (driveTrain.getRightInches() <= 145) {
 				driveTrain.driveStraight(sideAutoSpeed);
 			} else {
 				driveTrain.resetEncoders();
@@ -297,7 +304,7 @@ public class Autonomous {
 			}
 			break;
 		case 6:
-			if(System.currentTimeMillis() - time >= 4000) {
+			if(System.currentTimeMillis() - time >= 1000) {
 				driveTrain.resetEncoders();
 				autoStep++;
 				time = System.currentTimeMillis();
@@ -352,27 +359,36 @@ public class Autonomous {
 				driveTrain.tankDrive(0, 0);
 				autoStep++;
 			}
-			if (System.currentTimeMillis() - startTime >= 9000) {
-				autoStep++;
-			}
+			//if (System.currentTimeMillis() - startTime >= 9000) {
+			//	autoStep++;
+			//}
 			break;
 		case 10:
-			// Progression from 9 to 10 controlled by elevator switch statement
+			if(System.currentTimeMillis() - time >= 3000) {
+				driveTrain.resetEncoders();
+				autoStep++;
+				time = System.currentTimeMillis();
+			}
+			driveTrain.tankDrive(0, 0);
 			break;
+
 		case 11:
+			// Progression from 11 to 12 controlled by elevator switch statement
+			break;
+		case 12:
 			if (System.currentTimeMillis() - time >= 1000) {
 				time = System.currentTimeMillis();
 				autoStep++;
 			}
 			break;
-		case 12:
+		case 13:
 			if (System.currentTimeMillis() - time <= 500) {
 				driveTrain.driveStraight(-sideAutoSpeed);
 			} else {
 				autoStep++;
 			}
 			break;
-		case 13:
+		case 14:
 			driveTrain.tankDrive(0, 0);
 			break;
 		}
@@ -391,21 +407,22 @@ public class Autonomous {
 		case 7:// turn
 		case 8: // back against wall
 		case 9:// last drive
+		case 10:
 			if (doingSwitch) {
 				elevator.goTo("switch");
 			} else { // if(doingScale)
 				elevator.goTo("scale");
 			}
 			break;
-		case 10:
+		case 11:
 			grabber.open();
 			autoStep++;
 			time = System.currentTimeMillis();
 			break;
-		case 11:
 		case 12:
+		case 13:
 			break;
-		case 13: // terminate everything case used for testing
+		case 14: // terminate everything case used for testing
 			elevator.stop();
 		}
 	}
