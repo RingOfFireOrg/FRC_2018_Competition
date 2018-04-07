@@ -29,7 +29,9 @@ public class Robot extends IterativeRobot {
 	private static final String kScale = "scale";
 	private static final String kTurnRight = "right turn";
 	private static final String kTurnLeft = "left turn";
-	
+	private static final String kJustSwitch = "just switch";
+	private static final String kNormalLogic = "normal logic";
+
 	private Lifter lifter;
 	private Popcorn popcorn;
 	private Climber climber;
@@ -47,8 +49,10 @@ public class Robot extends IterativeRobot {
 
 	private String m_autoSelected;
 	private String m_preferenceSelected;
+	private String m_exclusionOfScale;
 	private SendableChooser<String> m_chooser = new SendableChooser<>();
 	private SendableChooser<String> m_preference = new SendableChooser<>();
+	private SendableChooser<String> m_exclusion = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -60,14 +64,20 @@ public class Robot extends IterativeRobot {
 		m_chooser.addObject("Left Auto", kLeftAuto);
 		m_chooser.addObject("Right Auto", kRightAuto);
 		m_chooser.addObject("Middle Auto", kMiddleAuto);
-		m_chooser.addObject("Right Turn", kTurnRight);
-		m_chooser.addObject("Left Turn", kTurnLeft);
-		m_chooser.addObject("20 Inches Straight Test", kTestStraight);
+		// m_chooser.addObject("Right Turn", kTurnRight);
+		// m_chooser.addObject("Left Turn", kTurnLeft);
+		// m_chooser.addObject("20 Inches Straight Test", kTestStraight);
 		SmartDashboard.putData("Auto choice", m_chooser);
 
 		m_preference.addDefault("Switch Priority", kSwitch);
 		m_preference.addObject("Scale Priority", kScale);
+
+		m_exclusion.addDefault("Normal Logic", kNormalLogic);
+		m_exclusion.addObject("Switch ONLY", kJustSwitch);
+
 		SmartDashboard.putData("Auto Priorities", m_preference);
+
+		SmartDashboard.putData("Scale Exclusion", m_exclusion);
 
 		lifter = new Lifter(manipulatorStick);
 		popcorn = new Popcorn();
@@ -151,8 +161,10 @@ public class Robot extends IterativeRobot {
 		drive.resetEncoders();
 		step = 0;
 	}
+
 	int step = 0;
 	double time = 0;
+
 	/**
 	 * This function is called periodically during test mode, approximate every 20ms
 	 */
@@ -160,34 +172,6 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 		drive.printEncoderValue();
 		testMode.run();
-		/*switch (step) {
-		case 0:
-			if (drive.getLeftInches() <= 6.8 * Math.PI) {
-				drive.pivotTurn(0.5);
-			} else {
-				drive.resetEncoders();
-				drive.tankDrive(0, 0);
-				time = System.currentTimeMillis();
-				step++;
-			}
-			break;
-		case 1:
-			if ((System.currentTimeMillis() - time) <= 5000) {
-				drive.tankDrive(0, 0);
-			} else {
-				step++;
-			}
-			break;
-		case 2:
-			if (drive.getRightInches() <= 6.8 * Math.PI) {
-				drive.pivotTurn(-0.5);
-			} else {
-				drive.resetEncoders();
-				drive.tankDrive(0, 0);
-				step++;
-			}
-		}
-		*/
 	}
 
 	/**
@@ -197,6 +181,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		m_autoSelected = m_chooser.getSelected();
 		m_preferenceSelected = m_preference.getSelected();
+		m_exclusionOfScale = m_exclusion.getSelected();
 
 		System.out.println("Auto selected: " + m_autoSelected);
 
@@ -223,10 +208,17 @@ public class Robot extends IterativeRobot {
 		case kLeftAuto:
 			switch (m_preferenceSelected) {
 			case kSwitch:
-				auto.sideAuto(true, false);
+				switch (m_exclusionOfScale) {
+				case kJustSwitch:
+					auto.sideAuto(true, false, true);
+					break;
+				case kNormalLogic:
+					auto.sideAuto(true, false, false);
+					break;
+				}
 				break;
 			case kScale:
-				auto.sideAuto(false, false);
+				auto.sideAuto(false, false, false);
 				break;
 			}
 			break;
@@ -234,26 +226,26 @@ public class Robot extends IterativeRobot {
 		case kRightAuto:
 			switch (m_preferenceSelected) {
 			case kSwitch:
-				auto.sideAuto(true, true);
+				auto.sideAuto(true, true, false);
 				break;
 			case kScale:
-				auto.sideAuto(false, true);
+				auto.sideAuto(false, true, false);
 				break;
 			}
 			break;
-			
+
 		case kMiddleAuto:
 			auto.centerAuto();
 			break;
-			
+
 		case kTurnRight:
 			auto.testTurn(true);
 			break;
-			
+
 		case kTurnLeft:
 			auto.testTurn(false);
 			break;
-			
+
 		case kTestStraight:
 			auto.twentyInches();
 			break;

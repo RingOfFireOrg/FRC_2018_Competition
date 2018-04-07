@@ -38,14 +38,14 @@ public class Autonomous {
 	}
 
 	public void twentyInches() {
-		if(driveTrain.getRightInches() <= 240) {
+		if (driveTrain.getRightInches() <= 240) {
 			driveTrain.driveStraight(0.3);
-			//driveTrain.tankDrive(0.3, 0.3);
+			// driveTrain.tankDrive(0.3, 0.3);
 		} else {
 			driveTrain.tankDrive(0, 0);
 		}
 	}
-	
+
 	public void testTurn(boolean right) {
 		switch (autoStep) {
 		case 0:
@@ -141,7 +141,7 @@ public class Autonomous {
 			}
 			break;
 		case 5:
-			if(System.currentTimeMillis() - time >= 700) {
+			if (System.currentTimeMillis() - time >= 700) {
 				driveTrain.resetEncoders();
 				driveTrain.tankDrive(0, 0);
 				autoStep++;
@@ -182,7 +182,7 @@ public class Autonomous {
 			break;
 		case 8:
 			// open arms
-			if(System.currentTimeMillis() - time >= 3000) {
+			if (System.currentTimeMillis() - time >= 3000) {
 				driveTrain.resetEncoders();
 				autoStep++;
 				time = System.currentTimeMillis();
@@ -220,8 +220,8 @@ public class Autonomous {
 			elevator.stop();
 		}
 	}
-	
-	public void sideAuto(boolean switchPriority, boolean rightPosition) {
+
+	public void sideAuto(boolean switchPriority, boolean rightPosition, boolean justSwitch) {
 		double sideAutoSpeed = 0.5;
 		SmartDashboard.putNumber("Auto Step: ", autoStep);
 		switch (autoStep) {
@@ -260,7 +260,7 @@ public class Autonomous {
 					if (FieldProperties.isRightSwitchOurs()) {
 						doingSwitch = true;
 						autoStep = 6;
-					} else if (FieldProperties.isRightScaleOurs()) {
+					} else if (FieldProperties.isRightScaleOurs() && !justSwitch) {
 						doingScale = true;
 						autoStep = 5;
 					}
@@ -268,7 +268,7 @@ public class Autonomous {
 					if (FieldProperties.isLeftSwitchOurs()) {
 						doingSwitch = true;
 						autoStep = 6;
-					} else if (FieldProperties.isLeftScaleOurs()) {
+					} else if (FieldProperties.isLeftScaleOurs() && !justSwitch) {
 						doingScale = true;
 						autoStep = 5;
 					}
@@ -304,7 +304,7 @@ public class Autonomous {
 			}
 			break;
 		case 6:
-			if(System.currentTimeMillis() - time >= 1000) {
+			if (System.currentTimeMillis() - time >= 1000) {
 				driveTrain.resetEncoders();
 				autoStep++;
 				time = System.currentTimeMillis();
@@ -359,12 +359,12 @@ public class Autonomous {
 				driveTrain.tankDrive(0, 0);
 				autoStep++;
 			}
-			//if (System.currentTimeMillis() - startTime >= 9000) {
-			//	autoStep++;
-			//}
+			// if (System.currentTimeMillis() - startTime >= 9000) {
+			// autoStep++;
+			// }
 			break;
 		case 10:
-			if(System.currentTimeMillis() - time >= 3000) {
+			if (System.currentTimeMillis() - time >= 3000) {
 				driveTrain.resetEncoders();
 				autoStep++;
 				time = System.currentTimeMillis();
