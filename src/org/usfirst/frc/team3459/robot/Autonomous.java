@@ -260,6 +260,7 @@ public class Autonomous {
 					if (FieldProperties.isRightSwitchOurs()) {
 						doingSwitch = true;
 						autoStep = 6;
+						time = System.currentTimeMillis();
 					} else if (FieldProperties.isRightScaleOurs() && !justSwitch) {
 						doingScale = true;
 						autoStep = 5;
@@ -268,6 +269,7 @@ public class Autonomous {
 					if (FieldProperties.isLeftSwitchOurs()) {
 						doingSwitch = true;
 						autoStep = 6;
+						time = System.currentTimeMillis();
 					} else if (FieldProperties.isLeftScaleOurs() && !justSwitch) {
 						doingScale = true;
 						autoStep = 5;
@@ -281,6 +283,7 @@ public class Autonomous {
 					} else if (FieldProperties.isRightSwitchOurs()) {
 						doingSwitch = true;
 						autoStep = 6;
+						time = System.currentTimeMillis();
 					}
 				} else if (!rightPosition) {
 					if (FieldProperties.isLeftScaleOurs()) {
@@ -289,6 +292,7 @@ public class Autonomous {
 					} else if (FieldProperties.isLeftSwitchOurs()) {
 						doingSwitch = true;
 						autoStep = 6;
+						time = System.currentTimeMillis();
 					}
 				}
 			}
