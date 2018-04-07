@@ -226,7 +226,14 @@ public class Robot extends IterativeRobot {
 		case kRightAuto:
 			switch (m_preferenceSelected) {
 			case kSwitch:
-				auto.sideAuto(true, true, false);
+				switch (m_exclusionOfScale) {
+				case kJustSwitch:
+					auto.sideAuto(true, true, true);
+					break;
+				case kNormalLogic:
+					auto.sideAuto(true, true, false);
+					break;
+				}
 				break;
 			case kScale:
 				auto.sideAuto(false, true, false);
