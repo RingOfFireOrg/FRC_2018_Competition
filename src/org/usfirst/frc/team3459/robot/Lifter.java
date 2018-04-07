@@ -15,7 +15,7 @@ public class Lifter {
 			Encoder.EncodingType.k1X);
 	private double totalRotations = 0;
 	private DigitalInput upperLimitSwitch = new DigitalInput(RobotMap.INPUT_UPPER_LIMIT_SW);
-	private DigitalInput lowerLimitSwitch = new DigitalInput(RobotMap.INPUT_LOWER_LIMIT_SW);
+//	private DigitalInput lowerLimitSwitch = new DigitalInput(RobotMap.INPUT_LOWER_LIMIT_SW);
 	private TalonSRX controller1 = new TalonSRX(RobotMap.CAN_LIFTER_1);
 	private TalonSRX controller2 = new TalonSRX(RobotMap.CAN_LIFTER_2);
 	private Joystick manipulatorStick;
@@ -79,12 +79,11 @@ public class Lifter {
 	public void down(double speed) {
 		debug();
 		//TODO Modify Number here (for power limit)
-
-		if (lowerLimitSwitch.get() && !manipulatorStick.getRawButton(RobotMap.LIFT_LIMIT_OVERRIDE)) {
-			encoder.reset();
-			stop();
-			return;
-		}
+//		if (lowerLimitSwitch.get() && !manipulatorStick.getRawButton(RobotMap.LIFT_LIMIT_OVERRIDE)) {
+//			encoder.reset();
+//			stop();
+//			return;
+//		}
 		controller1.set(ControlMode.PercentOutput, speed);
 		controller2.set(ControlMode.PercentOutput, speed);
 	}
@@ -134,6 +133,6 @@ public class Lifter {
 		SmartDashboard.putNumber("lift rotations", encoder.getDistance());
 		SmartDashboard.putNumber("top", totalRotations);
 		SmartDashboard.putBoolean("upper sw", upperLimitSwitch.get());
-		SmartDashboard.putBoolean("lower sw", lowerLimitSwitch.get());
+//		SmartDashboard.putBoolean("lower sw", lowerLimitSwitch.get());
 	}
 }
