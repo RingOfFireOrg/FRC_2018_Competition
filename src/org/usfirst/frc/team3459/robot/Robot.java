@@ -91,17 +91,14 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-
-	
 		double speed = Math.pow(commandStick.getMagnitude(), 2);
 		double direction = commandStick.getDirectionDegrees() * -1;
 		double twist = commandStick.getTwist();
-		SmartDashboard.putNumber("Joystick output", direction);
+		SmartDashboard.putNumber("Joystick output direction", direction);
 		SmartDashboard.putNumber("Joystick output speed", speed);
 		
-		swerveDrive.syncroDrive(speed, direction, twist);
+		swerveDrive.drive(speed, direction, twist);
 		SmartDashboard.putNumber("Gyro output: ", ahrs.getAngle());
-				swerveDrive.syncroDrive(speed, direction, twist);	
 		
 		//swerveDrive.setpidsetpoint((commandStick.getX() + 1.0) * 2.5);
 	}

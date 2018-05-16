@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-
 public class SwerveModule {
 	Jaguar drive;
 	Talon steer;
@@ -21,19 +20,21 @@ public class SwerveModule {
 	double currentAngle;
 	double zeroValue;
 	PIDController pid;
+	double tolerance = 5;
 
 	public SwerveModule(Jaguar driveMotor, Talon steerMotor, AbsoluteAnalogEncoder steerEncoder, double zeroValue) {
 		this.zeroValue = zeroValue;
 		drive = driveMotor;
 		steer = steerMotor;
 		turnEncoder = steerEncoder;
-	 //pid = new PIDController(0.1, 0, 0, steerEncoder, steerMotor);	
-	 //pid.enable(); 
+		// pid = new PIDController(0.1, 0, 0, steerEncoder, steerMotor);
+		// pid.enable();
 	}
-	
+
 	public void setpidsetpoint(double input) {
 		pid.setSetpoint(input);
 	}
+
 	private void setSpeed(double driveSpeed) {
 		speed = driveSpeed;
 		drive.set(speed);
@@ -41,40 +42,33 @@ public class SwerveModule {
 
 	public double convertToAbsolute(double wheelAngleGoal) {
 		return ((wheelAngleGoal + zeroValue) + 720) % 360;
+		// this method will eventually use some gyro stuff to change a field relative
+		// command to a wheel module relative command
 	}
-
-	public double convertToRobotRelative(double wheelAngleGoal) {
-		return ((wheelAngleGoal - zeroValue) + 720) % 360;
-	}
-
+	
 	public void setAngle(double wheelAngleGoal) {
 		angleGoal = convertToAbsolute(wheelAngleGoal);
 		currentAngle = turnEncoder.getAngle();
 		diff = angleGoal - currentAngle;
-		//turnSpeed = pid.get();
-		//SmartDashboard.putNumber("pid ", turnSpeed);
+		// turnSpeed = pid.get();
+		// SmartDashboard.putNumber("pid ", turnSpeed);
 
-		if (Math.abs(diff) < 5 || Math.abs(diff) > 355) {
+		if (Math.abs(diff) < tolerance || Math.abs(diff) > (360-tolerance)) {
 			// stop
 			steer.set(0);
 		} else {
 			// pid.setSetpoint(angle);
 			// pid.enable
-			//SmartDashboard.putNumber("diff value", diff);
-			if((diff > 0 && diff < 180) || diff < -180) {
+			// SmartDashboard.putNumber("diff value", diff);
+			if ((diff > 0 && diff < 180) || diff < -180) {
 				steer.set(0.6);
 			} else {
 				steer.set(-0.6);
 			}
-			
+
 		}
-
-		// figure out tolerance level 5 may be wrong number...
-		// also the while loop might not work if it is being called every x ms... maybe
-		// do cases with steps for each one
-
 	}
-	
+
 	public double getAngle() {
 		return turnEncoder.getAngle();
 	}

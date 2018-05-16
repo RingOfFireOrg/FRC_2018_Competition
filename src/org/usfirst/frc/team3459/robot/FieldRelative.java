@@ -20,6 +20,8 @@ public class FieldRelative {
 //		double temp = forward * Math.cos(gyroAngleRadians)
 	}
 
-	
+	public double normalizeAngle() {
+		
+	}
 	
 }

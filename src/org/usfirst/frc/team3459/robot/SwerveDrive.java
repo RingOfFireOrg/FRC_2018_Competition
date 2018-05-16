@@ -33,7 +33,7 @@ public class SwerveDrive {
 	SwerveDrive() {
 		Talon steerBackLeft = new Talon(STEER_BACK_LEFT_MOTOR);
 		Talon steerBackRight = new Talon(STEER_BACK_RIGHT_MOTOR);
-		
+
 		frontLeft = new SwerveModule(new Jaguar(DRIVE_FRONT_LEFT_MOTOR), new Talon(STEER_FRONT_LEFT_MOTOR),
 				new AbsoluteAnalogEncoder(ENCODER_FRONT_LEFT), ENCODER_CORRECTION_FRONT_LEFT);
 		frontRight = new SwerveModule(new Jaguar(DRIVE_FRONT_RIGHT_MOTOR), new Talon(STEER_FRONT_RIGHT_MOTOR),
@@ -45,29 +45,40 @@ public class SwerveDrive {
 
 		steerBackLeft.setInverted(true);
 		steerBackRight.setInverted(true);
-
 	}
-	void syncroDrive(double driveSpeed, double driveAngle, double twist) {
-		if(twist > .5){
-			frontRight.control(0.6, 45);
-			frontLeft.control(0.6, 315);
-			backRight.control(-0.6, 315);
-			backLeft.control(0.6, 45);
-		}else if(twist < -.5){
-			frontRight.control(-0.6, 45);
-			frontLeft.control(-0.6, 315);
-			backRight.control(0.6, 315);
-			backLeft.control(-0.6, 45);
-		} else {
-			frontRight.control(driveSpeed, driveAngle);
-			frontLeft.control(driveSpeed, driveAngle);
-			backRight.control(driveSpeed, driveAngle);
-			backLeft.control(driveSpeed, driveAngle);
-		}
-		
-		
-		//steerFrontRight.set(1);
+	public void deadZone(){
+		frontRight.control(0, frontRight.getAngle());
+		frontLeft.control(0, frontLeft.getAngle());
+		backRight.control(0, backRight.getAngle());
+		backLeft.control(0, backLeft.getAngle());
+	}
+	public void translate(double speed, double angle) {
+		frontRight.control(speed, angle);
+		frontLeft.control(speed, angle);
+		backRight.control(speed, angle);
+		backLeft.control(speed, angle);
+	}
+	public void twist(double speed) {
+		frontRight.control(speed, 45);
+		frontLeft.control(speed, 315);
+		backRight.control(-speed, 315); //sure there's a reason but why is the back right the speed of the others *-1?
+		backLeft.control(speed, 45);
+	}
+	public void twistyDrive(double speed, double angle) {
+		translate(speed, angle);
+		//place holder for the moment
+	}
 	
+	public void drive(double driveSpeed, double driveAngle, double twist) {
+		if(Math.abs(twist) <= .5 && driveSpeed <= 0.1) {
+			deadZone();
+		} else if(Math.abs(twist) > .5 && driveSpeed > 0.1) {
+			twistyDrive(driveSpeed, driveAngle);
+		} else if(Math.abs(twist) > .5) {
+			twist(twist);
+		} else {
+			translate(driveSpeed, driveAngle);
+		}
 		SmartDashboard.putNumber("front right encoder: ", frontRight.getAngle());
 		SmartDashboard.putNumber("front left encoder: ", frontLeft.getAngle());
 		SmartDashboard.putNumber("back right encoder: ", backRight.getAngle());
@@ -78,8 +89,9 @@ public class SwerveDrive {
 		SmartDashboard.putNumber("Corrected angle BR", backRight.convertToRobotRelative(backRight.getAngle()));
 		SmartDashboard.putNumber("Corrected angle BL", backLeft.convertToRobotRelative(backLeft.getAngle()));
 	}
-	
-	void setpidsetpoint(double input) {
+
+	//what even is this???  Considering deleting it.
+	public void setpidsetpoint(double input) {
 		frontRight.setpidsetpoint(input);
 		frontLeft.setpidsetpoint(input);
 		backRight.setpidsetpoint(input);
