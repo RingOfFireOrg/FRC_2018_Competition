@@ -1,18 +1,10 @@
 package org.usfirst.frc.team3459.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.Jaguar;
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.Encoder;
-
-import com.kauailabs.navx.frc.AHRS;
 
 
 /**
@@ -31,7 +23,7 @@ public class Robot extends IterativeRobot {
 	Joystick commandStick = new Joystick(0);
 	
 	SwerveDrive swerveDrive = new SwerveDrive();
-	AHRS ahrs;
+//	AHRS ahrs;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -43,12 +35,12 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
 		try {
-			ahrs = new AHRS(SerialPort.Port.kUSB1);
+//			ahrs = new AHRS(SerialPort.Port.kUSB1);
 		} catch (RuntimeException ex) {
 			DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
 		}
 
-		ahrs.reset();
+//		ahrs.reset();
 	}
 
 	/**
@@ -100,8 +92,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Joystick output speed", speed);
 		
 		swerveDrive.syncroDrive(speed, direction, twist);
-		SmartDashboard.putNumber("Gyro output: ", ahrs.getAngle());
-				swerveDrive.syncroDrive(speed, direction, twist);	
+//		SmartDashboard.putNumber("Gyro output: ", ahrs.getAngle());
+//				swerveDrive.syncroDrive(speed, direction, twist);	
 		
 	}
 

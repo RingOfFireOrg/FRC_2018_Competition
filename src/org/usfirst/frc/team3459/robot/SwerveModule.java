@@ -2,9 +2,6 @@ package org.usfirst.frc.team3459.robot;
 
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class SwerveModule {
 	Jaguar drive;
