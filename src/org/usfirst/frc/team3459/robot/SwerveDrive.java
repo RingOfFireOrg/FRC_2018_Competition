@@ -15,10 +15,10 @@ public class SwerveDrive {
 	public static final int STEER_BACK_LEFT_MOTOR = 5;
 	public static final int STEER_BACK_RIGHT_MOTOR = 7;
 
-	public static final int ENCODER_CORRECTION_FRONT_LEFT = 5;
-	public static final int ENCODER_CORRECTION_FRONT_RIGHT = 50;
-	public static final int ENCODER_CORRECTION_BACK_LEFT = 22;
-	public static final int ENCODER_CORRECTION_BACK_RIGHT = 180;
+	public static final int ENCODER_CORRECTION_FRONT_LEFT = 343;
+	public static final int ENCODER_CORRECTION_FRONT_RIGHT = 49;
+	public static final int ENCODER_CORRECTION_BACK_LEFT = 335;
+	public static final int ENCODER_CORRECTION_BACK_RIGHT = 97;
 
 	public static final int ENCODER_FRONT_LEFT = 1;
 	public static final int ENCODER_FRONT_RIGHT = 0;

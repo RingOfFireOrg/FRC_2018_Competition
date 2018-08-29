@@ -35,10 +35,13 @@ public class SwerveModule {
 		return ((wheelAngleGoal - zeroValue) + 720) % 360;
 	}
 
+	
 	public void setAngle(double wheelAngleGoal) {
 		angleGoal = convertToAbsolute(wheelAngleGoal);
 		currentAngle = turnEncoder.getAngle();
 		double diff = angleGoal - currentAngle;
+		double newDiff;
+		
 		if (Math.abs(diff) < 5 || Math.abs(diff) > 355) {
 			// stop
 			steer.set(0);
@@ -46,17 +49,47 @@ public class SwerveModule {
 			// pid.setSetpoint(angle);
 			// pid.enable
 			//SmartDashboard.putNumber("diff value", diff);
-			if((diff > 0 && diff < 180) || diff < -180) {
-				steer.set(-0.6);
-			} else {
-				steer.set(0.6);
-			}
+		
+			/*
+			 *          ^ front of robot
+			 *          |
+			 *      4   |  1
+			 *          |
+			 *    ------+------
+			 *          |
+			 *       3  |  2
+			 *          |
+			 * 
+			 */
 			
+			if (diff > 90 && diff < 270) //for quadrants 2 & 3
+			{
+				if (diff > 90 && diff < 180) 
+				{
+					newDiff = (diff - 180); //converting angles from quadrant 2 to quad 4
+				} 
+				else 
+				{
+					newDiff = (180 - diff); //converting from quad 3 to quad 1
+				}
+				steer.set(newDiff); 
+				drive.set(-.6);//go backwards
+			} 
+			else //quads 1 & 4
+			{
+				if (diff > 180) //quad 4
+				{
+					newDiff = (diff - 360); //converting from large + to small -
+				}
+				else 
+				{
+					newDiff = diff; //quad 1, no change
+				}
+				steer.set(newDiff); 
+				drive.set(.6);//forward
+			}
 		}
 
-		// figure out tolerance level 5 may be wrong number...
-		// also the while loop might not work if it is being called every x ms... maybe
-		// do cases with steps for each one
 
 	}
 	
