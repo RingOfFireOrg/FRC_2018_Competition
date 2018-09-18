@@ -22,11 +22,6 @@ public class SwerveModule {
 		turnEncoder = steerEncoder;
 	}
 
-	private void setSpeed(double driveSpeed) {
-		speed = driveSpeed;
-		drive.set(speed);
-	}
-
 	public double convertToAbsolute(double wheelAngleGoal) {
 		return ((wheelAngleGoal + zeroValue) + 720) % 360;
 	}
@@ -35,70 +30,54 @@ public class SwerveModule {
 		return ((wheelAngleGoal - zeroValue) + 720) % 360;
 	}
 
-	
-	public void setAngle(double wheelAngleGoal) {
-		angleGoal = convertToAbsolute(wheelAngleGoal);
-		currentAngle = turnEncoder.getAngle();
-		double diff = angleGoal - currentAngle;
-		double newDiff;
-		
-		if (Math.abs(diff) < 5 || Math.abs(diff) > 355) {
-			// stop
-			steer.set(0);
-		} else {
-			// pid.setSetpoint(angle);
-			// pid.enable
-			//SmartDashboard.putNumber("diff value", diff);
-		
-			/*
-			 *          ^ front of robot
-			 *          |
-			 *      4   |  1
-			 *          |
-			 *    ------+------
-			 *          |
-			 *       3  |  2
-			 *          |
-			 * 
-			 */
-			
-			if (diff > 90 && diff < 270) //for quadrants 2 & 3
-			{
-				if (diff > 90 && diff < 180) 
-				{
-					newDiff = (diff - 180); //converting angles from quadrant 2 to quad 4
-				} 
-				else 
-				{
-					newDiff = (180 - diff); //converting from quad 3 to quad 1
-				}
-				steer.set(newDiff); 
-				drive.set(-.6);//go backwards
-			} 
-			else //quads 1 & 4
-			{
-				if (diff > 180) //quad 4
-				{
-					newDiff = (diff - 360); //converting from large + to small -
-				}
-				else 
-				{
-					newDiff = diff; //quad 1, no change
-				}
-				steer.set(newDiff); 
-				drive.set(.6);//forward
-			}
-		}
-
-
-	}
-	
 	public double getAngle() {
 		return turnEncoder.getAngle();
 	}
 
 	public void control(double driveSpeed, double wheelAngle) {
-		setAngle(wheelAngle);
-		setSpeed(driveSpeed);
+		angleGoal = convertToAbsolute(wheelAngle);
+		currentAngle = turnEncoder.getAngle();
+		double diff = ((angleGoal - currentAngle) + 720) % 360; // diff is a number between -359.9 and 359.9 (720 range)
+		double newDiff;
+
+		if (Math.abs(diff) < 5 || Math.abs(diff) > 355) {
+			// stop steering
+			steer.set(0);
+			drive.set(driveSpeed);
+		} else if (Math.abs(diff) > 175 && Math.abs(diff) < 185){
+			//stop steering
+			steer.set(0);
+			drive.set(-driveSpeed);
+		} else {
+			// pid.setSetpoint(angle);
+			// pid.enable
+			// SmartDashboard.putNumber("diff value", diff);
+
+			/*
+			 * ^ front of robot | 4 | 1 | ------+------ | 3 | 2 |
+			 * 
+			 */
+
+			if (diff > 90 && diff < 270) // for quadrants 2 & 3
+			{
+				if (diff > 90 && diff < 180) {
+					newDiff = (diff - 180); // converting angles from quadrant 2 to quad 4
+				} else {
+					newDiff = (diff - 180); // converting from quad 3 to quad 1
+				}
+				steer.set(newDiff);
+				drive.set(-driveSpeed);// go backwards
+			} else // quads 1 & 4
+			{
+				if (diff >= 270) // quad 4
+				{
+					newDiff = (diff - 360); // converting from large + to small -
+				} else {
+					newDiff = diff; // quad 1, no change
+				}
+				steer.set(newDiff);
+				drive.set(driveSpeed);// forward
+			}
+		}
 	}
 }
