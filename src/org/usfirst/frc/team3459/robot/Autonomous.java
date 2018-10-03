@@ -13,10 +13,10 @@ public class Autonomous {
 	private int autoStep = 0;
 	private long time;
 	private long startTime;
-	
-	//TODO make the turns all rely on the the same encoder?
-	//TODO twenty foot test
-	//left worked 
+
+	// TODO make the turns all rely on the the same encoder?
+	// TODO twenty foot test
+	// left worked
 
 	public Autonomous(TankDrive drive, Lifter lifter, Popcorn popcorn) {
 		driveTrain = drive;
@@ -414,7 +414,7 @@ public class Autonomous {
 		case 10:
 			if (doingSwitch) {
 				elevator.goTo("switch");
-			} else { // if(doingScale)
+			} else if (doingScale) {
 				elevator.goTo("scale");
 			}
 			break;

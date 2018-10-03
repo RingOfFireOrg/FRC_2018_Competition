@@ -94,6 +94,8 @@ public class Lifter {
 
 	// TODO: Consider redefining goTo(String) to goTo(double) and having callers
 	public void goTo(String position) {
+		SmartDashboard.putString("Target lift", position);
+		SmartDashboard.putNumber("Encoder Position", encoder.getDistance());
 		switch (position) {
 		case "floor":
 			down();
