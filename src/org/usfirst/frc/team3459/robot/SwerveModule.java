@@ -33,7 +33,10 @@ public class SwerveModule {
 	public double getAngle() {
 		return turnEncoder.getAngle();
 	}
-
+	public void stop() {
+		drive.set(0);
+		steer.set(0);
+	}
 	public void control(double driveSpeed, double wheelAngle) {
 		angleGoal = convertToWheelRelative(wheelAngle);
 		currentAngle = turnEncoder.getAngle();
@@ -52,7 +55,7 @@ public class SwerveModule {
 			if (wheelTurnAngle0to360 > 90 && wheelTurnAngle0to360 < 270) // for quadrants 2 & 3
 			{
 				optimizedWheelTurnAngle = (wheelTurnAngle0to360 - 180); // converting angles from quadrant 2 to quad 4 and converting from quad 3 to quad 1
-				steer.set(optimizedWheelTurnAngle);
+				steer.set(optimizedWheelTurnAngle/90);
 				drive.set(-driveSpeed);// go backwards
 			} else // quads 1 & 4
 			{
@@ -62,7 +65,7 @@ public class SwerveModule {
 				} else {
 					optimizedWheelTurnAngle = wheelTurnAngle0to360; // quad 1, no change
 				}
-				steer.set(optimizedWheelTurnAngle);
+				steer.set(optimizedWheelTurnAngle/90);
 				drive.set(driveSpeed);// forward
 			}
 		}

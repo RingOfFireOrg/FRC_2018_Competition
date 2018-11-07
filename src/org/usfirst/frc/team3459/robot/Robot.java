@@ -3,6 +3,7 @@ package org.usfirst.frc.team3459.robot;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -18,9 +19,13 @@ public class Robot extends IterativeRobot {
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
 	String autoSelected;
-	SendableChooser<String> chooser = new SendableChooser<>();
-	
 	Joystick commandStick = new Joystick(0);
+	SendableChooser<String> chooser = new SendableChooser<>();
+	JoystickButton frButton = new JoystickButton(commandStick, 6);
+	JoystickButton flButton = new JoystickButton(commandStick, 5);
+	JoystickButton brButton = new JoystickButton(commandStick, 4);
+	JoystickButton blButton = new JoystickButton(commandStick, 3);
+	
 	
 	SwerveDrive swerveDrive = new SwerveDrive();
 //	AHRS ahrs;
@@ -90,6 +95,7 @@ public class Robot extends IterativeRobot {
 		double twist = commandStick.getTwist();
 		SmartDashboard.putNumber("Joystick output", direction);
 		SmartDashboard.putNumber("Joystick output speed", speed);
+	
 		
 		swerveDrive.syncroDrive(speed, direction, twist);
 //		SmartDashboard.putNumber("Gyro output: ", ahrs.getAngle());
@@ -102,6 +108,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+		swerveDrive.individualModuleControl(frButton.get(), flButton.get(), brButton.get(), blButton.get());
+		
 	}
 }
 
