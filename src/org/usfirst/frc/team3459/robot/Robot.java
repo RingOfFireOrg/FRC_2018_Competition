@@ -88,11 +88,15 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-
-	
+		double twist;
 		double speed = Math.pow(commandStick.getMagnitude(), 2);
 		double direction = commandStick.getDirectionDegrees() * -1;
-		double twist = commandStick.getTwist();
+		twist = commandStick.getTwist();
+		if(twist < 0) {
+			twist = -Math.pow(twist, 2);
+		} else {
+			twist = Math.pow(twist, 2);
+		}
 		SmartDashboard.putNumber("Joystick output", direction);
 		SmartDashboard.putNumber("Joystick output speed", speed);
 	
